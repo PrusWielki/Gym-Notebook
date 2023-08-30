@@ -2,14 +2,17 @@ import { fail } from '@sveltejs/kit';
 import type { Actions } from '@sveltejs/kit';
 
 export const actions: Actions = {
-	default: async ({ request, locals: { supabase } }) => {
+	default: async ({ request, url, locals: { supabase } }) => {
 		const formData = await request.formData();
 		const email = formData.get('email') as string;
 		const password = formData.get('password') as string;
 
-		const { error } = await supabase.auth.signInWithPassword({
+		const { error } = await supabase.auth.signUp({
 			email,
-			password
+			password,
+			options: {
+				emailRedirectTo: `${url.origin}/auth/callback`
+			}
 		});
 
 		if (error) {
@@ -17,7 +20,7 @@ export const actions: Actions = {
 		}
 
 		return {
-			message: 'Logged in',
+			message: 'Please check your email for a magic link to log into the website.',
 			success: true
 		};
 	}
