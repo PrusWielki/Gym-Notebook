@@ -1,4 +1,4 @@
-import { fail } from '@sveltejs/kit';
+import { fail, redirect } from '@sveltejs/kit';
 import type { Actions } from '@sveltejs/kit';
 
 export const actions: Actions = {
@@ -16,9 +16,6 @@ export const actions: Actions = {
 			return fail(500, { message: 'Server error. Try again later.', success: false, email });
 		}
 
-		return {
-			message: 'Logged in',
-			success: true
-		};
+		throw redirect(302, '/home');
 	}
 };
