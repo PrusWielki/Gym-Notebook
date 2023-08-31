@@ -1,6 +1,7 @@
 import { error } from '@sveltejs/kit';
+import type { LayoutServerLoad } from '../$types.js';
 
-export const load = async ({ locals: { getSession } }) => {
+export const load: LayoutServerLoad = async ({ locals: { getSession } }) => {
 	const session = await getSession();
 	if (!session) {
 		// the user is not signed in
