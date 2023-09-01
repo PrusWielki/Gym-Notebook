@@ -1,7 +1,7 @@
 <div class="navbar-container"><a href="/">Gym Notebook</a></div>
 <slot />
 
-<style lang="scss">
+<style lang="postcss">
 	.navbar-container {
 		width: 100%;
 		height: var(--size-8);

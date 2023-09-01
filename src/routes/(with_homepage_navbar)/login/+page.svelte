@@ -17,7 +17,7 @@
 	</form>
 </main>
 
-<style lang="scss">
+<style lang="postcss">
 	.login-page-wrapper {
 		display: flex;
 		justify-content: center;
