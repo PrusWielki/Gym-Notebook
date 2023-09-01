@@ -14,6 +14,7 @@ specifiers:
   open-props: ^1.5.15
   postcss: ^8.4.29
   postcss-csso: ^6.0.1
+  postcss-jit-props: ^1.0.13
   postcss-preset-env: ^9.1.2
   prettier: ^2.8.0
   prettier-plugin-svelte: ^2.10.1
@@ -28,6 +29,7 @@ dependencies:
   '@supabase/auth-helpers-sveltekit': 0.10.2_s4atedr65p23ds6wmj6s3p2qqi
   '@supabase/supabase-js': 2.33.1
   open-props: 1.5.15
+  postcss-jit-props: 1.0.13_postcss@8.4.29
 
 devDependencies:
   '@csstools/postcss-global-data': 2.1.0_postcss@8.4.29
@@ -1682,6 +1684,10 @@ packages:
       type-fest: 0.20.2
     dev: true
 
+  /globalyzer/0.1.0:
+    resolution: {integrity: sha512-40oNTM9UfG6aBmuKxk/giHn5nQ8RVz/SS4Ir6zgzOv9/qC3kKZ9v4etGTcJbEl/NyVQH7FGU7d+X1egr57Md2Q==}
+    dev: false
+
   /globby/11.1.0:
     resolution: {integrity: sha512-jhIXaOzy1sb8IyocaruWSn1TjmnBVs8Ayhcy83rmxNJ8q2uWKCAj3CnJY+KpGSXCueAPc0i05kVvVKtP1t9S3g==}
     engines: {node: '>=10'}
@@ -1693,6 +1699,10 @@ packages:
       merge2: 1.4.1
       slash: 3.0.0
     dev: true
+
+  /globrex/0.1.2:
+    resolution: {integrity: sha512-uHJgbwAMwNFf5mLst7IWLNg14x1CkeqglJb/K3doi4dw6q2IvAAmM/Y81kevy83wP+Sst+nutFTYOGg3d1lsxg==}
+    dev: false
 
   /graceful-fs/4.2.11:
     resolution: {integrity: sha512-RbJ5/jmFcNNCcDV5o9eTnBLJ/HszWV0P73bc+Ff4nS/rJj+YaS6IGyiOL0VoBYX+l1Wrl3k63h/KrH+nhJ0XvQ==}
@@ -2230,6 +2240,16 @@ packages:
       postcss: 8.4.29
     dev: true
 
+  /postcss-jit-props/1.0.13_postcss@8.4.29:
+    resolution: {integrity: sha512-UqJdixZQyf1//GEs0bUeJ30UuhmsD5OojTIiImElOH2cXbw6QAcWHpXuo+dl9AF/uz+x0AnCzhrB+SXUtYfSRw==}
+    engines: {node: '>=10.0.0'}
+    peerDependencies:
+      postcss: ^8.2.8
+    dependencies:
+      postcss: 8.4.29
+      tiny-glob: 0.2.9
+    dev: false
+
   /postcss-lab-function/6.0.2_postcss@8.4.29:
     resolution: {integrity: sha512-OfjeI/1rQWtj38Quy3+D9+mpOReOX3vOXfQNCfsmFIl6xK1AAJ1ta1uGjAswYwsN8uJ9Y52K8U53Jk8QJWfJLg==}
     engines: {node: ^14 || ^16 || >=18}
@@ -2740,6 +2760,13 @@ packages:
   /text-table/0.2.0:
     resolution: {integrity: sha512-N+8UisAXDGk8PFXP4HAzVR9nbfmVJ3zYLAWiTIoqC5v5isinhr+r5uaO8+7r3BMfuNIufIsA7RdpVgacC2cSpw==}
     dev: true
+
+  /tiny-glob/0.2.9:
+    resolution: {integrity: sha512-g/55ssRPUjShh+xkfx9UPDXqhckHEsHr4Vd9zX55oSdGZc/MD0m3sferOkwWtp98bv+kcVfEHtRJgBVJzelrzg==}
+    dependencies:
+      globalyzer: 0.1.0
+      globrex: 0.1.2
+    dev: false
 
   /to-regex-range/5.0.1:
     resolution: {integrity: sha512-65P7iz6X5yEr1cwcgvQxbbIw7Uk3gOy5dIdtZ4rDveLqhrdJP+Li/Hx6tyK0NEb+2GCyneCMJiGqrADCSNk8sQ==}
