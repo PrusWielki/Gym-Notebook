@@ -3,6 +3,7 @@
 	<div class="links">
 		<a href="/train">Train</a><a href="/prepare">Prepare</a><a href="/analyze">Analyze</a>
 	</div>
+	<a href="/logout" class="logout">Logout</a>
 </nav>
 <slot />
 
@@ -16,7 +17,7 @@
 		left: 0;
 		width: 100%;
 		display: flex;
-		gap: var(--size-fluid-6);
+		gap: var(--size-fluid-3);
 		align-items: center;
 
 		@media (--sm-n-above) {
@@ -33,6 +34,11 @@
 
 	.links {
 		display: flex;
-		gap: var(--size-fluid-4);
+		gap: var(--size-fluid-3);
+	}
+	.logout {
+		margin-left: auto;
+		cursor: pointer;
+		font-weight: var(--font-weight-7);
 	}
 </style>
