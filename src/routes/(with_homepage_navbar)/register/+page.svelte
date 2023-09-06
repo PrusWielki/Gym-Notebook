@@ -33,11 +33,12 @@
 
 	.input-label-container {
 		display: grid;
+		gap: var(--size-fluid-1);
 		grid-template-columns: 1fr 1fr;
 	}
 	.label {
 		justify-self: center;
-		font-size: var(--font-size-fluid-1);
+		font-size: var(--font-size-fluid-2);
 		color: var(--text-1);
 		align-self: center;
 	}
@@ -47,7 +48,7 @@
 		color: var(--text-1);
 	}
 	button {
-		background-color: var(--surface-3);
+		background-color: var(--button-1);
 		border-radius: var(--radius-1);
 		padding: var(--size-fluid-1);
 		transition: background-color 0.5s var(--ease-3);
@@ -56,7 +57,7 @@
 		font-weight: var(--font-weight-7);
 
 		&:hover {
-			background-color: var(--surface-4);
+			background-color: var(--button-2);
 		}
 	}
 </style>

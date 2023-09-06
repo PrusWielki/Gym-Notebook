@@ -1,4 +1,0 @@
-html {
-	--font-size-fluid-1: clamp(1.5rem, 4vw, 2rem);
-	--accent: var(--teal-5);
-}
