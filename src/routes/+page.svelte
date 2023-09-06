@@ -24,7 +24,7 @@
 		justify-content: center;
 	}
 	a {
-		font-size: var(--font-size-fluid-1);
+		font-size: var(--font-size-fluid-2);
 		text-decoration: none;
 		color: var(--text-1);
 		font-weight: var(--font-weight-6);
@@ -35,7 +35,7 @@
 		}
 	}
 	.slash {
-		font-size: var(--font-size-fluid-1);
+		font-size: var(--font-size-fluid-2);
 
 		color: var(--text-1);
 		font-weight: var(--font-weight-6);

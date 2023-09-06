@@ -28,7 +28,7 @@
 		display: flex;
 		flex-direction: column;
 		gap: var(--size-fluid-3);
-		padding: 0 var(--size-fluid-1);
+		padding: var(--size-fluid-1);
 	}
 
 	.input-label-container {
