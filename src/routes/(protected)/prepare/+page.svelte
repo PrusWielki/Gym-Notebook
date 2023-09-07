@@ -1,10 +1,10 @@
 <script lang="ts">
 	import TrainingDayInput from '$lib/components/training_day/training_day_input.svelte';
+	let planName: String;
 	let days: Array<
 		Array<{ exercise_type_name: string; sets: number; target_reps: string; target_rpe: number }>
 	> = [[{ exercise_type_name: 'DB curl', sets: 3, target_reps: '8-12', target_rpe: 9 }]];
 	$: days = days.filter((day) => day.length > 0);
-	$: console.log(days);
 </script>
 
 <div class="wrapper">
@@ -12,7 +12,7 @@
 		<div class="prepare-container">
 			<h2>Prepare Your training plan</h2>
 			<h4>Create a new plan:</h4>
-			<input type="text" placeholder="Plan Name" />
+			<input bind:value={planName} type="text" placeholder="Plan Name" />
 			{#each days as day}
 				<TrainingDayInput bind:day />
 			{/each}
@@ -25,7 +25,7 @@
 					];
 				}}>Add a day</button
 			>
-			<button>Save the plan</button>
+			<button class="accent">Save the plan</button>
 			<h4>Or choose an exisitng plan:</h4>
 			<select><option>option 1</option><option>option 1</option><option>option 1</option></select>
 		</div>
@@ -56,7 +56,7 @@
 		select {
 			padding: var(--size-fluid-2);
 			font-size: var(--font-size-fluid-1);
-			background-color: var(--surface-4);
+			background-color: var(--button-2);
 			color: var(--text-1);
 		}
 		input {
@@ -70,12 +70,15 @@
 	button {
 		background-color: var(--button-1);
 		border-radius: var(--radius-1);
-		padding: var(--size-fluid-1);
+		padding: var(--size-fluid-1) var(--size-fluid-2);
 		transition: background-color 0.5s var(--ease-3);
 		font-size: var(--font-size-fluid-1);
 		color: var(--text-1);
 		font-weight: var(--font-weight-7);
 
+		&.accent {
+			background-color: var(--accent);
+		}
 		&:hover {
 			background-color: var(--button-2);
 		}
