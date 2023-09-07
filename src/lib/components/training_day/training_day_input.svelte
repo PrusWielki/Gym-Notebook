@@ -95,6 +95,7 @@
 		grid-template-columns: 1fr 1fr 1fr 1fr 0.5fr;
 		width: 100%;
 		text-align: center;
+		gap: var(--size-2);
 	}
 	.day-row-input {
 		display: grid;
