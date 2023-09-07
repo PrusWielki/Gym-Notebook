@@ -26,13 +26,9 @@
 						{/each}
 					{/if}
 				</select>
-
 				<input bind:value={exercise.sets} placeholder="Sets" />
-
 				<input bind:value={exercise.target_reps} placeholder="Reps" />
-
 				<input bind:value={exercise.target_rpe} placeholder="RPE" />
-
 				<!-- svelte-ignore a11y-no-static-element-interactions -->
 				<svg
 					on:click={() => {
