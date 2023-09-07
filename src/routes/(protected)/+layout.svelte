@@ -1,12 +1,10 @@
 <nav>
-	<div class="container">
-		<div class="nav-container">
-			<h5>GN</h5>
-			<div class="links">
-				<a href="/train">Train</a><a href="/prepare">Prepare</a><a href="/analyze">Analyze</a>
-			</div>
-			<a href="/logout" class="logout">Logout</a>
+	<div class="container nav-container">
+		<h5>GN</h5>
+		<div class="links">
+			<a href="/train">Train</a><a href="/prepare">Prepare</a><a href="/analyze">Analyze</a>
 		</div>
+		<a href="/logout" class="logout">Logout</a>
 	</div>
 </nav>
 <slot />
@@ -22,6 +20,8 @@
 		width: 100%;
 		display: flex;
 		justify-content: center;
+		height: var(--size-fluid-6);
+		z-inde: 999;
 
 		.nav-container {
 			display: flex;
@@ -30,8 +30,6 @@
 			width: 100%;
 		}
 
-		@media (--sm-n-above) {
-		}
 		a {
 			color: var(--text-1);
 			font-weight: var(--font-weight-6);
