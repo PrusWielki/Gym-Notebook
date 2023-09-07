@@ -1,9 +1,9 @@
 <script lang="ts">
 	export let day: Array<{
-		exercise_type_name: string;
-		sets: number;
-		target_reps: string;
-		target_rpe: number;
+		exercise_type_name: string | null;
+		sets: number | null;
+		target_reps: string | null;
+		target_rpe: number | null;
 	}>;
 </script>
 
@@ -52,26 +52,10 @@
 		<!-- svelte-ignore a11y-interactive-supports-focus -->
 		<svg
 			on:click={() => {
-				day = [
-					...day,
-					{
-						exercise_type_name: 'DB curl',
-						sets: 3,
-						target_reps: '8-12',
-						target_rpe: 9
-					}
-				];
+				day = [...day, { exercise_type_name: '', sets: null, target_reps: '', target_rpe: null }];
 			}}
 			on:keydown={() => {
-				day = [
-					...day,
-					{
-						exercise_type_name: 'DB curl',
-						sets: 3,
-						target_reps: '8-12',
-						target_rpe: 9
-					}
-				];
+				day = [...day, { exercise_type_name: '', sets: null, target_reps: '', target_rpe: null }];
 			}}
 			role="button"
 			xmlns="http://www.w3.org/2000/svg"

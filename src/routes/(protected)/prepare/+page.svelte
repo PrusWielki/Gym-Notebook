@@ -2,8 +2,13 @@
 	import TrainingDayInput from '$lib/components/training_day/training_day_input.svelte';
 	let planName: String;
 	let days: Array<
-		Array<{ exercise_type_name: string; sets: number; target_reps: string; target_rpe: number }>
-	> = [[{ exercise_type_name: 'DB curl', sets: 3, target_reps: '8-12', target_rpe: 9 }]];
+		Array<{
+			exercise_type_name: string | null;
+			sets: number | null;
+			target_reps: string | null;
+			target_rpe: number | null;
+		}>
+	> = [[{ exercise_type_name: '', sets: null, target_reps: '', target_rpe: null }]];
 	$: days = days.filter((day) => day.length > 0);
 </script>
 
@@ -19,10 +24,12 @@
 
 			<button
 				on:click={() => {
-					days = [
-						...days,
-						[{ exercise_type_name: 'DB curl', sets: 3, target_reps: '8-12', target_rpe: 9 }]
-					];
+					if (days.length === 7) alert('A week has only 7 days :)');
+					else
+						days = [
+							...days,
+							[{ exercise_type_name: '', sets: null, target_reps: '', target_rpe: null }]
+						];
 				}}>Add a day</button
 			>
 			<button class="accent">Save the plan</button>
