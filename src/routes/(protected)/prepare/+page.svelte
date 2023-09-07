@@ -153,15 +153,8 @@
 		svg {
 			margin: 0 auto;
 			cursor: pointer;
-			width: 20px;
-			height: 20px;
-			&:focus {
-				border: none;
-			}
-			@media (--md-n-below) {
-				width: 15px;
-				height: 15px;
-			}
+			width: 24px;
+			height: 24px;
 		}
 	}
 	.day-label-row {
@@ -194,6 +187,19 @@
 			@media (--md-n-below) {
 				width: var(--size-9);
 				font-size: var(--font-size-0);
+			}
+		}
+		svg {
+			margin: 0 auto;
+			cursor: pointer;
+			width: 20px;
+			height: 20px;
+			&:focus {
+				border: none;
+			}
+			@media (--md-n-below) {
+				width: 15px;
+				height: 15px;
 			}
 		}
 	}

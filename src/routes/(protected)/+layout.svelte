@@ -44,7 +44,7 @@
 		}
 		.links {
 			display: flex;
-			gap: var(--size-fluid-3);
+			gap: var(--size-fluid-2);
 		}
 		.logout {
 			margin-left: auto;
