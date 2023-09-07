@@ -3,6 +3,7 @@
 	let days: Array<
 		Array<{ exercise_type_name: string; sets: number; target_reps: string; target_rpe: number }>
 	> = [[{ exercise_type_name: 'DB curl', sets: 3, target_reps: '8-12', target_rpe: 9 }]];
+	$: days = days.filter((day) => day.length > 0);
 	$: console.log(days);
 </script>
 
@@ -13,7 +14,7 @@
 			<h4>Create a new plan:</h4>
 			<input type="text" placeholder="Plan Name" />
 			{#each days as day}
-				<TrainingDayInput {day} />
+				<TrainingDayInput bind:day />
 			{/each}
 
 			<button
