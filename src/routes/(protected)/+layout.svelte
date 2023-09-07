@@ -1,9 +1,13 @@
 <nav>
-	<h5>GN</h5>
-	<div class="links">
-		<a href="/train">Train</a><a href="/prepare">Prepare</a><a href="/analyze">Analyze</a>
+	<div class="container">
+		<div class="nav-container">
+			<h5>GN</h5>
+			<div class="links">
+				<a href="/train">Train</a><a href="/prepare">Prepare</a><a href="/analyze">Analyze</a>
+			</div>
+			<a href="/logout" class="logout">Logout</a>
+		</div>
 	</div>
-	<a href="/logout" class="logout">Logout</a>
 </nav>
 <slot />
 
@@ -17,8 +21,14 @@
 		left: 0;
 		width: 100%;
 		display: flex;
-		gap: var(--size-fluid-3);
-		align-items: center;
+		justify-content: center;
+
+		.nav-container {
+			display: flex;
+			gap: var(--size-fluid-3);
+			align-items: center;
+			width: 100%;
+		}
 
 		@media (--sm-n-above) {
 		}
@@ -28,17 +38,19 @@
 			font-size: var(--font-size-fluid-1);
 			&:hover {
 				color: var(--accent);
+				text-decoration-color: var(--surface-4);
 			}
 		}
-	}
-
-	.links {
-		display: flex;
-		gap: var(--size-fluid-3);
-	}
-	.logout {
-		margin-left: auto;
-		cursor: pointer;
-		font-weight: var(--font-weight-7);
+		h5 {
+			font-size: var(--font-size-fluid-2);
+		}
+		.links {
+			display: flex;
+			gap: var(--size-fluid-3);
+		}
+		.logout {
+			margin-left: auto;
+			font-weight: var(--font-weight-7);
+		}
 	}
 </style>
