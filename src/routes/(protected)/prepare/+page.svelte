@@ -61,13 +61,14 @@
 			}
 		}
 		select {
-			padding: var(--size-fluid-2);
+			padding: var(--size-fluid-1) var(--size-fluid-2);
 			font-size: var(--font-size-fluid-1);
 			background-color: var(--button-2);
 			color: var(--text-1);
 		}
 		input {
 			font-size: var(--font-size-fluid-1);
+			text-align: center;
 			&::placeholder {
 				color: var(--text-1);
 			}
