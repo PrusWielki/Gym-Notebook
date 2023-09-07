@@ -1,4 +1,5 @@
 <script lang="ts">
+	export let exercises: Array<{ name: string; id: number }> | null;
 	export let day: Array<{
 		exercise_type_name: string | null;
 		sets: number | null;
@@ -18,10 +19,14 @@
 		{#each day as exercise, exercise_index}
 			<div class="day-row-input">
 				<select bind:value={exercise.exercise_type_name}>
-					<option value="" disabled selected>Exercise</option><option value="option 1"
-						>option 1</option
-					></select
-				>
+					<option value="" disabled selected>Exercise</option>
+					{#if exercises}
+						{#each exercises as exercise}
+							<option value={exercise.name}>{exercise.name}</option>
+						{/each}
+					{/if}
+				</select>
+
 				<input bind:value={exercise.sets} placeholder="Sets" />
 
 				<input bind:value={exercise.target_reps} placeholder="Reps" />

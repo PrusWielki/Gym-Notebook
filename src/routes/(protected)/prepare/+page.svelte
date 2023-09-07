@@ -1,6 +1,11 @@
 <script lang="ts">
 	import TrainingDayInput from '$lib/components/training_day/training_day_input.svelte';
+	import type { PageData } from './$types';
+	export let data: PageData;
+	$: console.log(data);
+
 	let planName: String;
+
 	let days: Array<
 		Array<{
 			exercise_type_name: string | null;
@@ -19,7 +24,7 @@
 			<h4>Create a new plan:</h4>
 			<input bind:value={planName} type="text" placeholder="Plan Name" />
 			{#each days as day}
-				<TrainingDayInput bind:day />
+				<TrainingDayInput exercises={data.exercises} bind:day />
 			{/each}
 
 			<button
