@@ -1,6 +1,6 @@
 html {
 	@media (--OSlight) {
-		--accent: var(--cyan-4);
+		--accent: var(--cyan-2);
 		--button-1: var(--stone-3);
 		--button-2: var(--stone-4);
 		--surface-2: var(--stone-3);
@@ -10,6 +10,6 @@ html {
 	@media (--OSdark) {
 		--button-1: var(--stone-8);
 		--button-2: var(--stone-7);
-		--accent: var(--blue-5);
+		--accent: var(--blue-8);
 	}
 }
