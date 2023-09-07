@@ -17,7 +17,9 @@
 		</div>
 		{#each day as exercise, exercise_index}
 			<div class="day-row-input">
-				<input bind:value={exercise.exercise_type_name} placeholder="Name" />
+				<select bind:value={exercise.exercise_type_name} placeholder="Name"
+					><option value="option 1">option 1</option></select
+				>
 				<input bind:value={exercise.sets} placeholder="Sets" />
 
 				<input bind:value={exercise.target_reps} placeholder="Reps" />
@@ -105,6 +107,7 @@
 		input {
 			width: var(--size-11);
 			font-size: var(--font-size-1);
+			text-align: center;
 			@media (--md-n-below) {
 				width: var(--size-9);
 				font-size: var(--font-size-0);
@@ -122,6 +125,17 @@
 				width: 15px;
 				height: 15px;
 			}
+		}
+	}
+	select {
+		appearance: none;
+		text-align: center;
+		padding: var(--size-1);
+		width: var(--size-11);
+		font-size: var(--font-size-1);
+		@media (--md-n-below) {
+			width: var(--size-9);
+			font-size: var(--font-size-0);
 		}
 	}
 </style>

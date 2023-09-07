@@ -12,8 +12,7 @@
 <style lang="postcss">
 	nav {
 		background-color: var(--surface-1);
-		backdrop-filter: blur(var(--radius-6));
-		padding: var(--size-3) var(--size-4);
+		padding: var(--size-1) var(--size-4);
 		position: fixed;
 		top: 0;
 		left: 0;
@@ -21,7 +20,7 @@
 		display: flex;
 		justify-content: center;
 		height: var(--size-fluid-6);
-		z-inde: 999;
+		z-index: 999;
 
 		.nav-container {
 			display: flex;
@@ -45,9 +44,9 @@
 		.links {
 			display: flex;
 			gap: var(--size-fluid-2);
+			margin: 0 auto;
 		}
 		.logout {
-			margin-left: auto;
 			font-weight: var(--font-weight-7);
 		}
 	}
