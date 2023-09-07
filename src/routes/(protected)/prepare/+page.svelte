@@ -2,7 +2,6 @@
 	import TrainingDayInput from '$lib/components/training_day/training_day_input.svelte';
 	import type { PageData } from './$types';
 	export let data: PageData;
-	$: console.log(data);
 
 	let planName: String;
 
