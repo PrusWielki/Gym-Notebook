@@ -17,8 +17,10 @@
 		</div>
 		{#each day as exercise, exercise_index}
 			<div class="day-row-input">
-				<select bind:value={exercise.exercise_type_name} placeholder="Name"
-					><option value="option 1">option 1</option></select
+				<select bind:value={exercise.exercise_type_name}>
+					<option value="" disabled selected>Exercise</option><option value="option 1"
+						>option 1</option
+					></select
 				>
 				<input bind:value={exercise.sets} placeholder="Sets" />
 
