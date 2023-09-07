@@ -1,3 +1,14 @@
 @import 'open-props/postcss/normalize';
 @import './lib/styles/overwrites.css';
 @import './lib/styles//grid.css';
+
+html {
+	&::-webkit-scrollbar {
+		width: 4px;
+		margin-left: 10px;
+	}
+	&::-webkit-scrollbar-thumb {
+		background: var(--surface-4);
+		border-radius: 2px;
+	}
+}
