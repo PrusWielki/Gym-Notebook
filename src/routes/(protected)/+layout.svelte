@@ -11,7 +11,7 @@
 
 <style lang="postcss">
 	nav {
-		background-color: var(--surface-1);
+		backdrop-filter: blur(var(--radius-2));
 		padding: var(--size-1) var(--size-4);
 		position: fixed;
 		top: 0;
