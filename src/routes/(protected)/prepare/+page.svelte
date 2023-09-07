@@ -3,7 +3,7 @@
 	import type { PageData } from './$types';
 	export let data: PageData;
 
-	let planName: String;
+	let planName: string;
 
 	let days: Array<
 		Array<{
@@ -13,6 +13,24 @@
 			target_rpe: number | null;
 		}>
 	> = [[{ exercise_type_name: '', sets: null, target_reps: '', target_rpe: null }]];
+
+	const saveThePlan = async () => {
+		const { data: result } = await data.supabase.from('Plans').insert({ name: planName }).select();
+		console.log(result && result[0].id);
+		let daysIds;
+		days.forEach(async (day, index) => {
+			const { data: dayId } = await data.supabase
+				.from('Days')
+				.insert({ name: `${planName}_${index}` })
+				.select();
+			if (dayId && result)
+				await data.supabase
+					.from('Plans_Days')
+					.insert({ day_id: dayId[0].id, plan_id: result[0].id })
+					.select();
+		});
+	};
+
 	$: days = days.filter((day) => day.length > 0);
 </script>
 
@@ -36,7 +54,7 @@
 						];
 				}}>Add a day</button
 			>
-			<button class="accent">Save the plan</button>
+			<button on:click={saveThePlan} class="accent">Save the plan</button>
 			<h4>Or choose an exisitng plan:</h4>
 			<select><option>option 1</option><option>option 1</option><option>option 1</option></select>
 		</div>
