@@ -5,6 +5,16 @@
 
 	export let data: PageData;
 
+	const handleSelectChange = async (event: Event) => {
+		if (event.target)
+			await fetch(`/api/plans/${(event.target as HTMLInputElement).value}`, { method: 'GET' }).then(
+				async (response) => {
+					let result = await response.json();
+					console.log(result);
+				}
+			);
+	};
+
 	let planName: string;
 	let saving: boolean = false;
 	let days: App.TrainingDays = [
@@ -49,6 +59,7 @@
 									await response.json().then((response) => (data.plans = response.data))
 							);
 						});
+
 						saving = false;
 					}}
 					class="accent"
@@ -60,10 +71,10 @@
 				>
 				{#if data.plans.data}
 					<h4>Or choose an exisitng plan:</h4>
-					<select>
+					<select on:change={handleSelectChange}>
 						<option value="" disabled selected>Plan</option>
 						{#each data.plans.data as plan}
-							<option value={plan.name}>{plan.name}</option>
+							<option value={plan.id}>{plan.name}</option>
 						{/each}
 					</select>
 				{/if}
