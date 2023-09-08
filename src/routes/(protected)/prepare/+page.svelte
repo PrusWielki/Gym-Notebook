@@ -1,10 +1,13 @@
 <script lang="ts">
 	import TrainingDayInput from '$lib/components/training_day/training_day_input.svelte';
+	import TrainingDayShow from '$lib/components/training_day/training_day_show.svelte';
 	import type { PageData } from './$types';
+	import { saveThePlan } from '../../../hooks/post';
+	import { getPlans } from '../../../hooks/get';
 	export let data: PageData;
 
 	let planName: string;
-
+	let saving: boolean = false;
 	let days: Array<
 		Array<{
 			exercise_type_name: string | null;
@@ -13,23 +16,6 @@
 			target_rpe: number | null;
 		}>
 	> = [[{ exercise_type_name: '', sets: null, target_reps: '', target_rpe: null }]];
-
-	const saveThePlan = async () => {
-		const { data: result } = await data.supabase.from('Plans').insert({ name: planName }).select();
-		console.log(result && result[0].id);
-		let daysIds;
-		days.forEach(async (day, index) => {
-			const { data: dayId } = await data.supabase
-				.from('Days')
-				.insert({ name: `${planName}_${index}` })
-				.select();
-			if (dayId && result)
-				await data.supabase
-					.from('Plans_Days')
-					.insert({ day_id: dayId[0].id, plan_id: result[0].id })
-					.select();
-		});
-	};
 
 	$: days = days.filter((day) => day.length > 0);
 </script>
@@ -41,7 +27,7 @@
 			<h4>Create a new plan:</h4>
 			<input bind:value={planName} type="text" placeholder="Plan Name" />
 			{#each days as day}
-				<TrainingDayInput exercises={data.exercises} bind:day />
+				<TrainingDayInput exercises={data.exercises.data} bind:day />
 			{/each}
 
 			<button
@@ -54,9 +40,29 @@
 						];
 				}}>Add a day</button
 			>
-			<button on:click={saveThePlan} class="accent">Save the plan</button>
-			<h4>Or choose an exisitng plan:</h4>
-			<select><option>option 1</option><option>option 1</option><option>option 1</option></select>
+			<button
+				on:click={async () => {
+					saving = true;
+					await saveThePlan(days, planName, data.supabase);
+					await getPlans(data.supabase).then((result) => (data.plans = result));
+					saving = false;
+				}}
+				class="accent"
+				>{#if saving}
+					Saving...
+				{:else}
+					Save the plan
+				{/if}</button
+			>
+			{#if data.plans.data}
+				<h4>Or choose an exisitng plan:</h4>
+				<select>
+					<option value="" disabled selected>Plan</option>
+					{#each data.plans.data as plan}
+						<option value={plan.name}>{plan.name}</option>
+					{/each}
+				</select>
+			{/if}
 		</div>
 	</div>
 </div>

@@ -7,11 +7,11 @@
 	<form method="post" class="form-container" use:enhance>
 		<div class="input-label-container">
 			<h5 class="label">Email</h5>
-			<input name="email" value={form?.email ?? ''} />
+			<input required name="email" value={form?.email ?? ''} />
 		</div>
 		<div class="input-label-container">
 			<h5 class="label">Password</h5>
-			<input type="password" name="password" />
+			<input required type="password" name="password" />
 		</div>
 		<button>Register</button>
 	</form>
