@@ -2,8 +2,6 @@
 	import TrainingDayInput from '$lib/components/training_day/training_day_input.svelte';
 	import TrainingDayShow from '$lib/components/training_day/training_day_show.svelte';
 	import type { PageData } from './$types';
-	import { saveThePlan } from '../../../hooks/post';
-	import { getPlans } from '../../../hooks/get';
 
 	export let data: PageData;
 
@@ -40,10 +38,17 @@
 				<button
 					on:click={async () => {
 						saving = true;
-						await saveThePlan(days, planName, data.supabase).catch((error) => console.log(error));
-						await getPlans(data.supabase)
-							.then((result) => (data.plans = result))
-							.catch((error) => console.log(error));
+						await fetch('/api/plans', {
+							method: 'POST',
+							body: JSON.stringify({ days: days, planName: planName })
+						}).finally(async () => {
+							await fetch('/api/plans', {
+								method: 'GET'
+							}).then(
+								async (response) =>
+									await response.json().then((response) => (data.plans = response.data))
+							);
+						});
 						saving = false;
 					}}
 					class="accent"

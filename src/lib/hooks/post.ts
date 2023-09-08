@@ -8,9 +8,9 @@ const validateData = (days: App.TrainingDays, planName: string) => {
 		day.forEach((exercise) => {
 			if (
 				!exercise.exercise_type_name ||
-				exercise.sets ||
-				exercise.target_reps ||
-				exercise.target_rpe
+				!exercise.sets ||
+				!exercise.target_reps ||
+				!exercise.target_rpe
 			)
 				result = { result: false, message: 'Make sure to fill all the fields :)' };
 		});

@@ -25,6 +25,10 @@ declare global {
 			target_rpe: number | null;
 		}>;
 
+		type Plans = Array<{
+			name: string;
+		}> | null;
+
 		// interface Error {}
 		// interface Platform {}
 	}
