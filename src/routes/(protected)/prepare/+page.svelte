@@ -26,7 +26,7 @@
 				{/each}
 
 				<button
-					on:click={() => {
+					on:click|preventDefault={() => {
 						if (days.length === 7) alert('A week has only 7 days :)');
 						else
 							days = [
