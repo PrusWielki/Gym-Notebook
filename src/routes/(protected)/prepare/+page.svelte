@@ -4,13 +4,14 @@
 	import type { PageData } from './$types';
 
 	export let data: PageData;
+	let premadePlan: Array<Array<{ id: number; Exercise_Detail: App.TrainingDay }>>;
 
 	const handleSelectChange = async (event: Event) => {
 		if (event.target)
 			await fetch(`/api/plans/${(event.target as HTMLInputElement).value}`, { method: 'GET' }).then(
 				async (response) => {
-					let result = await response.json();
-					console.log(result);
+					await response.json().then((result) => (premadePlan = result.data));
+					console.log(premadePlan);
 				}
 			);
 	};
@@ -69,16 +70,23 @@
 						Save the plan
 					{/if}</button
 				>
-				{#if data.plans.data}
-					<h4>Or choose an exisitng plan:</h4>
-					<select on:change={handleSelectChange}>
-						<option value="" disabled selected>Plan</option>
-						{#each data.plans.data as plan}
-							<option value={plan.id}>{plan.name}</option>
-						{/each}
-					</select>
-				{/if}
 			</form>
+			{#if data.plans.data}
+				<h4>Or choose an exisitng plan:</h4>
+				<select on:change={handleSelectChange}>
+					<option value="" disabled selected>Plan</option>
+					{#each data.plans.data as plan}
+						<option value={plan.id}>{plan.name}</option>
+					{/each}
+				</select>
+			{/if}
+			{#if premadePlan}
+				{#each premadePlan as days}
+					{#each days as day}
+						<TrainingDayShow day={day.Exercise_Detail} />
+					{/each}
+				{/each}
+			{/if}
 		</div>
 	</div>
 </div>

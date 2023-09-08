@@ -78,6 +78,8 @@
 		border-radius: var(--radius-2);
 		box-shadow: var(--shadow-1);
 		gap: var(--size-fluid-2);
+		max-width: var(--size-md);
+		width: 100%;
 		h5 {
 			font-size: var(--font-size-fluid-0);
 		}
@@ -90,14 +92,14 @@
 	}
 	.day-label-row {
 		display: grid;
-		grid-template-columns: 1fr 1fr 1fr 1fr 0.5fr;
+		grid-template-columns: 1fr 0.5fr 0.5fr 0.5fr 0.3fr;
 		width: 100%;
 		text-align: center;
 		gap: var(--size-2);
 	}
 	.day-row-input {
 		display: grid;
-		grid-template-columns: 1fr 1fr 1fr 1fr 0.5fr;
+		grid-template-columns: 1fr 0.5fr 0.5fr 0.5fr 0.3fr;
 		width: 100%;
 		text-align: center;
 		gap: var(--size-2);
@@ -107,8 +109,8 @@
 			width: var(--size-11);
 			font-size: var(--font-size-1);
 			text-align: center;
+			width: 100%;
 			@media (--md-n-below) {
-				width: var(--size-9);
 				font-size: var(--font-size-0);
 			}
 		}
@@ -132,8 +134,8 @@
 		padding: var(--size-1);
 		width: var(--size-11);
 		font-size: var(--font-size-1);
+		width: 100%;
 		@media (--md-n-below) {
-			width: var(--size-9);
 			font-size: var(--font-size-0);
 		}
 	}
