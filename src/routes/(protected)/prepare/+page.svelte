@@ -19,46 +19,50 @@
 <div class="wrapper">
 	<div class="container">
 		<div class="prepare-container">
-			<h2>Prepare Your training plan</h2>
-			<h4>Create a new plan:</h4>
-			<input bind:value={planName} type="text" placeholder="Plan Name" />
-			{#each days as day}
-				<TrainingDayInput exercises={data.exercises.data} bind:day />
-			{/each}
+			<form>
+				<h2>Prepare Your training plan</h2>
+				<h4>Create a new plan:</h4>
+				<input required bind:value={planName} type="text" placeholder="Plan Name" />
+				{#each days as day}
+					<TrainingDayInput exercises={data.exercises.data} bind:day />
+				{/each}
 
-			<button
-				on:click={() => {
-					if (days.length === 7) alert('A week has only 7 days :)');
-					else
-						days = [
-							...days,
-							[{ exercise_type_name: '', sets: null, target_reps: '', target_rpe: null }]
-						];
-				}}>Add a day</button
-			>
-			<button
-				on:click={async () => {
-					saving = true;
-					await saveThePlan(days, planName, data.supabase);
-					await getPlans(data.supabase).then((result) => (data.plans = result));
-					saving = false;
-				}}
-				class="accent"
-				>{#if saving}
-					Saving...
-				{:else}
-					Save the plan
-				{/if}</button
-			>
-			{#if data.plans.data}
-				<h4>Or choose an exisitng plan:</h4>
-				<select>
-					<option value="" disabled selected>Plan</option>
-					{#each data.plans.data as plan}
-						<option value={plan.name}>{plan.name}</option>
-					{/each}
-				</select>
-			{/if}
+				<button
+					on:click={() => {
+						if (days.length === 7) alert('A week has only 7 days :)');
+						else
+							days = [
+								...days,
+								[{ exercise_type_name: '', sets: null, target_reps: '', target_rpe: null }]
+							];
+					}}>Add a day</button
+				>
+				<button
+					on:click={async () => {
+						saving = true;
+						await saveThePlan(days, planName, data.supabase).catch((error) => console.log(error));
+						await getPlans(data.supabase)
+							.then((result) => (data.plans = result))
+							.catch((error) => console.log(error));
+						saving = false;
+					}}
+					class="accent"
+					>{#if saving}
+						Saving...
+					{:else}
+						Save the plan
+					{/if}</button
+				>
+				{#if data.plans.data}
+					<h4>Or choose an exisitng plan:</h4>
+					<select>
+						<option value="" disabled selected>Plan</option>
+						{#each data.plans.data as plan}
+							<option value={plan.name}>{plan.name}</option>
+						{/each}
+					</select>
+				{/if}
+			</form>
 		</div>
 	</div>
 </div>
@@ -96,6 +100,13 @@
 			&::placeholder {
 				color: var(--text-1);
 			}
+		}
+		form {
+			display: flex;
+			flex-direction: column;
+			align-items: center;
+			width: 100%;
+			gap: var(--size-4);
 		}
 	}
 

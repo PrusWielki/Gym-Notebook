@@ -1,28 +1,40 @@
 import type { SupabaseClient } from '@supabase/supabase-js';
+
+const validateData = (days: App.TrainingDays, planName: string) => {
+	let result: { result: boolean; message: string } = { result: true, message: '' };
+	if (!planName) return { result: false, message: 'Plan Name is empty!' };
+
+	days.forEach((day) => {
+		day.forEach((exercise) => {
+			if (
+				!exercise.exercise_type_name ||
+				exercise.sets ||
+				exercise.target_reps ||
+				exercise.target_rpe
+			)
+				result = { result: false, message: 'Make sure to fill all the fields :)' };
+		});
+	});
+	return result;
+};
+
 export const saveThePlan = async (
-	days: Array<
-		Array<{
-			exercise_type_name: string | null;
-			sets: number | null;
-			target_reps: string | null;
-			target_rpe: number | null;
-		}>
-	>,
+	days: App.TrainingDays,
 	planName: string,
 	supabase: SupabaseClient
 ) => {
-	const { data: result } = await supabase.from('Plans').insert({ name: planName }).select();
-
+	const validationResult = validateData(days, planName);
+	if (validationResult.result !== true) throw validationResult.message;
+	const { error, data: result } = await supabase.from('Plans').insert({ name: planName }).select();
+	if (error) throw error;
 	days.forEach(async (day, index) => {
-		const { data: dayId } = await supabase
+		const { error, data: dayId } = await supabase
 			.from('Days')
 			.insert({ name: `${planName}_${index}` })
 			.select();
+		if (error) throw error;
 		if (dayId && result)
-			await supabase
-				.from('Plans_Days')
-				.insert({ day_id: dayId[0].id, plan_id: result[0].id })
-				.select();
+			await supabase.from('Plans_Days').insert({ day_id: dayId[0].id, plan_id: result[0].id });
 
 		day.forEach(async (exercise) => {
 			if (
@@ -31,7 +43,7 @@ export const saveThePlan = async (
 				exercise.target_reps &&
 				exercise.target_rpe
 			) {
-				const { data: exerciseResult } = await supabase
+				const { error, data: exerciseResult } = await supabase
 					.from('Exercise_Detail')
 					.insert({
 						exercise_type_name: exercise.exercise_type_name,
@@ -40,6 +52,7 @@ export const saveThePlan = async (
 						target_rpe: exercise.target_rpe
 					})
 					.select();
+				if (error) throw error;
 				if (dayId && exerciseResult)
 					await supabase
 						.from('Days_Exercises')

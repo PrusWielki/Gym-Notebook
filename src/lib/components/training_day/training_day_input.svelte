@@ -13,7 +13,7 @@
 		</div>
 		{#each day as exercise, exercise_index}
 			<div class="day-row-input">
-				<select bind:value={exercise.exercise_type_name}>
+				<select required bind:value={exercise.exercise_type_name}>
 					<option value="" disabled selected>Exercise</option>
 					{#if exercises}
 						{#each exercises as exercise}
@@ -21,9 +21,9 @@
 						{/each}
 					{/if}
 				</select>
-				<input bind:value={exercise.sets} placeholder="Sets" />
-				<input bind:value={exercise.target_reps} placeholder="Reps" />
-				<input bind:value={exercise.target_rpe} placeholder="RPE" />
+				<input required bind:value={exercise.sets} placeholder="Sets" />
+				<input required bind:value={exercise.target_reps} placeholder="Reps" />
+				<input required bind:value={exercise.target_rpe} placeholder="RPE" />
 				<!-- svelte-ignore a11y-no-static-element-interactions -->
 				<svg
 					on:click={() => {
