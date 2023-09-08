@@ -1,11 +1,6 @@
 <script lang="ts">
 	export let exercises: Array<{ name: string; id: number }> | null;
-	export let day: Array<{
-		exercise_type_name: string | null;
-		sets: number | null;
-		target_reps: string | null;
-		target_rpe: number | null;
-	}>;
+	export let day: App.TrainingDay;
 </script>
 
 {#if day.length > 0}

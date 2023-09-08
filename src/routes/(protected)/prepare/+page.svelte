@@ -4,18 +4,14 @@
 	import type { PageData } from './$types';
 	import { saveThePlan } from '../../../hooks/post';
 	import { getPlans } from '../../../hooks/get';
+
 	export let data: PageData;
 
 	let planName: string;
 	let saving: boolean = false;
-	let days: Array<
-		Array<{
-			exercise_type_name: string | null;
-			sets: number | null;
-			target_reps: string | null;
-			target_rpe: number | null;
-		}>
-	> = [[{ exercise_type_name: '', sets: null, target_reps: '', target_rpe: null }]];
+	let days: App.TrainingDays = [
+		[{ exercise_type_name: '', sets: null, target_reps: '', target_rpe: null }]
+	];
 
 	$: days = days.filter((day) => day.length > 0);
 </script>

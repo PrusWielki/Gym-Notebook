@@ -10,6 +10,21 @@ declare global {
 		interface PageData {
 			session: Session | null;
 		}
+		type TrainingDays = Array<
+			Array<{
+				exercise_type_name: string | null;
+				sets: number | null;
+				target_reps: string | null;
+				target_rpe: number | null;
+			}>
+		>;
+		type TrainingDay = Array<{
+			exercise_type_name: string | null;
+			sets: number | null;
+			target_reps: string | null;
+			target_rpe: number | null;
+		}>;
+
 		// interface Error {}
 		// interface Platform {}
 	}
