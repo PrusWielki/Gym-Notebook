@@ -7,6 +7,7 @@
 	let premadePlan: Array<Array<{ id: number; Exercise_Detail: App.TrainingDay }>>;
 
 	const handleSelectChange = async (event: Event) => {
+		requestState = 'Loading';
 		if (event.target)
 			await fetch(`/api/plans/${(event.target as HTMLInputElement).value}`, { method: 'GET' }).then(
 				async (response) => {
@@ -14,10 +15,11 @@
 					console.log(premadePlan);
 				}
 			);
+		requestState = 'Done';
 	};
 
 	let planName: string;
-	let saving: boolean = false;
+	let requestState: 'Saving' | 'Loading' | 'Done';
 	let days: App.TrainingDays = [
 		[{ exercise_type_name: '', sets: null, target_reps: '', target_rpe: null }]
 	];
@@ -48,7 +50,7 @@
 				>
 				<button
 					on:click={async () => {
-						saving = true;
+						requestState = 'Saving';
 						await fetch('/api/plans', {
 							method: 'POST',
 							body: JSON.stringify({ days: days, planName: planName })
@@ -61,10 +63,10 @@
 							);
 						});
 
-						saving = false;
+						requestState = 'Done';
 					}}
 					class="accent"
-					>{#if saving}
+					>{#if requestState === 'Saving'}
 						Saving...
 					{:else}
 						Save the plan
@@ -80,11 +82,12 @@
 					{/each}
 				</select>
 			{/if}
+			{#if requestState === 'Loading'}
+				<h3>Loading...</h3>
+			{/if}
 			{#if premadePlan}
-				{#each premadePlan as days}
-					{#each days as day}
-						<TrainingDayShow day={day.Exercise_Detail} />
-					{/each}
+				{#each premadePlan[0] as day}
+					<TrainingDayShow day={day.Exercise_Detail} />
 				{/each}
 			{/if}
 		</div>
