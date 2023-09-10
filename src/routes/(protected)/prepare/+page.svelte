@@ -6,6 +6,7 @@
 	import type { GetPlansResponse } from '../../api/plans/[planId]/+server';
 	import notificationMessage from '$lib/store/notifications';
 	import { showNotification } from '$lib/utils/show-notification';
+	import type { PlansPostRequest } from '../../api/plans/+server';
 
 	export let data: PageData;
 	let premadePlan: GetPlansResponse;
@@ -69,10 +70,6 @@
 		weeks = weeks.filter((week) => {
 			if (week?.Days) return week?.Days.length > 0;
 		});
-
-		/* weeks.forEach((week, index) => {
-			if (week) week.order = index + 1;
-		}); */
 	}
 </script>
 
@@ -169,12 +166,17 @@
 							];
 					}}>Add a week</button
 				>
-				<!-- <button
+				<button
 					on:click={async () => {
 						requestState = 'Saving';
 						await fetch('/api/plans', {
 							method: 'POST',
-							body: JSON.stringify({ days: days, planName: planName })
+							body: JSON.stringify({
+								weeks,
+								planName: planName,
+								custom: false,
+								periodization: 'None'
+							})
 						}).finally(async () => {
 							await fetch('/api/plans', {
 								method: 'GET'
@@ -191,7 +193,8 @@
 						Saving...
 					{:else}
 						Save the plan
-					{/if}</button> -->
+					{/if}</button
+				>
 			</form>
 		</div>
 	</div>

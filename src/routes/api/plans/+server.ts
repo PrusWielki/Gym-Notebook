@@ -14,10 +14,16 @@ type PlansGetResponse = {
 	data: void | PostgrestMaybeSingleResponse<unknown[]>;
 };
 
+export type PlansPostRequest = {
+	weeks: Array<App.Week>;
+	planName: string;
+	custom: boolean;
+	periodization: string;
+};
 export async function POST({ request, locals: { supabase } }) {
-	const { days, planName } = await request.json();
+	const { weeks, planName, custom, periodization } = await request.json();
 	const response: PlansPostResponse = { success: true, reason: '' };
-	await saveThePlan(days, planName, supabase).catch((reason) => {
+	await saveThePlan(weeks, planName, supabase, custom, periodization).catch((reason) => {
 		response.success = false;
 		response.reason = reason;
 	});
