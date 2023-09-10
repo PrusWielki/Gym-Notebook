@@ -1,10 +1,13 @@
 <script lang="ts">
 	import TrainingDayInput from '$lib/components/training_day/training_day_input.svelte';
 	import TrainingDayShow from '$lib/components/training_day/training_day_show.svelte';
+
 	import type { PageData } from './$types';
+	import notificationMessage from '$lib/store/notifications';
+	import { showNotification } from '$lib/utils/show-notification';
 
 	export let data: PageData;
-	let premadePlan: Array<Array<{ id: number; Exercise_Detail: App.TrainingDay }>>;
+	let premadePlan: Array<App.TrainingDays>;
 
 	const handleSelectChange = async (event: Event) => {
 		requestState = 'Loading';
@@ -16,23 +19,44 @@
 				}
 			);
 		requestState = 'Done';
+		showNotification('Program chosen', 2000, notificationMessage);
 	};
 
 	let planName: string;
 	let requestState: 'Saving' | 'Loading' | 'Done';
 	let days: App.TrainingDays = [
-		[{ exercise_type_name: '', sets: null, target_reps: '', target_rpe: null }]
+		{
+			name: '',
+			Exercise_Detail: [{ exercise_type_name: '', sets: null, target_reps: '', target_rpe: null }]
+		}
 	];
 
-	$: days = days.filter((day) => day.length > 0);
+	$: days = days.filter((day) => day.Exercise_Detail.length > 0);
 </script>
 
 <div class="wrapper">
 	<div class="container">
 		<div class="prepare-container">
+			<h2>Prepare Your training plan</h2>
+			{#if data.plans.data}
+				<h4>Choose an exisitng plan:</h4>
+				<select on:change={handleSelectChange}>
+					<option value="" disabled selected>Plan</option>
+					{#each data.plans.data as plan}
+						<option value={plan.id}>{plan.name}</option>
+					{/each}
+				</select>
+			{/if}
+			{#if requestState === 'Loading'}
+				<h3>Loading...</h3>
+			{/if}
+			{#if premadePlan}
+				{#each premadePlan as day}
+					<TrainingDayShow day={day[0]} />
+				{/each}
+			{/if}
 			<form>
-				<h2>Prepare Your training plan</h2>
-				<h4>Create a new plan:</h4>
+				<h4>Or create a new plan:</h4>
 				<input required bind:value={planName} type="text" placeholder="Plan Name" />
 				{#each days as day}
 					<TrainingDayInput exercises={data.exercises.data} bind:day />
@@ -44,7 +68,12 @@
 						else
 							days = [
 								...days,
-								[{ exercise_type_name: '', sets: null, target_reps: '', target_rpe: null }]
+								{
+									name: '',
+									Exercise_Detail: [
+										{ exercise_type_name: '', sets: null, target_reps: '', target_rpe: null }
+									]
+								}
 							];
 					}}>Add a day</button
 				>
@@ -73,23 +102,6 @@
 					{/if}</button
 				>
 			</form>
-			{#if data.plans.data}
-				<h4>Or choose an exisitng plan:</h4>
-				<select on:change={handleSelectChange}>
-					<option value="" disabled selected>Plan</option>
-					{#each data.plans.data as plan}
-						<option value={plan.id}>{plan.name}</option>
-					{/each}
-				</select>
-			{/if}
-			{#if requestState === 'Loading'}
-				<h3>Loading...</h3>
-			{/if}
-			{#if premadePlan}
-				{#each premadePlan[0] as day}
-					<TrainingDayShow day={day.Exercise_Detail} />
-				{/each}
-			{/if}
 		</div>
 	</div>
 </div>

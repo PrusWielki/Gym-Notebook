@@ -3,15 +3,16 @@
 	export let day: App.TrainingDay;
 </script>
 
-{#if day.length > 0}
+{#if day.Exercise_Detail.length > 0}
 	<div class="day-container">
+		<input class="input-day-name" required placeholder="day name" bind:value={day.name} />
 		<div class="day-label-row">
 			<h5>Exercise</h5>
 			<h5>Sets</h5>
 			<h5>Reps</h5>
 			<h5>RPE</h5>
 		</div>
-		{#each day as exercise, exercise_index}
+		{#each day.Exercise_Detail as exercise, exercise_index}
 			<div class="day-row-input">
 				<select required bind:value={exercise.exercise_type_name}>
 					<option value="" disabled selected>Exercise</option>
@@ -27,11 +28,11 @@
 				<!-- svelte-ignore a11y-no-static-element-interactions -->
 				<svg
 					on:click={() => {
-						day.splice(exercise_index, 1);
+						day.Exercise_Detail.splice(exercise_index, 1);
 						day = day;
 					}}
 					on:keydown={() => {
-						day.splice(exercise_index, 1);
+						day.Exercise_Detail.splice(exercise_index, 1);
 						day = day;
 					}}
 					xmlns="http://www.w3.org/2000/svg"
@@ -52,10 +53,16 @@
 		<!-- svelte-ignore a11y-interactive-supports-focus -->
 		<svg
 			on:click={() => {
-				day = [...day, { exercise_type_name: '', sets: null, target_reps: '', target_rpe: null }];
+				day.Exercise_Detail = [
+					...day.Exercise_Detail,
+					{ exercise_type_name: '', sets: null, target_reps: '', target_rpe: null }
+				];
 			}}
 			on:keydown={() => {
-				day = [...day, { exercise_type_name: '', sets: null, target_reps: '', target_rpe: null }];
+				day.Exercise_Detail = [
+					...day.Exercise_Detail,
+					{ exercise_type_name: '', sets: null, target_reps: '', target_rpe: null }
+				];
 			}}
 			role="button"
 			xmlns="http://www.w3.org/2000/svg"
@@ -138,5 +145,11 @@
 		@media (--md-n-below) {
 			font-size: var(--font-size-0);
 		}
+	}
+	.input-day-name {
+		width: 50%;
+		justify-self: center;
+		align-self: center;
+		text-align: center;
 	}
 </style>

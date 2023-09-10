@@ -2,15 +2,16 @@
 	export let day: App.TrainingDay;
 </script>
 
-{#if day.length > 0}
+{#if day.Exercise_Detail.length > 0}
 	<div class="day-container">
+		<h5>{day.name}</h5>
 		<div class="day-label-row">
 			<h5>Exercise</h5>
 			<h5>Sets</h5>
 			<h5>Reps</h5>
 			<h5>RPE</h5>
 		</div>
-		{#each day as exercise}
+		{#each day.Exercise_Detail as exercise}
 			<div class="day-row">
 				<h5>{exercise.exercise_type_name}</h5>
 				<h5>{exercise.sets}</h5>
@@ -35,6 +36,7 @@
 		width: 100%;
 		h5 {
 			font-size: var(--font-size-fluid-1);
+			align-self: center;
 		}
 	}
 	.day-label-row {

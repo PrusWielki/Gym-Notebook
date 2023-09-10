@@ -10,14 +10,17 @@ type PlansDetailsGetResponse = {
 export async function GET({ locals: { supabase }, params }) {
 	const response: PlansDetailsGetResponse = { success: true, reason: '', data: undefined };
 
-	const { data } = await supabase.from('Plans').select(`id, Days ( id ) `).eq('id', params.planId);
+	const { data } = await supabase
+		.from('Plans')
+		.select(`id, Days ( id, name ) `)
+		.eq('id', params.planId);
 
 	let toReturn: unknown[] = [];
 	if (data)
 		for (let i = 0; i < data[0].Days.length; i++) {
 			await supabase
 				.from('Days')
-				.select(`id, Exercise_Detail ( sets, target_reps, target_rpe, exercise_type_name ) `)
+				.select(`id, name, Exercise_Detail ( sets, target_reps, target_rpe, exercise_type_name )`)
 				.eq('id', data[0].Days[i].id)
 				.then((result) => (toReturn = [...toReturn, result.data]));
 		}

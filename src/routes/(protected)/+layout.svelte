@@ -1,3 +1,7 @@
+<script>
+	import Toast from '$lib/components/toast/toast.svelte';
+</script>
+
 <nav>
 	<div class="container nav-container">
 		<h5>GN</h5>
@@ -7,6 +11,7 @@
 		<a href="/logout" class="logout">Logout</a>
 	</div>
 </nav>
+<Toast />
 <slot />
 
 <style lang="postcss">

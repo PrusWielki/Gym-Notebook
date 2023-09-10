@@ -1,5 +1,5 @@
-import { getPlans } from '$lib/hooks/get.js';
-import { saveThePlan } from '$lib/hooks/post.js';
+import { getPlans } from '$lib/query/get.js';
+import { saveThePlan } from '$lib/query/post.js';
 import { json } from '@sveltejs/kit';
 import type { PostgrestMaybeSingleResponse } from '@supabase/supabase-js';
 

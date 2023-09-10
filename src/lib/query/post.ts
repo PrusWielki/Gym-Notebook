@@ -5,7 +5,8 @@ const validateData = (days: App.TrainingDays, planName: string) => {
 	if (!planName) return { result: false, message: 'Plan Name is empty!' };
 
 	days.forEach((day) => {
-		day.forEach((exercise) => {
+		if (!day.name) return { result: false, message: 'Day name is empty!' };
+		day.Exercise_Detail.forEach((exercise) => {
 			if (
 				!exercise.exercise_type_name ||
 				!exercise.sets ||
@@ -27,16 +28,13 @@ export const saveThePlan = async (
 	if (validationResult.result !== true) throw validationResult.message;
 	const { error, data: result } = await supabase.from('Plans').insert({ name: planName }).select();
 	if (error) throw error;
-	days.forEach(async (day, index) => {
-		const { error, data: dayId } = await supabase
-			.from('Days')
-			.insert({ name: `${planName}_${index}` })
-			.select();
+	days.forEach(async (day) => {
+		const { error, data: dayId } = await supabase.from('Days').insert({ name: day.name }).select();
 		if (error) throw error;
 		if (dayId && result)
 			await supabase.from('Plans_Days').insert({ day_id: dayId[0].id, plan_id: result[0].id });
 
-		day.forEach(async (exercise) => {
+		day.Exercise_Detail.forEach(async (exercise) => {
 			if (
 				exercise.exercise_type_name &&
 				exercise.sets &&
