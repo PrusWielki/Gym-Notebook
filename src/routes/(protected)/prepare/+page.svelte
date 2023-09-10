@@ -25,7 +25,26 @@
 
 	let planName: string;
 	let requestState: 'Saving' | 'Loading' | 'Done';
-	let weeks: Array<App.Week>;
+	let weeks: Array<App.Week> = [
+		{
+			order: 1,
+			Days: [
+				{
+					name: '',
+					notes: '',
+					Exercise_Detail: [
+						{
+							sets: null,
+							target_reps: null,
+							target_rpe: null,
+							exercise_type_name: null,
+							Exercise_Detail_Sets: null
+						}
+					]
+				}
+			]
+		}
+	];
 	/* let days: App.TrainingDays = [
 		{
 			name: '',
@@ -42,7 +61,10 @@
 		}
 	]; */
 
-	$: days = days.filter((day) => day.Exercise_Detail.length > 0);
+	// $: days = days.filter((day) => day.Exercise_Detail.length > 0);
+	$: weeks.forEach((week) => {
+		if (week?.Days) week.Days = week?.Days.filter((day) => day.Exercise_Detail.length > 0);
+	});
 </script>
 
 <div class="wrapper">
@@ -71,39 +93,38 @@
 			<form>
 				<h4>Or create a new plan:</h4>
 				<input required bind:value={planName} type="text" placeholder="Plan Name" />
+				{#each weeks as week, index}
+					{#if week?.Days}
+						<h4>Week - {week.order}</h4>
+						{#each week.Days as day}
+							<TrainingDayInput exercises={data.exercises.data} bind:day />
+						{/each}
+						<button
+							on:click|preventDefault={() => {
+								if (week?.Days)
+									week.Days = [
+										...week.Days,
 
-				{#each days as day}
-					<TrainingDayInput exercises={data.exercises.data} bind:day />
-				{/each}
-
-				<button
-					on:click|preventDefault={() => {
-						if (days.length === 7) alert('A week has only 7 days :)');
-						else
-							days = [
-								...days,
-								{
-									name: '',
-									Exercise_Detail: [
 										{
 											name: '',
 											notes: '',
 											Exercise_Detail: [
 												{
-													exercise_type_name: '',
 													sets: null,
-													target_reps: '',
+													target_reps: null,
 													target_rpe: null,
+													exercise_type_name: null,
 													Exercise_Detail_Sets: null
 												}
 											]
 										}
-									]
-								}
-							];
-					}}>Add a day</button
-				>
-				<button
+									];
+							}}>Add a day</button
+						>
+					{/if}
+				{/each}
+
+				<!-- <button
 					on:click={async () => {
 						requestState = 'Saving';
 						await fetch('/api/plans', {
@@ -125,8 +146,7 @@
 						Saving...
 					{:else}
 						Save the plan
-					{/if}</button
-				>
+					{/if}</button> -->
 			</form>
 		</div>
 	</div>

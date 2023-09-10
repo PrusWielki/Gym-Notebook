@@ -1,6 +1,5 @@
 <script lang="ts">
 	export let day: App.TrainingDay;
-	console.log(day);
 </script>
 
 {#if day.Exercise_Detail.length > 0}

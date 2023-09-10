@@ -1,5 +1,5 @@
 <script>
-	import { fade } from 'svelte/transition';
+	import { fly } from 'svelte/transition';
 	import notificationMessage from '$lib/store/notifications';
 	let message = '';
 	notificationMessage.subscribe((value) => {
@@ -8,7 +8,7 @@
 </script>
 
 {#if message}
-	<div in:fade out:fade class="toast-container"><h4>{message}</h4></div>
+	<div in:fly={{ x: -400 }} out:fly={{ x: 400 }} class="toast-container"><h4>{message}</h4></div>
 {/if}
 
 <style lang="postcss">

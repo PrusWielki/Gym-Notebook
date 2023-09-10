@@ -1,6 +1,7 @@
 <script lang="ts">
 	export let exercises: Array<{ name: string; id: number }> | null;
 	export let day: App.TrainingDay;
+	console.log(day);
 </script>
 
 {#if day.Exercise_Detail.length > 0}
@@ -55,13 +56,25 @@
 			on:click={() => {
 				day.Exercise_Detail = [
 					...day.Exercise_Detail,
-					{ exercise_type_name: '', sets: null, target_reps: '', target_rpe: null }
+					{
+						sets: null,
+						target_reps: null,
+						target_rpe: null,
+						exercise_type_name: null,
+						Exercise_Detail_Sets: null
+					}
 				];
 			}}
 			on:keydown={() => {
 				day.Exercise_Detail = [
 					...day.Exercise_Detail,
-					{ exercise_type_name: '', sets: null, target_reps: '', target_rpe: null }
+					{
+						sets: null,
+						target_reps: null,
+						target_rpe: null,
+						exercise_type_name: null,
+						Exercise_Detail_Sets: null
+					}
 				];
 			}}
 			role="button"
