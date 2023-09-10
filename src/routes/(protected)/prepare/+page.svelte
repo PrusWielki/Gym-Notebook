@@ -177,14 +177,16 @@
 								custom: isCustom,
 								periodization: chosenPeriodization
 							})
-						}).then(async () => {
-							await fetch('/api/plans', {
-								method: 'GET'
-							}).then(async (response) => {
-								await response.json().then((response) => (data.plans = response.data));
-								showNotification('Program chosen', 2000, notificationMessage);
-							});
-						});
+						})
+							.then(async () => {
+								await fetch('/api/plans', {
+									method: 'GET'
+								}).then(async (response) => {
+									await response.json().then((response) => (data.plans = response.data));
+									showNotification('Program chosen', 2000, notificationMessage);
+								});
+							})
+							.catch(() => showNotification('Error occured', 2000, notificationMessage));
 
 						requestState = 'Done';
 					}}
