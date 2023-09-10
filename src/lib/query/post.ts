@@ -49,52 +49,40 @@ export const saveThePlan = async (
 		if (error) throw error;
 		weeks.forEach(async (week) => {
 			if (week) {
-				try {
-					const { error, data: weekId } = await supabase
-						.from('Weeks')
-						.insert({ order: week.order, plan_id: result[0].id })
-						.select();
+				const { error, data: weekId } = await supabase
+					.from('Weeks')
+					.insert({ order: week.order, plan_id: result[0].id })
+					.select();
 
-					if (error) throw error;
+				if (error) throw error;
 
-					week.Days.forEach(async (day) => {
-						if (day) {
-							try {
-								const { error, data: dayId } = await supabase
-									.from('Days')
-									.insert({ name: day.name, notes: day.notes, week_id: weekId[0].id })
-									.select();
-								if (error) throw error;
+				week.Days.forEach(async (day) => {
+					if (day) {
+						const { error, data: dayId } = await supabase
+							.from('Days')
+							.insert({ name: day.name, notes: day.notes, week_id: weekId[0].id })
+							.select();
+						if (error) throw error;
 
-								day.Exercise_Detail.forEach(async (exercise) => {
-									if (
-										exercise.exercise_type_name &&
-										exercise.sets &&
-										exercise.target_reps &&
-										exercise.target_rpe
-									) {
-										try {
-											const { error } = await supabase.from('Exercise_Detail').insert({
-												exercise_type_name: exercise.exercise_type_name,
-												sets: exercise.sets,
-												target_reps: exercise.target_reps,
-												target_rpe: exercise.target_rpe,
-												day_id: dayId[0].id
-											});
-											if (error) throw error;
-										} catch (error) {
-											console.log(error);
-										}
-									}
+						day.Exercise_Detail.forEach(async (exercise) => {
+							if (
+								exercise.exercise_type_name &&
+								exercise.sets &&
+								exercise.target_reps &&
+								exercise.target_rpe
+							) {
+								const { error } = await supabase.from('Exercise_Detail').insert({
+									exercise_type_name: exercise.exercise_type_name,
+									sets: exercise.sets,
+									target_reps: exercise.target_reps,
+									target_rpe: exercise.target_rpe,
+									day_id: dayId[0].id
 								});
-							} catch {
-								console.log(error);
+								if (error) throw error;
 							}
-						}
-					});
-				} catch {
-					console.log(error);
-				}
+						});
+					}
+				});
 			}
 		});
 	} catch (error) {
