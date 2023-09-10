@@ -86,10 +86,10 @@
 						}).finally(async () => {
 							await fetch('/api/plans', {
 								method: 'GET'
-							}).then(
-								async (response) =>
-									await response.json().then((response) => (data.plans = response.data))
-							);
+							}).then(async (response) => {
+								await response.json().then((response) => (data.plans = response.data));
+								showNotification('Program chosen', 2000, notificationMessage);
+							});
 						});
 
 						requestState = 'Done';
