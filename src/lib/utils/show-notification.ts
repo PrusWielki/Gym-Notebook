@@ -8,6 +8,5 @@ export const showNotification = (
 	notificationMessage.set(message);
 	setTimeout(() => {
 		notificationMessage.set('');
-		console.log('xd');
 	}, time);
 };

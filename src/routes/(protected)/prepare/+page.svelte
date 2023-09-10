@@ -6,7 +6,6 @@
 	import type { GetPlansResponse } from '../../api/plans/[planId]/+server';
 	import notificationMessage from '$lib/store/notifications';
 	import { showNotification } from '$lib/utils/show-notification';
-	import type { PlansPostRequest } from '../../api/plans/+server';
 
 	export let data: PageData;
 	let premadePlan: GetPlansResponse;
@@ -17,7 +16,6 @@
 			await fetch(`/api/plans/${(event.target as HTMLInputElement).value}`, { method: 'GET' }).then(
 				async (response) => {
 					await response.json().then((result) => (premadePlan = result));
-					console.log(premadePlan);
 				}
 			);
 		requestState = 'Done';
