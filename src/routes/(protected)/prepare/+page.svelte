@@ -62,9 +62,17 @@
 	]; */
 
 	// $: days = days.filter((day) => day.Exercise_Detail.length > 0);
-	$: weeks.forEach((week) => {
-		if (week?.Days) week.Days = week?.Days.filter((day) => day.Exercise_Detail.length > 0);
-	});
+	$: {
+		weeks.forEach((week) => {
+			if (week?.Days) week.Days = week?.Days.filter((day) => day.Exercise_Detail.length > 0);
+		});
+		weeks = weeks.filter((week) => {
+			if (week?.Days) return week?.Days.length > 0;
+		});
+		weeks.forEach((week, index) => {
+			if (week) week.order = index + 1;
+		});
+	}
 </script>
 
 <div class="wrapper">
@@ -123,7 +131,32 @@
 						>
 					{/if}
 				{/each}
-
+				<button
+					on:click|preventDefault={() => {
+						if (weeks)
+							weeks = [
+								...weeks,
+								{
+									order: weeks.length + 1,
+									Days: [
+										{
+											name: '',
+											notes: '',
+											Exercise_Detail: [
+												{
+													sets: null,
+													target_reps: null,
+													target_rpe: null,
+													exercise_type_name: null,
+													Exercise_Detail_Sets: null
+												}
+											]
+										}
+									]
+								}
+							];
+					}}>Add a week</button
+				>
 				<!-- <button
 					on:click={async () => {
 						requestState = 'Saving';
