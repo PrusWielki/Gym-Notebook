@@ -1,31 +1,44 @@
 import { json } from '@sveltejs/kit';
-import type { PostgrestMaybeSingleResponse } from '@supabase/supabase-js';
 
-type PlansDetailsGetResponse = {
-	success: boolean;
-	reason: string;
-	data: void | PostgrestMaybeSingleResponse<unknown[]>;
+export type GetPlansResponse = {
+	code: number;
+	data:
+		| {
+				id: number;
+				order: number;
+				Days: {
+					id: number;
+					name: string;
+					notes: string;
+					Exercise_Detail: {
+						id: number;
+						sets: number;
+						target_reps: number;
+						target_rpe: number;
+						exercise_type_name: string;
+						Exercise_Detail_Sets: {
+							id: number;
+							set: number;
+							reps: number;
+							rpe: number;
+							target_reps: number;
+							target_rpe: number;
+						}[];
+					}[];
+				}[];
+		  }[]
+		| null;
 };
 
 export async function GET({ locals: { supabase }, params }) {
-	const response: PlansDetailsGetResponse = { success: true, reason: '', data: undefined };
+	const { error, data } = await supabase
+		.from('Weeks')
+		.select(
+			`id,order, Days (id, name, notes, Exercise_Detail (id, sets, target_reps, target_rpe, exercise_type_name, Exercise_Detail_Sets (id, set, reps, rpe, target_reps, target_rpe)))`
+		)
+		.eq('plan_id', params.planId);
 
-	const { data } = await supabase
-		.from('Plans')
-		.select(`id, Days ( id, name ) `)
-		.eq('id', params.planId);
+	if (error) return json({ code: 400, error });
 
-	let toReturn: unknown[] = [];
-	if (data)
-		for (let i = 0; i < data[0].Days.length; i++) {
-			await supabase
-				.from('Days')
-				.select(`id, name, Exercise_Detail ( sets, target_reps, target_rpe, exercise_type_name )`)
-				.eq('id', data[0].Days[i].id)
-				.then((result) => (toReturn = [...toReturn, result.data]));
-		}
-
-	if (!response.success) return json({ code: 400, response });
-
-	return json({ code: 200, data: toReturn });
+	return json({ code: 200, data });
 }

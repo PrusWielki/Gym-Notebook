@@ -1,4 +1,4 @@
-export type Json = string | number | boolean | null | { [key: string]: Json } | Json[];
+export type Json = string | number | boolean | null | { [key: string]: Json | undefined } | Json[];
 
 export interface Database {
 	public: {
@@ -7,50 +7,30 @@ export interface Database {
 				Row: {
 					id: number;
 					name: string;
+					week_id: number;
 				};
 				Insert: {
 					id?: number;
 					name: string;
+					week_id: number;
 				};
 				Update: {
 					id?: number;
 					name?: string;
-				};
-				Relationships: [];
-			};
-			Days_Exercises: {
-				Row: {
-					day_id: number;
-					exercise_detail_id: number;
-					id: number;
-				};
-				Insert: {
-					day_id: number;
-					exercise_detail_id: number;
-					id?: number;
-				};
-				Update: {
-					day_id?: number;
-					exercise_detail_id?: number;
-					id?: number;
+					week_id?: number;
 				};
 				Relationships: [
 					{
-						foreignKeyName: 'Days_Exercises_day_id_fkey';
-						columns: ['day_id'];
-						referencedRelation: 'Days';
-						referencedColumns: ['id'];
-					},
-					{
-						foreignKeyName: 'Days_Exercises_exercise_detail_id_fkey';
-						columns: ['exercise_detail_id'];
-						referencedRelation: 'Exercise_Detail';
+						foreignKeyName: 'Days_week_id_fkey';
+						columns: ['week_id'];
+						referencedRelation: 'Weeks';
 						referencedColumns: ['id'];
 					}
 				];
 			};
 			Exercise_Detail: {
 				Row: {
+					day_id: number;
 					exercise_type_name: string;
 					id: number;
 					sets: number;
@@ -58,6 +38,7 @@ export interface Database {
 					target_rpe: number;
 				};
 				Insert: {
+					day_id: number;
 					exercise_type_name: string;
 					id?: number;
 					sets: number;
@@ -65,6 +46,7 @@ export interface Database {
 					target_rpe: number;
 				};
 				Update: {
+					day_id?: number;
 					exercise_type_name?: string;
 					id?: number;
 					sets?: number;
@@ -73,10 +55,53 @@ export interface Database {
 				};
 				Relationships: [
 					{
+						foreignKeyName: 'Exercise_Detail_day_id_fkey';
+						columns: ['day_id'];
+						referencedRelation: 'Days';
+						referencedColumns: ['id'];
+					},
+					{
 						foreignKeyName: 'Exercise_Detail_exercise_type_name_fkey';
 						columns: ['exercise_type_name'];
 						referencedRelation: 'Exercise_Types';
 						referencedColumns: ['name'];
+					}
+				];
+			};
+			Exercise_Detail_Sets: {
+				Row: {
+					exercise_detail: number;
+					id: number;
+					reps: number;
+					rpe: number;
+					set: number;
+					target_reps: number;
+					target_rpe: number;
+				};
+				Insert: {
+					exercise_detail: number;
+					id?: number;
+					reps: number;
+					rpe: number;
+					set: number;
+					target_reps: number;
+					target_rpe: number;
+				};
+				Update: {
+					exercise_detail?: number;
+					id?: number;
+					reps?: number;
+					rpe?: number;
+					set?: number;
+					target_reps?: number;
+					target_rpe?: number;
+				};
+				Relationships: [
+					{
+						foreignKeyName: 'Exercise_Detail_Sets_exercise_detail_fkey';
+						columns: ['exercise_detail'];
+						referencedRelation: 'Exercise_Detail';
+						referencedColumns: ['id'];
 					}
 				];
 			};
@@ -150,46 +175,68 @@ export interface Database {
 					}
 				];
 			};
-			Plans: {
+			Periodization: {
 				Row: {
 					id: number;
-					name: string;
+					type: string;
 				};
 				Insert: {
 					id?: number;
-					name: string;
+					type: string;
 				};
 				Update: {
 					id?: number;
-					name?: string;
+					type?: string;
 				};
 				Relationships: [];
 			};
-			Plans_Days: {
+			Plans: {
 				Row: {
-					day_id: number;
+					custom: boolean;
 					id: number;
+					name: string;
+					periodization_id: number;
+				};
+				Insert: {
+					custom: boolean;
+					id?: number;
+					name: string;
+					periodization_id: number;
+				};
+				Update: {
+					custom?: boolean;
+					id?: number;
+					name?: string;
+					periodization_id?: number;
+				};
+				Relationships: [
+					{
+						foreignKeyName: 'Plans_periodization_id_fkey';
+						columns: ['periodization_id'];
+						referencedRelation: 'Periodization';
+						referencedColumns: ['id'];
+					}
+				];
+			};
+			Weeks: {
+				Row: {
+					id: number;
+					order: number;
 					plan_id: number;
 				};
 				Insert: {
-					day_id: number;
 					id?: number;
+					order: number;
 					plan_id: number;
 				};
 				Update: {
-					day_id?: number;
 					id?: number;
+					order?: number;
 					plan_id?: number;
 				};
 				Relationships: [
 					{
-						foreignKeyName: 'Plans_Days_day_id_fkey';
-						columns: ['day_id'];
-						referencedRelation: 'Days';
-						referencedColumns: ['id'];
-					},
-					{
-						foreignKeyName: 'Plans_Days_plan_id_fkey';
+						foreignKeyName: 'Weeks_plan_id_fkey';
 						columns: ['plan_id'];
 						referencedRelation: 'Plans';
 						referencedColumns: ['id'];
