@@ -44,23 +44,6 @@
 			]
 		}
 	];
-	/* let days: App.TrainingDays = [
-		{
-			name: '',
-			notes: '',
-			Exercise_Detail: [
-				{
-					exercise_type_name: '',
-					sets: null,
-					target_reps: '',
-					target_rpe: null,
-					Exercise_Detail_Sets: null
-				}
-			]
-		}
-	]; */
-
-	// $: days = days.filter((day) => day.Exercise_Detail.length > 0);
 	$: {
 		weeks.forEach((week) => {
 			if (week?.Days) week.Days = week?.Days.filter((day) => day.Exercise_Detail.length > 0);
