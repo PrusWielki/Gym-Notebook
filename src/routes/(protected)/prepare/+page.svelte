@@ -69,10 +69,7 @@
 		weeks = weeks.filter((week) => {
 			if (week?.Days) return week?.Days.length > 0;
 		});
-		weeks.sort((a, b) => {
-			if (a && b && a.order > b.order) return 1;
-			else return -1;
-		});
+
 		/* weeks.forEach((week, index) => {
 			if (week) week.order = index + 1;
 		}); */
@@ -108,7 +105,16 @@
 				{#each weeks as week, index}
 					{#if week?.Days}
 						<h4 class="week-input">
-							Week <input placeholder={week.order.toString()} bind:value={week.order} />
+							Week <input
+								placeholder={week.order.toString()}
+								bind:value={week.order}
+								on:blur={() => {
+									weeks = weeks.sort((a, b) => {
+										if (a && b && a.order > b.order) return 1;
+										else return -1;
+									});
+								}}
+							/>
 						</h4>
 						{#each week.Days as day}
 							<TrainingDayInput exercises={data.exercises.data} bind:day />
