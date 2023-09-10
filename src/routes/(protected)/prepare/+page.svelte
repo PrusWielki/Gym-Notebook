@@ -48,9 +48,8 @@
 				</select>
 			{/if}
 			{#if requestState === 'Loading'}
-				<h3>Loading...</h3>
-			{/if}
-			{#if premadePlan}
+				<h3 class="loading">Loading...</h3>
+			{:else if premadePlan}
 				{#each premadePlan as day}
 					<TrainingDayShow day={day[0]} />
 				{/each}
@@ -164,5 +163,9 @@
 		&:hover {
 			background-color: var(--button-2);
 		}
+	}
+	.loading {
+		font-size: var(--font-size-fluid-2);
+		padding: 0 var(--size-fluid-6);
 	}
 </style>
