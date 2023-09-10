@@ -177,7 +177,7 @@
 								custom: isCustom,
 								periodization: chosenPeriodization
 							})
-						}).finally(async () => {
+						}).then(async () => {
 							await fetch('/api/plans', {
 								method: 'GET'
 							}).then(async (response) => {
