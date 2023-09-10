@@ -69,9 +69,13 @@
 		weeks = weeks.filter((week) => {
 			if (week?.Days) return week?.Days.length > 0;
 		});
-		weeks.forEach((week, index) => {
-			if (week) week.order = index + 1;
+		weeks.sort((a, b) => {
+			if (a && b && a.order > b.order) return 1;
+			else return -1;
 		});
+		/* weeks.forEach((week, index) => {
+			if (week) week.order = index + 1;
+		}); */
 	}
 </script>
 
@@ -92,7 +96,7 @@
 				<h3 class="loading">Loading...</h3>
 			{:else if premadePlan?.data}
 				{#each premadePlan.data[0].Weeks as week}
-					<h4>Week {week.order}</h4>
+					<h4>Week - {week.order}</h4>
 					{#each week.Days as day}
 						<TrainingDayShow {day} />
 					{/each}
@@ -103,7 +107,9 @@
 				<input required bind:value={planName} type="text" placeholder="Plan Name" />
 				{#each weeks as week, index}
 					{#if week?.Days}
-						<h4>Week - {week.order}</h4>
+						<h4 class="week-input">
+							Week <input placeholder={week.order.toString()} bind:value={week.order} />
+						</h4>
 						{#each week.Days as day}
 							<TrainingDayInput exercises={data.exercises.data} bind:day />
 						{/each}
@@ -186,6 +192,14 @@
 </div>
 
 <style lang="postcss">
+	.week-input {
+		display: flex;
+		justify-content: center;
+		gap: var(--size-fluid-1);
+		input {
+			width: 20%;
+		}
+	}
 	.prepare-container {
 		padding: var(--size-fluid-6) 0;
 		display: flex;
