@@ -23,6 +23,7 @@
 	};
 
 	let planName: string;
+	let periodization: string;
 	let requestState: 'Saving' | 'Loading' | 'Done';
 	let weeks: Array<App.Week> = [
 		{
@@ -80,6 +81,16 @@
 			<form>
 				<h4>Or create a new plan:</h4>
 				<input required bind:value={planName} type="text" placeholder="Plan Name" />
+
+				{#if data.periodizations.data && weeks.length === 1}
+					<h4>Periodization</h4>
+					<select bind:value={periodization}>
+						<option value="" disabled selected>Periodization</option>
+						{#each data.periodizations.data as periodization}
+							<option value={periodization.type}>{periodization.type}</option>
+						{/each}
+					</select>
+				{/if}
 				{#each weeks as week, index}
 					{#if week?.Days}
 						<h4 class="week-input">
@@ -121,42 +132,50 @@
 						>
 					{/if}
 				{/each}
-				<button
-					on:click|preventDefault={() => {
-						if (weeks)
-							weeks = [
-								...weeks,
-								{
-									order: weeks.length + 1,
-									Days: [
-										{
-											name: '',
-											notes: '',
-											Exercise_Detail: [
-												{
-													sets: null,
-													target_reps: null,
-													target_rpe: null,
-													exercise_type_name: null,
-													Exercise_Detail_Sets: null
-												}
-											]
-										}
-									]
-								}
-							];
-					}}>Add a week</button
-				>
+				{#if periodization === 'None'}
+					<button
+						on:click|preventDefault={() => {
+							if (weeks)
+								weeks = [
+									...weeks,
+									{
+										order: weeks.length + 1,
+										Days: [
+											{
+												name: '',
+												notes: '',
+												Exercise_Detail: [
+													{
+														sets: null,
+														target_reps: null,
+														target_rpe: null,
+														exercise_type_name: null,
+														Exercise_Detail_Sets: null
+													}
+												]
+											}
+										]
+									}
+								];
+						}}>Add a week</button
+					>
+				{/if}
 				<button
 					on:click={async () => {
+						let chosenPeriodization = periodization;
+						let isCustom = false;
+						if (weeks.length > 1) {
+							isCustom = true;
+							chosenPeriodization = 'None';
+						}
 						requestState = 'Saving';
 						await fetch('/api/plans', {
 							method: 'POST',
 							body: JSON.stringify({
 								weeks,
 								planName: planName,
-								custom: false,
-								periodization: 'None'
+								custom: isCustom,
+								periodization: chosenPeriodization
 							})
 						}).finally(async () => {
 							await fetch('/api/plans', {
@@ -215,6 +234,9 @@
 			font-size: var(--font-size-fluid-1);
 			background-color: var(--button-2);
 			color: var(--text-1);
+			@media (--md-n-above) {
+				max-width: 50%;
+			}
 		}
 		input {
 			font-size: var(--font-size-fluid-1);
