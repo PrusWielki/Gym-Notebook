@@ -5,24 +5,30 @@ export type GetPlansResponse = {
 	data:
 		| {
 				id: number;
-				order: number;
-				Days: {
+				name: string;
+				periodization: string;
+				custom: boolean;
+				Weeks: {
 					id: number;
-					name: string;
-					notes: string;
-					Exercise_Detail: {
+					order: number;
+					Days: {
 						id: number;
-						sets: number;
-						target_reps: number;
-						target_rpe: number;
-						exercise_type_name: string;
-						Exercise_Detail_Sets: {
+						name: string;
+						notes: string;
+						Exercise_Detail: {
 							id: number;
-							set: number;
-							reps: number;
-							rpe: number;
-							target_reps: number;
+							sets: number;
+							target_reps: string;
 							target_rpe: number;
+							exercise_type_name: string;
+							Exercise_Detail_Sets: {
+								id: number;
+								set: number;
+								reps: number;
+								rpe: number;
+								target_reps: number;
+								target_rpe: number;
+							}[];
 						}[];
 					}[];
 				}[];
@@ -32,11 +38,11 @@ export type GetPlansResponse = {
 
 export async function GET({ locals: { supabase }, params }) {
 	const { error, data } = await supabase
-		.from('Weeks')
+		.from('Plans')
 		.select(
-			`id,order, Days (id, name, notes, Exercise_Detail (id, sets, target_reps, target_rpe, exercise_type_name, Exercise_Detail_Sets (id, set, reps, rpe, target_reps, target_rpe)))`
+			`id, name, periodization, custom, Weeks (id, order, Days (id, name, notes, Exercise_Detail (id, sets, target_reps, target_rpe, exercise_type_name, Exercise_Detail_Sets (id, set, reps, rpe, target_reps, target_rpe))))`
 		)
-		.eq('plan_id', params.planId);
+		.eq('id', params.planId);
 
 	if (error) return json({ code: 400, error });
 

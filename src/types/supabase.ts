@@ -7,16 +7,19 @@ export interface Database {
 				Row: {
 					id: number;
 					name: string;
+					notes: string | null;
 					week_id: number;
 				};
 				Insert: {
 					id?: number;
 					name: string;
+					notes?: string | null;
 					week_id: number;
 				};
 				Update: {
 					id?: number;
 					name?: string;
+					notes?: string | null;
 					week_id?: number;
 				};
 				Relationships: [
@@ -195,26 +198,26 @@ export interface Database {
 					custom: boolean;
 					id: number;
 					name: string;
-					periodization_id: number;
+					periodization: string;
 				};
 				Insert: {
 					custom: boolean;
 					id?: number;
 					name: string;
-					periodization_id: number;
+					periodization: string;
 				};
 				Update: {
 					custom?: boolean;
 					id?: number;
 					name?: string;
-					periodization_id?: number;
+					periodization?: string;
 				};
 				Relationships: [
 					{
-						foreignKeyName: 'Plans_periodization_id_fkey';
-						columns: ['periodization_id'];
+						foreignKeyName: 'Plans_periodization_fkey';
+						columns: ['periodization'];
 						referencedRelation: 'Periodization';
-						referencedColumns: ['id'];
+						referencedColumns: ['type'];
 					}
 				];
 			};

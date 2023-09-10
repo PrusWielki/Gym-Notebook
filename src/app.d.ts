@@ -11,13 +11,23 @@ declare global {
 			session: Session | null;
 		}
 		type TrainingDay = {
-			name: string;
-			Exercise_Detail: Array<{
-				exercise_type_name: string | null;
+			name: string | null;
+			notes: string | null;
+			Exercise_Detail: {
 				sets: number | null;
 				target_reps: string | null;
 				target_rpe: number | null;
-			}>;
+				exercise_type_name: string | null;
+				Exercise_Detail_Sets:
+					| {
+							set: number;
+							reps: number;
+							rpe: number;
+							target_reps: number;
+							target_rpe: number;
+					  }[]
+					| null;
+			}[];
 		};
 		type TrainingDays = Array<TrainingDay>;
 

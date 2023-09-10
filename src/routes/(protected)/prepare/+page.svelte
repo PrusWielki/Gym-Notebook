@@ -3,18 +3,19 @@
 	import TrainingDayShow from '$lib/components/training_day/training_day_show.svelte';
 
 	import type { PageData } from './$types';
+	import type { GetPlansResponse } from '../../api/plans/[planId]/+server';
 	import notificationMessage from '$lib/store/notifications';
 	import { showNotification } from '$lib/utils/show-notification';
 
 	export let data: PageData;
-	let premadePlan: Array<App.TrainingDays>;
+	let premadePlan: GetPlansResponse;
 
 	const handleSelectChange = async (event: Event) => {
 		requestState = 'Loading';
 		if (event.target)
 			await fetch(`/api/plans/${(event.target as HTMLInputElement).value}`, { method: 'GET' }).then(
 				async (response) => {
-					await response.json().then((result) => (premadePlan = result.data));
+					await response.json().then((result) => (premadePlan = result));
 					console.log(premadePlan);
 				}
 			);
@@ -27,7 +28,16 @@
 	let days: App.TrainingDays = [
 		{
 			name: '',
-			Exercise_Detail: [{ exercise_type_name: '', sets: null, target_reps: '', target_rpe: null }]
+			notes: '',
+			Exercise_Detail: [
+				{
+					exercise_type_name: '',
+					sets: null,
+					target_reps: '',
+					target_rpe: null,
+					Exercise_Detail_Sets: null
+				}
+			]
 		}
 	];
 
@@ -49,12 +59,15 @@
 			{/if}
 			{#if requestState === 'Loading'}
 				<h3 class="loading">Loading...</h3>
-			{:else if premadePlan}
-				{#each premadePlan as day}
-					<TrainingDayShow day={day[0]} />
+			{:else if premadePlan?.data}
+				{#each premadePlan.data[0].Weeks as week}
+					<h4>Week {week.order}</h4>
+					{#each week.Days as day}
+						<TrainingDayShow {day} />
+					{/each}
 				{/each}
 			{/if}
-			<form>
+			<!-- <form>
 				<h4>Or create a new plan:</h4>
 				<input required bind:value={planName} type="text" placeholder="Plan Name" />
 				{#each days as day}
@@ -70,7 +83,19 @@
 								{
 									name: '',
 									Exercise_Detail: [
-										{ exercise_type_name: '', sets: null, target_reps: '', target_rpe: null }
+										{
+											name: '',
+											notes: '',
+											Exercise_Detail: [
+												{
+													exercise_type_name: '',
+													sets: null,
+													target_reps: '',
+													target_rpe: null,
+													Exercise_Detail_Sets: null
+												}
+											]
+										}
 									]
 								}
 							];
@@ -100,7 +125,7 @@
 						Save the plan
 					{/if}</button
 				>
-			</form>
+			</form> -->
 		</div>
 	</div>
 </div>
