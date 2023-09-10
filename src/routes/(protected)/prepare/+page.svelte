@@ -25,7 +25,8 @@
 
 	let planName: string;
 	let requestState: 'Saving' | 'Loading' | 'Done';
-	let days: App.TrainingDays = [
+	let weeks: Array<App.Week>;
+	/* let days: App.TrainingDays = [
 		{
 			name: '',
 			notes: '',
@@ -39,7 +40,7 @@
 				}
 			]
 		}
-	];
+	]; */
 
 	$: days = days.filter((day) => day.Exercise_Detail.length > 0);
 </script>
@@ -67,9 +68,10 @@
 					{/each}
 				{/each}
 			{/if}
-			<!-- <form>
+			<form>
 				<h4>Or create a new plan:</h4>
 				<input required bind:value={planName} type="text" placeholder="Plan Name" />
+
 				{#each days as day}
 					<TrainingDayInput exercises={data.exercises.data} bind:day />
 				{/each}
@@ -125,7 +127,7 @@
 						Save the plan
 					{/if}</button
 				>
-			</form> -->
+			</form>
 		</div>
 	</div>
 </div>

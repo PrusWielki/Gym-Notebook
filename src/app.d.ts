@@ -29,7 +29,10 @@ declare global {
 					| null;
 			}[];
 		};
-		type TrainingDays = Array<TrainingDay>;
+		type Week = {
+			order: number;
+			Days: Array<TrainingDay>;
+		} | null;
 
 		type Plans = Array<{
 			name: string;
