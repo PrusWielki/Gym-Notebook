@@ -91,7 +91,7 @@
 						{/each}
 					</select>
 				{/if}
-				{#each weeks as week, index}
+				{#each weeks as week}
 					{#if week?.Days}
 						<h4 class="week-input">
 							Week <input
@@ -132,7 +132,7 @@
 						>
 					{/if}
 				{/each}
-				{#if periodization === 'None'}
+				{#if periodization === 'None' || periodization === ''}
 					<button
 						on:click|preventDefault={() => {
 							if (weeks)
@@ -162,7 +162,7 @@
 				{/if}
 				<button
 					on:click={async () => {
-						let chosenPeriodization = periodization;
+						let chosenPeriodization = periodization ? periodization : 'None';
 						let isCustom = false;
 						if (weeks.length > 1) {
 							isCustom = true;
