@@ -178,6 +178,13 @@
 								periodization: chosenPeriodization
 							})
 						})
+							.then((response) => {
+								if (response.ok) {
+									return response.json();
+								}
+								throw new Error();
+							})
+
 							.then(async () => {
 								await fetch('/api/plans', {
 									method: 'GET'
