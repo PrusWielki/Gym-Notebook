@@ -80,6 +80,7 @@ export interface Database {
 					set: number;
 					target_reps: number;
 					target_rpe: number;
+					user_id: string;
 				};
 				Insert: {
 					exercise_detail: number;
@@ -89,6 +90,7 @@ export interface Database {
 					set: number;
 					target_reps: number;
 					target_rpe: number;
+					user_id: string;
 				};
 				Update: {
 					exercise_detail?: number;
@@ -98,6 +100,7 @@ export interface Database {
 					set?: number;
 					target_reps?: number;
 					target_rpe?: number;
+					user_id?: string;
 				};
 				Relationships: [
 					{
@@ -105,19 +108,28 @@ export interface Database {
 						columns: ['exercise_detail'];
 						referencedRelation: 'Exercise_Detail';
 						referencedColumns: ['id'];
+					},
+					{
+						foreignKeyName: 'Exercise_Detail_Sets_user_id_fkey';
+						columns: ['user_id'];
+						referencedRelation: 'users';
+						referencedColumns: ['id'];
 					}
 				];
 			};
 			Exercise_Types: {
 				Row: {
+					category: string;
 					id: number;
 					name: string;
 				};
 				Insert: {
+					category?: string;
 					id?: number;
 					name: string;
 				};
 				Update: {
+					category?: string;
 					id?: number;
 					name?: string;
 				};
@@ -218,6 +230,43 @@ export interface Database {
 						columns: ['periodization'];
 						referencedRelation: 'Periodization';
 						referencedColumns: ['type'];
+					}
+				];
+			};
+			Plans_Users: {
+				Row: {
+					creation_date: string;
+					current: boolean;
+					id: number;
+					plan_id: number;
+					user_id: string;
+				};
+				Insert: {
+					creation_date?: string;
+					current: boolean;
+					id?: number;
+					plan_id: number;
+					user_id: string;
+				};
+				Update: {
+					creation_date?: string;
+					current?: boolean;
+					id?: number;
+					plan_id?: number;
+					user_id?: string;
+				};
+				Relationships: [
+					{
+						foreignKeyName: 'Plans_Users_plan_id_fkey';
+						columns: ['plan_id'];
+						referencedRelation: 'Plans';
+						referencedColumns: ['id'];
+					},
+					{
+						foreignKeyName: 'Plans_Users_user_id_fkey';
+						columns: ['user_id'];
+						referencedRelation: 'users';
+						referencedColumns: ['id'];
 					}
 				];
 			};
