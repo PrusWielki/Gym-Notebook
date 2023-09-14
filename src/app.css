@@ -1,8 +1,9 @@
 @import 'open-props/postcss/normalize';
 @import './lib/styles/overwrites.css';
 @import './lib/styles//grid.css';
-
+@import url('https://fonts.googleapis.com/css2?family=Roboto&display=swap');
 html {
+	font-family: 'Roboto', sans-serif;
 	&::-webkit-scrollbar {
 		width: 4px;
 		height: 4px;
