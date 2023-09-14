@@ -338,9 +338,11 @@
 		--bar-color: var(--accent);
 		--background: transparent;
 
+		font-size: var(--font-size-fluid-0);
 		display: flex;
 		width: 100%;
-		border: 1px solid #ddd;
+		border: var(--border-size-1) solid var(--accent);
+		color: var(--text-1);
 	}
 
 	.tabs > .tab {
@@ -356,7 +358,7 @@
 	}
 
 	.tab > .tab-box {
-		padding: var(--size-2);
+		padding: var(--size-3);
 		width: 100%;
 		text-align: center;
 		transition: 0.5s;
