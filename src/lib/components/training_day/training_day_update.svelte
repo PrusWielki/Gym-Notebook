@@ -17,6 +17,7 @@
 					{#if index === 0}
 						<h5>{exercise.exercise_type_name}</h5>
 					{:else}
+						<!-- svelte-ignore a11y-missing-content -->
 						<h5 />
 					{/if}
 					<h5>{(index + 1).toString()}</h5>

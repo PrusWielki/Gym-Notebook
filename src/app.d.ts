@@ -38,6 +38,16 @@ declare global {
 			name: string;
 		}> | null;
 
+		type ExerciseDetailSet = {
+			set: number;
+			reps: number;
+			rpe: number;
+			exercise_detail_id: string;
+			target_reps: number;
+			target_rpe: number;
+			plans_users_id: string;
+		};
+
 		// interface Error {}
 		// interface Platform {}
 	}
