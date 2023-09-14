@@ -54,7 +54,6 @@
 			if (week?.Days) return week?.Days.length > 0;
 		});
 	}
-	$: console.log(checked);
 </script>
 
 <div class="wrapper">
@@ -102,6 +101,13 @@
 							<TrainingDayShow {day} />
 						{/each}
 					{/each}
+					<button class="accent"
+						>{#if requestState === 'Saving'}
+							Saving...
+						{:else}
+							Save the plan
+						{/if}</button
+					>
 				{/if}
 			</div>
 
@@ -238,7 +244,7 @@
 
 <style lang="postcss">
 	.hidden {
-		display: none;
+		display: none !important;
 	}
 	.choose-plan-container {
 		display: flex;
@@ -325,7 +331,7 @@
 		--background: transparent;
 
 		display: flex;
-		width: 600px;
+		width: 100%;
 		border: 1px solid #ddd;
 	}
 
