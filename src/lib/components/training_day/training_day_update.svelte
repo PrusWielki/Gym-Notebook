@@ -10,15 +10,18 @@
 	const weightArray: Array<Array<number>> = [[]];
 
 	const onSave = () => {
-		repsArray.forEach((reps, index) => {
-			exerciseDetailSetsArray.push({
-				reps,
-				set: index + 1,
-				rpe: rpeArray[index],
-				weight: weightArray[index],
-				target_reps: 12,
-				target_rpe: 12,
-				exercise_detail_id
+		repsArray.forEach((reps, exerciseIndex) => {
+			reps.forEach((rep, setIndex) => {
+				exerciseDetailSetsArray.push({
+					reps: rep,
+					set: setIndex + 1,
+					rpe: rpeArray[exerciseIndex][setIndex],
+					weight: weightArray[exerciseIndex][setIndex],
+					target_reps: 12,
+					target_rpe: 12,
+					exercise_detail_id: 'asd',
+					plans_users_id: 'aasd'
+				});
 			});
 		});
 	};
