@@ -22,14 +22,12 @@
 		<div class="train-container">
 			{#if state === 'Loading'}
 				<h4>Loading...</h4>
-			{:else if plan?.data}
+			{:else if plan?.data && data?.plan}
 				<h4>{plan.data[0].name}</h4>
 				<form>
-					{#each plan.data[0].Weeks[0].Days as day}
+					{#each plan.data[0].Weeks[data?.plan[0].current_week].Days as day}
 						<TrainingDayUpdate {day} />
 					{/each}
-
-					<button>save</button>
 				</form>
 			{/if}
 		</div>
@@ -54,26 +52,7 @@
 		width: 100%;
 		gap: var(--size-fluid-4);
 	}
-	button {
-		background-color: var(--button-1);
-		border-radius: var(--radius-1);
-		padding: var(--size-fluid-1) var(--size-fluid-2);
-		transition: background-color 0.5s var(--ease-3);
-		font-size: var(--font-size-fluid-1);
-		color: var(--text-1);
-		font-weight: var(--font-weight-7);
-		width: 50%;
-		@media (--md-n-below) {
-			width: 100%;
-		}
 
-		&.accent {
-			background-color: var(--accent);
-		}
-		&:hover {
-			background-color: var(--button-2);
-		}
-	}
 	h4 {
 		text-align: center;
 		background: var(--gradient-3);

@@ -46,6 +46,7 @@ declare global {
 			target_reps: number;
 			target_rpe: number;
 			plans_users_id: string;
+			weight: number;
 		};
 
 		// interface Error {}
