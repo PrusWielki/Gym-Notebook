@@ -11,14 +11,19 @@
 			<h5>Reps</h5>
 			<h5>RPE</h5>
 		</div>
-		{#each day.Exercise_Detail as exercise, exercise_index}
-			<div class="day-row-input">
-				<h5>{exercise.exercise_type_name}</h5>
-
-				<input required bind:value={exercise.sets} placeholder="Sets" />
-				<input required bind:value={exercise.target_reps} placeholder="Reps" />
-				<input required bind:value={exercise.target_rpe} placeholder="RPE" />
-			</div>
+		{#each day.Exercise_Detail as exercise}
+			{#each Array(exercise.sets) as _, index}
+				<div class="day-row-input">
+					{#if index === 0}
+						<h5>{exercise.exercise_type_name}</h5>
+					{:else}
+						<h5 />
+					{/if}
+					<h5>{(index + 1).toString()}</h5>
+					<input required placeholder={exercise.target_reps?.toString()} />
+					<input required placeholder={exercise.target_rpe?.toString()} />
+				</div>
+			{/each}
 		{/each}
 	</div>
 {/if}

@@ -23,11 +23,14 @@
 			{#if state === 'Loading'}
 				<h4>Loading...</h4>
 			{:else if plan?.data}
-				{#each plan.data[0].Weeks[0].Days as day}
-					<TrainingDayUpdate {day} />
-				{/each}
+				<h4>{plan.data[0].name}</h4>
+				<form>
+					{#each plan.data[0].Weeks[0].Days as day}
+						<TrainingDayUpdate {day} />
+					{/each}
 
-				<button>save</button>
+					<button>save</button>
+				</form>
 			{/if}
 		</div>
 	</div>
@@ -36,6 +39,14 @@
 <style lang="postcss">
 	.train-container {
 		margin-top: var(--size-fluid-6);
+		display: flex;
+		flex-direction: column;
+		justify-content: center;
+		align-items: center;
+		width: 100%;
+		gap: var(--size-fluid-4);
+	}
+	form {
 		display: flex;
 		flex-direction: column;
 		justify-content: center;
@@ -64,7 +75,6 @@
 		}
 	}
 	h4 {
-		margin-top: var(--size-fluid-6);
 		text-align: center;
 		background: var(--gradient-3);
 		-webkit-background-clip: text;
