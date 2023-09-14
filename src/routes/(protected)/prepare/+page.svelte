@@ -282,6 +282,7 @@
 			-webkit-text-fill-color: transparent;
 			@media (--md-n-below) {
 				font-size: var(--font-size-4);
+				letter-spacing: var(--font-letterspacing-0);
 			}
 		}
 		h4 {
