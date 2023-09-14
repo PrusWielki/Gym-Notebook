@@ -20,18 +20,13 @@ export type PlansPostRequest = {
 	custom: boolean;
 	periodization: string;
 };
-export async function POST({ request, locals: { supabase, getSession } }) {
+export async function POST({ request, locals: { supabase } }) {
 	const { weeks, planName, custom, periodization } = await request.json();
 	const response: PlansPostResponse = { success: true, reason: '' };
-	const session = await getSession();
-	if (session)
-		await saveThePlan(weeks, planName, supabase, custom, periodization, session.user.id).catch(
-			(reason) => {
-				response.success = false;
-				response.reason = reason.message;
-			}
-		);
-	else return json({ code: 400, response: { reason: 'Not logged in' } });
+	await saveThePlan(weeks, planName, supabase, custom, periodization).catch((reason) => {
+		response.success = false;
+		response.reason = reason.message;
+	});
 	if (!response.success) throw error(400, response.reason);
 	else return json({ code: 200 });
 }

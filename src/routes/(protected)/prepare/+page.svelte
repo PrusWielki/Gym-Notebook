@@ -9,6 +9,7 @@
 
 	export let data: PageData;
 	let premadePlan: GetPlansResponse;
+	let chosenPlanId: number = -1;
 
 	const handleSelectChange = async (event: Event) => {
 		requestState = 'Loading';
@@ -18,8 +19,8 @@
 					await response.json().then((result) => (premadePlan = result));
 				}
 			);
+		chosenPlanId = +(event.target as HTMLInputElement).value;
 		requestState = 'Done';
-		showNotification('Program chosen', 2000, notificationMessage);
 	};
 
 	let checked = true;
@@ -101,7 +102,14 @@
 							<TrainingDayShow {day} />
 						{/each}
 					{/each}
-					<button class="accent"
+					<button
+						class="accent"
+						on:click={async () => {
+							const { error: plansUsersError } = await data.supabase
+								.from('Plans_Users')
+								.insert({ plan_id: chosenPlanId, current: true });
+							if (!plansUsersError) showNotification('Program chosen', 2000, notificationMessage);
+						}}
 						>{#if requestState === 'Saving'}
 							Saving...
 						{:else}

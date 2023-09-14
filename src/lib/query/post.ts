@@ -4,11 +4,9 @@ const validateData = (
 	weeks: Array<App.Week>,
 	planName: string,
 	periodization: string,
-	custom: boolean,
-	userId: string
+	custom: boolean
 ) => {
 	let result: { result: boolean; message: string } = { result: true, message: '' };
-	if (!userId) return { result: false, message: 'User ID is empty!' };
 	if (!planName) return { result: false, message: 'Plan Name is empty!' };
 	if (custom === null || custom === undefined)
 		return { result: false, message: 'custom is empty!' };
@@ -38,10 +36,9 @@ export const saveThePlan = async (
 	planName: string,
 	supabase: SupabaseClient,
 	custom: boolean,
-	periodization: string,
-	userId: string
+	periodization: string
 ) => {
-	const validationResult = validateData(weeks, planName, periodization, custom, userId);
+	const validationResult = validateData(weeks, planName, periodization, custom);
 	if (validationResult.result !== true) throw new Error(validationResult.message);
 
 	const { error, data: result } = await supabase

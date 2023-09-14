@@ -246,7 +246,7 @@ export interface Database {
 					current: boolean;
 					id?: number;
 					plan_id: number;
-					user_id: string;
+					user_id?: string;
 				};
 				Update: {
 					creation_date?: string;
