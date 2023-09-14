@@ -86,6 +86,6 @@ export const saveThePlan = async (
 	});
 	const { error: plansUsersError } = await supabase
 		.from('Plans_Users')
-		.insert({ plan_id: result[0].id, current: true });
+		.insert({ plan_id: result[0].id });
 	if (plansUsersError) throw new Error('Query Error');
 };

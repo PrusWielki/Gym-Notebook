@@ -108,7 +108,7 @@
 						on:click={async () => {
 							const { error: plansUsersError } = await data.supabase
 								.from('Plans_Users')
-								.insert({ plan_id: chosenPlanId, current: true });
+								.insert({ plan_id: chosenPlanId });
 							if (!plansUsersError) showNotification('Program chosen', 2000, notificationMessage);
 						}}
 						>{#if requestState === 'Saving'}

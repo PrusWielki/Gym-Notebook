@@ -236,21 +236,21 @@ export interface Database {
 			Plans_Users: {
 				Row: {
 					creation_date: string;
-					current: boolean;
+
 					id: number;
 					plan_id: number;
 					user_id: string;
 				};
 				Insert: {
 					creation_date?: string;
-					current: boolean;
+
 					id?: number;
 					plan_id: number;
 					user_id?: string;
 				};
 				Update: {
 					creation_date?: string;
-					current?: boolean;
+
 					id?: number;
 					plan_id?: number;
 					user_id?: string;

@@ -3,19 +3,18 @@
 	import TrainingDayUpdate from '$lib/components/training_day/training_day_update.svelte';
 	import type { GetPlansResponse } from '../../api/plans/[planId]/+server';
 	import { browser } from '$app/environment';
+	import { error } from '@sveltejs/kit';
 
 	export let data: PageData;
+	console.log(data);
 	let plan: GetPlansResponse;
-	let plansUsersId: string;
+
 	let state: 'Loading' | 'Done' = 'Done';
 	if (data?.plan && browser) {
 		state = 'Loading';
 
-		fetch(`api/plans/${data.plan[0].plan_id}`, { method: 'GET' }).then(async (response) => {
+		fetch(`api/plans/${data.plan.plan_id}`, { method: 'GET' }).then(async (response) => {
 			await response.json().then((result) => (plan = result));
-		});
-		fetch(`api/plansUsers/${data.plan[0].plan_id}`, { method: 'GET' }).then(async (response) => {
-			await response.json().then((result) => (plansUsersId = result.data[0].id));
 			state = 'Done';
 		});
 	}
@@ -29,8 +28,8 @@
 			{:else if plan?.data && data?.plan}
 				<h4>{plan.data[0].name}</h4>
 				<form>
-					{#each plan.data[0].Weeks[data?.plan[0].current_week].Days as day}
-						<TrainingDayUpdate {day} planUsersId={plansUsersId} />
+					{#each plan.data[0].Weeks[data?.plan.current_week].Days as day}
+						<TrainingDayUpdate {day} planUsersId={data.plan.id} />
 					{/each}
 				</form>
 			{/if}
