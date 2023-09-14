@@ -14,6 +14,7 @@ declare global {
 			name: string | null;
 			notes: string | null;
 			Exercise_Detail: {
+				id: string | null;
 				sets: number | null;
 				target_reps: string | null;
 				target_rpe: number | null;

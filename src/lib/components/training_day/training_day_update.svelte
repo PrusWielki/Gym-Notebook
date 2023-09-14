@@ -3,6 +3,7 @@
 	// export let targetReps: number;
 	// export let targetRpe: number;
 	// export let targetWeight: number;
+	export let planUsersId: string;
 	const exerciseDetailSetsArray: Array<App.ExerciseDetailSet> = [];
 
 	const repsArray: Array<Array<number>> = [[]];
@@ -19,8 +20,8 @@
 					weight: weightArray[exerciseIndex][setIndex],
 					target_reps: 12,
 					target_rpe: 12,
-					exercise_detail_id: 'asd',
-					plans_users_id: 'aasd'
+					exercise_detail_id: day.Exercise_Detail[exerciseIndex].id,
+					plans_users_id: planUsersId
 				});
 			});
 		});

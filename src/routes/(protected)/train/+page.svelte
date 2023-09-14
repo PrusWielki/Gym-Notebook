@@ -26,7 +26,7 @@
 				<h4>{plan.data[0].name}</h4>
 				<form>
 					{#each plan.data[0].Weeks[data?.plan[0].current_week].Days as day}
-						<TrainingDayUpdate {day} />
+						<TrainingDayUpdate {day} planUsersId={data.plan[0].plan_id} />
 					{/each}
 				</form>
 			{/if}

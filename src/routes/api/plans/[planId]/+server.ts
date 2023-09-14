@@ -16,7 +16,7 @@ export type GetPlansResponse = {
 						name: string;
 						notes: string;
 						Exercise_Detail: {
-							id: number;
+							id: string;
 							sets: number;
 							target_reps: string;
 							target_rpe: number;
