@@ -1,4 +1,7 @@
 <script lang="ts">
+	import notificationMessage from '$lib/store/notifications';
+	import { showNotification } from '$lib/utils/show-notification';
+
 	export let day: App.TrainingDay;
 	// export let targetReps: number;
 	// export let targetRpe: number;
@@ -28,7 +31,7 @@
 		await fetch('api/exercise_detail_sets', {
 			method: 'POST',
 			body: JSON.stringify({ exerciseDetailSets: exerciseDetailSetsArray })
-		});
+		}).then(() => showNotification('Day Saved', 2000, notificationMessage));
 	};
 </script>
 
@@ -69,7 +72,7 @@
 			{/each}
 		{/each}
 	</div>
-	<button>save</button>
+	<button on:click={onSave}>save</button>
 {/if}
 
 <style lang="postcss">

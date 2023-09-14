@@ -6,12 +6,16 @@
 
 	export let data: PageData;
 	let plan: GetPlansResponse;
+	let plansUsersId: string;
 	let state: 'Loading' | 'Done' = 'Done';
 	if (data?.plan && browser) {
 		state = 'Loading';
 
 		fetch(`api/plans/${data.plan[0].plan_id}`, { method: 'GET' }).then(async (response) => {
 			await response.json().then((result) => (plan = result));
+		});
+		fetch(`api/plansUsers/${data.plan[0].plan_id}`, { method: 'GET' }).then(async (response) => {
+			await response.json().then((result) => (plansUsersId = result.data[0].id));
 			state = 'Done';
 		});
 	}
@@ -26,7 +30,7 @@
 				<h4>{plan.data[0].name}</h4>
 				<form>
 					{#each plan.data[0].Weeks[data?.plan[0].current_week].Days as day}
-						<TrainingDayUpdate {day} planUsersId={data.plan[0].plan_id} />
+						<TrainingDayUpdate {day} planUsersId={plansUsersId} />
 					{/each}
 				</form>
 			{/if}
