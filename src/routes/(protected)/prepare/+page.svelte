@@ -22,6 +22,7 @@
 		showNotification('Program chosen', 2000, notificationMessage);
 	};
 
+	let checked = true;
 	let planName: string;
 	let periodization: string;
 	let requestState: 'Saving' | 'Loading' | 'Done';
@@ -53,32 +54,58 @@
 			if (week?.Days) return week?.Days.length > 0;
 		});
 	}
+	$: console.log(checked);
 </script>
 
 <div class="wrapper">
 	<div class="container">
 		<div class="prepare-container">
 			<h2>Prepare Your training plan</h2>
-			{#if data.plans.data}
-				<h4>Choose an exisitng plan:</h4>
-				<select on:change={handleSelectChange}>
-					<option value="" disabled selected>Plan</option>
-					{#each data.plans.data as plan}
-						<option value={plan.id}>{plan.name}</option>
+			<div class="tabs">
+				<label class="tab">
+					<input
+						type="radio"
+						name="tab-input"
+						bind:group={checked}
+						value={true}
+						class="tab-input"
+					/>
+					<div class="tab-box">Existing Plan</div>
+				</label>
+				<label class="tab">
+					<input
+						type="radio"
+						name="tab-input"
+						class="tab-input"
+						bind:group={checked}
+						value={false}
+					/>
+					<div class="tab-box">New Plan</div>
+				</label>
+			</div>
+			<div class={` ${!checked ? 'hidden' : 'choose-plan-container'} `}>
+				{#if data.plans.data}
+					<h4>Choose an exisitng plan:</h4>
+					<select on:change={handleSelectChange}>
+						<option value="" disabled selected>Plan</option>
+						{#each data.plans.data as plan}
+							<option value={plan.id}>{plan.name}</option>
+						{/each}
+					</select>
+				{/if}
+				{#if requestState === 'Loading'}
+					<h3 class="loading">Loading...</h3>
+				{:else if premadePlan?.data}
+					{#each premadePlan.data[0].Weeks as week}
+						<h4>Week {week.order}</h4>
+						{#each week.Days as day}
+							<TrainingDayShow {day} />
+						{/each}
 					{/each}
-				</select>
-			{/if}
-			{#if requestState === 'Loading'}
-				<h3 class="loading">Loading...</h3>
-			{:else if premadePlan?.data}
-				{#each premadePlan.data[0].Weeks as week}
-					<h4>Week - {week.order}</h4>
-					{#each week.Days as day}
-						<TrainingDayShow {day} />
-					{/each}
-				{/each}
-			{/if}
-			<form>
+				{/if}
+			</div>
+
+			<form class={`${checked ? 'hidden' : ''}`}>
 				<h4>Or create a new plan:</h4>
 				<input required bind:value={planName} type="text" placeholder="Plan Name" />
 
@@ -210,6 +237,16 @@
 </div>
 
 <style lang="postcss">
+	.hidden {
+		display: none;
+	}
+	.choose-plan-container {
+		display: flex;
+		flex-direction: column;
+		gap: var(--size-4);
+		justify-content: center;
+		align-items: center;
+	}
 	.week-input {
 		display: flex;
 		justify-content: center;
@@ -282,5 +319,38 @@
 	.loading {
 		font-size: var(--font-size-fluid-2);
 		padding: 0 var(--size-fluid-6);
+	}
+	.tabs {
+		--bar-color: var(--accent);
+		--background: transparent;
+
+		display: flex;
+		width: 600px;
+		border: 1px solid #ddd;
+	}
+
+	.tabs > .tab {
+		flex: 1;
+		display: flex;
+	}
+
+	.tab > .tab-input {
+		width: 0;
+		height: 0;
+		margin: 0;
+		display: none;
+	}
+
+	.tab > .tab-box {
+		padding: var(--size-2);
+		width: 100%;
+		text-align: center;
+		transition: 0.5s;
+		border-bottom: var(--border-size-3) solid rgba(0, 0, 0, 0);
+	}
+
+	.tab > .tab-input:checked + .tab-box {
+		background: var(--background);
+		border-color: var(--bar-color);
 	}
 </style>
