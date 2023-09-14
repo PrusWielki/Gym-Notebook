@@ -10,7 +10,7 @@
 	const rpeArray: Array<Array<number>> = [[]];
 	const weightArray: Array<Array<number>> = [[]];
 
-	const onSave = () => {
+	const onSave = async () => {
 		repsArray.forEach((reps, exerciseIndex) => {
 			reps.forEach((rep, setIndex) => {
 				exerciseDetailSetsArray.push({
@@ -20,10 +20,14 @@
 					weight: weightArray[exerciseIndex][setIndex],
 					target_reps: 12,
 					target_rpe: 12,
-					exercise_detail_id: day.Exercise_Detail[exerciseIndex].id,
+					exercise_detail_id: day.Exercise_Detail[exerciseIndex].id!,
 					plans_users_id: planUsersId
 				});
 			});
+		});
+		await fetch('api/exercise_detail_sets', {
+			method: 'POST',
+			body: JSON.stringify({ exerciseDetailSets: exerciseDetailSetsArray })
 		});
 	};
 </script>

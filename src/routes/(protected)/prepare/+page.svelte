@@ -40,7 +40,8 @@
 							target_reps: null,
 							target_rpe: null,
 							exercise_type_name: null,
-							Exercise_Detail_Sets: null
+							Exercise_Detail_Sets: null,
+							id: null
 						}
 					]
 				}
@@ -164,7 +165,8 @@
 													target_reps: null,
 													target_rpe: null,
 													exercise_type_name: null,
-													Exercise_Detail_Sets: null
+													Exercise_Detail_Sets: null,
+													id: null
 												}
 											]
 										}
@@ -191,7 +193,8 @@
 														target_reps: null,
 														target_rpe: null,
 														exercise_type_name: null,
-														Exercise_Detail_Sets: null
+														Exercise_Detail_Sets: null,
+														id: null
 													}
 												]
 											}
