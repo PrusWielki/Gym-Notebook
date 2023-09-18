@@ -59,7 +59,7 @@ export const saveThePlan = async (
 				if (day) {
 					const { error, data: dayId } = await supabase
 						.from('Days')
-						.insert({ name: day.name, notes: day.notes, week_id: weekId[0].id })
+						.insert({ name: day.name, order: day.order, notes: day.notes, week_id: weekId[0].id })
 						.select();
 					if (error) throw new Error('Query Error');
 
@@ -72,6 +72,7 @@ export const saveThePlan = async (
 						) {
 							const { error } = await supabase.from('Exercise_Detail').insert({
 								exercise_type_name: exercise.exercise_type_name,
+								order: exercise.order,
 								sets: exercise.sets,
 								target_reps: exercise.target_reps,
 								target_rpe: exercise.target_rpe,

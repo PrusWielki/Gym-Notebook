@@ -13,7 +13,9 @@ declare global {
 		type TrainingDay = {
 			name: string | null;
 			notes: string | null;
+			order: number;
 			Exercise_Detail: {
+				order: number;
 				id: string | null;
 				sets: number | null;
 				target_reps: string | null;

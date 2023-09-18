@@ -6,7 +6,6 @@
 	import { error } from '@sveltejs/kit';
 
 	export let data: PageData;
-	console.log(data);
 	let plan: GetPlansResponse;
 
 	let state: 'Loading' | 'Done' = 'Done';
@@ -28,11 +27,12 @@
 			{:else if plan?.data && data?.plan}
 				<h4>{plan.data[0].name}</h4>
 				<h5>Week {plan.data[0].Weeks[data?.plan.current_week].order}</h5>
-				<form>
-					{#each plan.data[0].Weeks[data?.plan.current_week].Days as day}
+
+				{#each plan.data[0].Weeks[data?.plan.current_week].Days as day}
+					<form>
 						<TrainingDayUpdate {day} planUsersId={data.plan.id} />
-					{/each}
-				</form>
+					</form>
+				{/each}
 			{/if}
 		</div>
 	</div>

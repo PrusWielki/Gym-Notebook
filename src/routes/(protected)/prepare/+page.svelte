@@ -34,8 +34,10 @@
 				{
 					name: '',
 					notes: '',
+					order: 1,
 					Exercise_Detail: [
 						{
+							order: 1,
 							sets: null,
 							target_reps: null,
 							target_rpe: null,
@@ -159,8 +161,10 @@
 										{
 											name: '',
 											notes: '',
+											order: week.Days.length + 1,
 											Exercise_Detail: [
 												{
+													order: 1,
 													sets: null,
 													target_reps: null,
 													target_rpe: null,
@@ -185,10 +189,12 @@
 										order: weeks.length + 1,
 										Days: [
 											{
+												order: 1,
 												name: '',
 												notes: '',
 												Exercise_Detail: [
 													{
+														order: 1,
 														sets: null,
 														target_reps: null,
 														target_rpe: null,

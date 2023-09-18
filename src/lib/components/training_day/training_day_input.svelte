@@ -56,6 +56,8 @@
 				day.Exercise_Detail = [
 					...day.Exercise_Detail,
 					{
+						order: day.Exercise_Detail.length + 1,
+						id: null,
 						sets: null,
 						target_reps: null,
 						target_rpe: null,
@@ -68,6 +70,8 @@
 				day.Exercise_Detail = [
 					...day.Exercise_Detail,
 					{
+						order: day.Exercise_Detail.length + 1,
+						id: null,
 						sets: null,
 						target_reps: null,
 						target_rpe: null,
