@@ -27,6 +27,7 @@
 				<h4>Loading...</h4>
 			{:else if plan?.data && data?.plan}
 				<h4>{plan.data[0].name}</h4>
+				<h5>Week {plan.data[0].Weeks[data?.plan.current_week].order}</h5>
 				<form>
 					{#each plan.data[0].Weeks[data?.plan.current_week].Days as day}
 						<TrainingDayUpdate {day} planUsersId={data.plan.id} />
@@ -45,7 +46,7 @@
 		justify-content: center;
 		align-items: center;
 		width: 100%;
-		gap: var(--size-fluid-4);
+		gap: var(--size-fluid-2);
 	}
 	form {
 		display: flex;
@@ -57,9 +58,13 @@
 	}
 
 	h4 {
+		font-size: var(--font-size-fluid-3);
 		text-align: center;
 		background: var(--gradient-3);
 		-webkit-background-clip: text;
 		-webkit-text-fill-color: transparent;
+	}
+	h5 {
+		font-size: var(--font-size-fluid-2);
 	}
 </style>
