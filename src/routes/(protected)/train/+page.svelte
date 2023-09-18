@@ -7,6 +7,7 @@
 
 	export let data: PageData;
 	let plan: GetPlansResponse;
+	let chosenDay: App.TrainingDay;
 
 	let state: 'Loading' | 'Done' = 'Done';
 	if (data?.plan && browser) {
@@ -27,10 +28,16 @@
 			{:else if plan?.data && data?.plan}
 				<h4>{plan.data[0].name}</h4>
 				<h5>Week {plan.data[0].Weeks[data?.plan.current_week].order}</h5>
+				<select required bind:value={chosenDay}>
+					<option value="" disabled selected>Day</option>
+					{#each plan.data[0].Weeks[data?.plan.current_week].Days as day}
+						<option value={day}>{day.name}</option>
+					{/each}
+				</select>
 
-				{#each plan.data[0].Weeks[data?.plan.current_week].Days as day}
-					<TrainingDayUpdate {day} planUsersId={data.plan.id} />
-				{/each}
+				{#if chosenDay}
+					<TrainingDayUpdate day={chosenDay} planUsersId={data.plan.id} />
+				{/if}
 			{/if}
 		</div>
 	</div>
@@ -64,5 +71,16 @@
 	}
 	h5 {
 		font-size: var(--font-size-fluid-2);
+	}
+	select {
+		appearance: none;
+		text-align: center;
+		padding: var(--size-1);
+		width: var(--size-11);
+		font-size: var(--font-size-1);
+		width: var(--size-fluid-8);
+		@media (--md-n-below) {
+			font-size: var(--font-size-0);
+		}
 	}
 </style>
