@@ -17,7 +17,10 @@
 		fetch(`api/plans/${data.plan.plan_id}`, { method: 'GET' }).then(async (response) => {
 			await response.json().then((result) => {
 				plan = result;
-				if (plan.data) chosenWeek = plan.data[0].Weeks[data?.plan.current_week];
+				if (plan.data) {
+					chosenWeek = plan.data[0].Weeks[data?.plan.current_week];
+					chosenDay = chosenWeek.Days[data?.plan.current_day];
+				}
 			});
 			state = 'Done';
 		});
