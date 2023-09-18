@@ -61,8 +61,6 @@
 		</div>
 		{#each day.Exercise_Detail as exercise, exerciseIndex}
 			{#each Array(exercise.sets) as _, index}
-				<script lang="ts">
-				</script>
 				<div class="day-row-input">
 					{#if index === 0}
 						<h5>{exercise.exercise_type_name}</h5>
