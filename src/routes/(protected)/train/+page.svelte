@@ -8,13 +8,17 @@
 	export let data: PageData;
 	let plan: GetPlansResponse;
 	let chosenDay: App.TrainingDay;
+	let chosenWeek: App.Week;
 
 	let state: 'Loading' | 'Done' = 'Done';
 	if (data?.plan && browser) {
 		state = 'Loading';
 
 		fetch(`api/plans/${data.plan.plan_id}`, { method: 'GET' }).then(async (response) => {
-			await response.json().then((result) => (plan = result));
+			await response.json().then((result) => {
+				plan = result;
+				if (plan.data) chosenWeek = plan.data[0].Weeks[data?.plan.current_week];
+			});
 			state = 'Done';
 		});
 	}
@@ -28,6 +32,13 @@
 			{:else if plan?.data && data?.plan}
 				<h4>{plan.data[0].name}</h4>
 				<h5>Week {plan.data[0].Weeks[data?.plan.current_week].order}</h5>
+				<select required bind:value={chosenWeek}>
+					<option value="" disabled>Week</option>
+					{#each plan.data[0].Weeks as week}
+						<option value={week}>Week {week.order}</option>
+					{/each}
+				</select>
+
 				<select required bind:value={chosenDay}>
 					<option value="" disabled selected>Day</option>
 					{#each plan.data[0].Weeks[data?.plan.current_week].Days as day}
