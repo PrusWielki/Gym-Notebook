@@ -6,7 +6,11 @@
 	// export let targetReps: number;
 	// export let targetRpe: number;
 	// export let targetWeight: number;
-	export let planUsersId: string;
+	export let plansUsersId: string;
+	export let numberOfWeeks: number;
+	export let currentWeek: number;
+	export let numberOfDays: number;
+
 	const exerciseDetailSetsArray: Array<App.ExerciseDetailSet> = [];
 
 	const repsArray: Array<Array<number>> = new Array(day.Exercise_Detail.length).fill([]);
@@ -24,13 +28,23 @@
 					target_reps: 12,
 					target_rpe: 12,
 					exercise_detail_id: day.Exercise_Detail[exerciseIndex].id!,
-					plans_users_id: planUsersId
+					plans_users_id: plansUsersId
 				});
 			});
 		});
+		let newCurrentWeek = 0;
+		let newCurrentDay = 0;
+		if (day.order >= numberOfDays && currentWeek + 1 < numberOfWeeks) {
+			newCurrentWeek = currentWeek + 1;
+		} else newCurrentDay = day.order;
 		await fetch('api/exercise_detail_sets', {
 			method: 'POST',
-			body: JSON.stringify({ exerciseDetailSets: exerciseDetailSetsArray })
+			body: JSON.stringify({
+				exerciseDetailSets: exerciseDetailSetsArray,
+				plansUsersId,
+				newCurrentDay,
+				newCurrentWeek
+			})
 		}).then(() => showNotification('Day Saved', 2000, notificationMessage));
 	};
 </script>

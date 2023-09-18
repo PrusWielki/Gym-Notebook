@@ -50,7 +50,15 @@
 				</select>
 
 				{#if chosenDay}
-					<TrainingDayUpdate day={chosenDay} planUsersId={data.plan.id} />
+					<form>
+						<TrainingDayUpdate
+							day={chosenDay}
+							plansUsersId={data.plan.id}
+							currentWeek={data.plan.current_week}
+							numberOfDays={plan.data[0].Weeks[data?.plan.current_week].Days.length}
+							numberOfWeeks={plan.data[0].Weeks.length}
+						/>
+					</form>
 				{/if}
 			{/if}
 		</div>
@@ -74,6 +82,7 @@
 		align-items: center;
 		width: 100%;
 		gap: var(--size-fluid-4);
+		padding-bottom: var(--size-10);
 	}
 
 	h4 {
