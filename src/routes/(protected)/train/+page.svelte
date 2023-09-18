@@ -29,9 +29,7 @@
 				<h5>Week {plan.data[0].Weeks[data?.plan.current_week].order}</h5>
 
 				{#each plan.data[0].Weeks[data?.plan.current_week].Days as day}
-					<form>
-						<TrainingDayUpdate {day} planUsersId={data.plan.id} />
-					</form>
+					<TrainingDayUpdate {day} planUsersId={data.plan.id} />
 				{/each}
 			{/if}
 		</div>

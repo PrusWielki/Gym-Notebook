@@ -9,9 +9,9 @@
 	export let planUsersId: string;
 	const exerciseDetailSetsArray: Array<App.ExerciseDetailSet> = [];
 
-	const repsArray: Array<Array<number>> = [[]];
-	const rpeArray: Array<Array<number>> = [[]];
-	const weightArray: Array<Array<number>> = [[]];
+	const repsArray: Array<Array<number>> = new Array(day.Exercise_Detail.length).fill([]);
+	const rpeArray: Array<Array<number>> = new Array(day.Exercise_Detail.length).fill([]);
+	const weightArray: Array<Array<number>> = new Array(day.Exercise_Detail.length).fill([]);
 
 	const onSave = async () => {
 		repsArray.forEach((reps, exerciseIndex) => {

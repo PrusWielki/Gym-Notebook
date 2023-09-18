@@ -50,10 +50,5 @@ export async function GET({ locals: { supabase }, params }) {
 		.order('order', { foreignTable: 'Weeks.Days.Exercise_Detail' });
 	if (error) return json({ code: 400, error });
 
-	/* 	data[0].Weeks = data[0].Weeks.sort((a, b) => {
-		if (a.order > b.order) return 1;
-		else return -1;
-	}); */
-
 	return json({ code: 200, data });
 }
