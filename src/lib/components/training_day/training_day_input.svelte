@@ -1,6 +1,8 @@
 <script lang="ts">
 	export let exercises: Array<{ name: string; id: number }> | null;
 	export let day: App.TrainingDay;
+	let queryPhrase = '';
+	const dialogOpened: Array<boolean> = new Array(day.Exercise_Detail.length).fill(false);
 </script>
 
 {#if day.Exercise_Detail.length > 0}
@@ -14,14 +16,39 @@
 		</div>
 		{#each day.Exercise_Detail as exercise, exercise_index}
 			<div class="day-row-input">
-				<select required bind:value={exercise.exercise_type_name}>
+				<dialog id="exercise_type_name_dialog" open={dialogOpened[exercise_index]}>
+					<div class="dialog-content-container">
+						<input bind:value={queryPhrase} placeholder="Search" />
+						<div class="types-container">
+							{#if exercises}
+								{#each exercises as exercise_types}
+									<!-- svelte-ignore a11y-click-events-have-key-events -->
+									<!-- svelte-ignore a11y-no-static-element-interactions -->
+									<div
+										on:click={() => {
+											exercise.exercise_type_name = exercise_types.name;
+											dialogOpened[exercise_index] = false;
+										}}
+									>
+										{exercise_types.name}
+									</div>
+								{/each}
+							{/if}
+						</div>
+					</div>
+				</dialog>
+				<input
+					on:click|preventDefault={() => (dialogOpened[exercise_index] = true)}
+					value={exercise.exercise_type_name ? exercise.exercise_type_name : 'Exercise'}
+				/>
+				<!-- 				<select required bind:value={exercise.exercise_type_name}>
 					<option value="" disabled selected>Exercise</option>
 					{#if exercises}
 						{#each exercises as exercise}
 							<option value={exercise.name}>{exercise.name}</option>
 						{/each}
 					{/if}
-				</select>
+				</select> -->
 				<input required bind:value={exercise.sets} placeholder="Sets" />
 				<input required bind:value={exercise.target_reps} placeholder="Reps" />
 				<input required bind:value={exercise.target_rpe} placeholder="RPE" />
@@ -93,6 +120,19 @@
 {/if}
 
 <style lang="postcss">
+	dialog {
+		background-color: var(--surface-1);
+		z-index: 10;
+		width: 50%;
+		@media (--md-n-below) {
+			width: 90%;
+		}
+	}
+	.dialog-content-container {
+		display: flex;
+		flex-direction: column;
+		gap: var(--size-4);
+	}
 	.day-container {
 		display: flex;
 		flex-direction: column;
