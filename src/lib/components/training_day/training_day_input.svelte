@@ -128,6 +128,12 @@
 			width: 90%;
 		}
 	}
+	.types-container {
+		display: flex;
+		flex-direction: column;
+		gap: var(--size-2);
+		overflow-y: auto;
+	}
 	.dialog-content-container {
 		display: flex;
 		flex-direction: column;
