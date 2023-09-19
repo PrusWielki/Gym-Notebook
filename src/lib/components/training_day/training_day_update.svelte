@@ -1,7 +1,7 @@
 <script lang="ts">
 	import notificationMessage from '$lib/store/notifications';
 	import { showNotification } from '$lib/utils/show-notification';
-
+	import { browser } from '$app/environment';
 	export let day: App.TrainingDay;
 	// export let targetReps: number;
 	// export let targetRpe: number;
@@ -13,9 +13,17 @@
 
 	const exerciseDetailSetsArray: Array<App.ExerciseDetailSet> = [];
 
-	const repsArray: Array<number> = [];
-	const rpeArray: Array<number> = [];
-	const weightArray: Array<number> = [];
+	let repsArray: Array<number> = [];
+	let rpeArray: Array<number> = [];
+	let weightArray: Array<number> = [];
+	if (browser) {
+		if (window.localStorage.getItem('repsArray'))
+			repsArray = JSON.parse(window.localStorage.getItem('repsArray')!);
+		if (window.localStorage.getItem('rpeArray'))
+			rpeArray = JSON.parse(window.localStorage.getItem('rpeArray')!);
+		if (window.localStorage.getItem('weightArray'))
+			weightArray = JSON.parse(window.localStorage.getItem('weightArray')!);
+	}
 
 	const onSave = async () => {
 		day.Exercise_Detail.forEach((exercise, exerciseIndex) => {
@@ -48,9 +56,16 @@
 				newCurrentDay,
 				newCurrentWeek
 			})
-		}).then(() => showNotification('Day Saved', 2000, notificationMessage));
+		}).then(() => {
+			showNotification('Day Saved', 2000, notificationMessage);
+			window.localStorage.removeItem('repsArray');
+			window.localStorage.removeItem('rpeArray');
+			window.localStorage.removeItem('weightArray');
+		});
 	};
-	$: console.log(repsArray);
+	$: window.localStorage.setItem('repsArray', JSON.stringify(repsArray));
+	$: window.localStorage.setItem('rpeArray', JSON.stringify(rpeArray));
+	$: window.localStorage.setItem('weightArray', JSON.stringify(weightArray));
 </script>
 
 {#if day.Exercise_Detail.length > 0}
