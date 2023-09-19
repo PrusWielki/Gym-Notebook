@@ -41,14 +41,14 @@
 						<option value={week}>Week {week.order}</option>
 					{/each}
 				</select>
-
-				<select required bind:value={chosenDay}>
-					<option value="" disabled selected>Day</option>
-					{#each plan.data[0].Weeks[data?.plan.current_week].Days as day}
-						<option value={day}>{day.name}</option>
-					{/each}
-				</select>
-
+				{#if chosenWeek}
+					<select required bind:value={chosenDay}>
+						<option value="" disabled selected>Day</option>
+						{#each chosenWeek.Days as day, index}
+							<option value={day}>{day.name}</option>
+						{/each}
+					</select>
+				{/if}
 				{#if chosenDay}
 					<form>
 						<TrainingDayUpdate
