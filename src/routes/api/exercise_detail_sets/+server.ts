@@ -9,7 +9,7 @@ export async function POST({ request, locals: { supabase } }) {
 	const { error: insertError } = await supabase
 		.from('Exercise_Detail_Sets')
 		.insert(exerciseDetailSets);
-
+	console.log(insertError);
 	if (insertError) throw error(400, insertError.message);
 	const { error: updateError } = await supabase
 		.from('Plans_Users')

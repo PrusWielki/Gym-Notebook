@@ -13,24 +13,27 @@
 
 	const exerciseDetailSetsArray: Array<App.ExerciseDetailSet> = [];
 
-	const repsArray: Array<Array<number>> = new Array(day.Exercise_Detail.length).fill([]);
-	const rpeArray: Array<Array<number>> = new Array(day.Exercise_Detail.length).fill([]);
-	const weightArray: Array<Array<number>> = new Array(day.Exercise_Detail.length).fill([]);
+	const repsArray: Array<number> = [];
+	const rpeArray: Array<number> = [];
+	const weightArray: Array<number> = [];
 
 	const onSave = async () => {
-		repsArray.forEach((reps, exerciseIndex) => {
-			reps.forEach((rep, setIndex) => {
-				exerciseDetailSetsArray.push({
-					reps: rep,
-					set: setIndex + 1,
-					rpe: rpeArray[exerciseIndex][setIndex],
-					weight: weightArray[exerciseIndex][setIndex],
-					target_reps: 12,
-					target_rpe: 12,
-					exercise_detail_id: day.Exercise_Detail[exerciseIndex].id!,
-					plans_users_id: plansUsersId
+		day.Exercise_Detail.forEach((exercise, exerciseIndex) => {
+			if (exercise.sets) {
+				let arr = new Array(exercise.sets).fill(0);
+				arr.forEach((_, setIndex) => {
+					exerciseDetailSetsArray.push({
+						reps: repsArray[day.Exercise_Detail.length * setIndex + exerciseIndex],
+						set: setIndex + 1,
+						rpe: rpeArray[day.Exercise_Detail.length * setIndex + exerciseIndex],
+						weight: weightArray[day.Exercise_Detail.length * setIndex + exerciseIndex],
+						target_reps: 12,
+						target_rpe: 12,
+						exercise_detail_id: day.Exercise_Detail[exerciseIndex].id!,
+						plans_users_id: plansUsersId
+					});
 				});
-			});
+			}
 		});
 		let newCurrentWeek = 0;
 		let newCurrentDay = 0;
@@ -47,6 +50,7 @@
 			})
 		}).then(() => showNotification('Day Saved', 2000, notificationMessage));
 	};
+	$: console.log(repsArray);
 </script>
 
 {#if day.Exercise_Detail.length > 0}
@@ -71,15 +75,19 @@
 					<h5>{(index + 1).toString()}</h5>
 					<input
 						required
-						bind:value={repsArray[exerciseIndex][index]}
+						bind:value={repsArray[day.Exercise_Detail.length * index + exerciseIndex]}
 						placeholder={exercise.target_reps?.toString()}
 					/>
 					<input
 						required
-						bind:value={rpeArray[exerciseIndex][index]}
+						bind:value={rpeArray[day.Exercise_Detail.length * index + exerciseIndex]}
 						placeholder={exercise.target_rpe?.toString()}
 					/>
-					<input required bind:value={weightArray[exerciseIndex][index]} placeholder="" />
+					<input
+						required
+						bind:value={weightArray[day.Exercise_Detail.length * index + exerciseIndex]}
+						placeholder=""
+					/>
 				</div>
 			{/each}
 		{/each}
@@ -116,9 +124,6 @@
 			width: 100%;
 		}
 
-		&.accent {
-			background-color: var(--accent);
-		}
 		&:hover {
 			background-color: var(--button-2);
 		}
@@ -147,22 +152,5 @@
 				font-size: var(--font-size-0);
 			}
 		}
-	}
-	select {
-		appearance: none;
-		text-align: center;
-		padding: var(--size-1);
-		width: var(--size-11);
-		font-size: var(--font-size-1);
-		width: 100%;
-		@media (--md-n-below) {
-			font-size: var(--font-size-0);
-		}
-	}
-	.input-day-name {
-		width: 50%;
-		justify-self: center;
-		align-self: center;
-		text-align: center;
 	}
 </style>
