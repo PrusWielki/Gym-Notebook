@@ -1,6 +1,9 @@
 <script lang="ts">
+	import ExerciseModal from '../exercise_modal/exercise_modal.svelte';
+
 	export let exercises: Array<{ name: string; id: number }> | null;
 	export let day: App.TrainingDay;
+	const dialogOpened: Array<boolean> = new Array(day.Exercise_Detail.length).fill(false);
 </script>
 
 {#if day.Exercise_Detail.length > 0}
@@ -14,14 +17,19 @@
 		</div>
 		{#each day.Exercise_Detail as exercise, exercise_index}
 			<div class="day-row-input">
-				<select required bind:value={exercise.exercise_type_name}>
+				<ExerciseModal {dialogOpened} index={exercise_index} bind:exercise {exercises} />
+				<input
+					on:click|preventDefault={() => (dialogOpened[exercise_index] = true)}
+					value={exercise.exercise_type_name ? exercise.exercise_type_name : 'Exercise'}
+				/>
+				<!-- 				<select required bind:value={exercise.exercise_type_name}>
 					<option value="" disabled selected>Exercise</option>
 					{#if exercises}
 						{#each exercises as exercise}
 							<option value={exercise.name}>{exercise.name}</option>
 						{/each}
 					{/if}
-				</select>
+				</select> -->
 				<input required bind:value={exercise.sets} placeholder="Sets" />
 				<input required bind:value={exercise.target_reps} placeholder="Reps" />
 				<input required bind:value={exercise.target_rpe} placeholder="RPE" />

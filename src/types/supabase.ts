@@ -8,18 +8,21 @@ export interface Database {
 					id: number;
 					name: string;
 					notes: string | null;
+					order: number;
 					week_id: number;
 				};
 				Insert: {
 					id?: number;
 					name: string;
 					notes?: string | null;
+					order?: number;
 					week_id: number;
 				};
 				Update: {
 					id?: number;
 					name?: string;
 					notes?: string | null;
+					order?: number;
 					week_id?: number;
 				};
 				Relationships: [
@@ -36,6 +39,7 @@ export interface Database {
 					day_id: number;
 					exercise_type_name: string;
 					id: number;
+					order: number;
 					sets: number;
 					target_reps: string;
 					target_rpe: number;
@@ -44,6 +48,7 @@ export interface Database {
 					day_id: number;
 					exercise_type_name: string;
 					id?: number;
+					order?: number;
 					sets: number;
 					target_reps: string;
 					target_rpe: number;
@@ -52,6 +57,7 @@ export interface Database {
 					day_id?: number;
 					exercise_type_name?: string;
 					id?: number;
+					order?: number;
 					sets?: number;
 					target_reps?: string;
 					target_rpe?: number;
@@ -73,40 +79,55 @@ export interface Database {
 			};
 			Exercise_Detail_Sets: {
 				Row: {
-					exercise_detail: number;
+					creation_date: string | null;
+					exercise_detail_id: number;
 					id: number;
+					plans_users_id: number;
 					reps: number;
 					rpe: number;
 					set: number;
 					target_reps: number;
 					target_rpe: number;
-					user_id: string;
+					user_id: string | null;
+					weight: number;
 				};
 				Insert: {
-					exercise_detail: number;
+					creation_date?: string | null;
+					exercise_detail_id: number;
 					id?: number;
+					plans_users_id: number;
 					reps: number;
 					rpe: number;
 					set: number;
 					target_reps: number;
 					target_rpe: number;
-					user_id: string;
+					user_id?: string | null;
+					weight: number;
 				};
 				Update: {
-					exercise_detail?: number;
+					creation_date?: string | null;
+					exercise_detail_id?: number;
 					id?: number;
+					plans_users_id?: number;
 					reps?: number;
 					rpe?: number;
 					set?: number;
 					target_reps?: number;
 					target_rpe?: number;
-					user_id?: string;
+					user_id?: string | null;
+					weight?: number;
 				};
 				Relationships: [
 					{
-						foreignKeyName: 'Exercise_Detail_Sets_exercise_detail_fkey';
-						columns: ['exercise_detail'];
+						foreignKeyName: 'Exercise_Detail_Sets_exercise_detail_id_fkey';
+						columns: ['exercise_detail_id'];
 						referencedRelation: 'Exercise_Detail';
+						referencedColumns: ['id'];
+					},
+					{
+						foreignKeyName: 'Exercise_Detail_Sets_plans_users_id_fkey';
+						columns: ['plans_users_id'];
+						referencedRelation: 'Plans_Users';
 						referencedColumns: ['id'];
 					},
 					{
@@ -134,61 +155,6 @@ export interface Database {
 					name?: string;
 				};
 				Relationships: [];
-			};
-			Exercises: {
-				Row: {
-					created_at: string;
-					day: number;
-					detail: number;
-					id: number;
-					name: string;
-					plan: number;
-					reps: number[];
-					rpe: number;
-					target_reps: number[];
-				};
-				Insert: {
-					created_at?: string;
-					day: number;
-					detail: number;
-					id?: number;
-					name: string;
-					plan: number;
-					reps: number[];
-					rpe: number;
-					target_reps: number[];
-				};
-				Update: {
-					created_at?: string;
-					day?: number;
-					detail?: number;
-					id?: number;
-					name?: string;
-					plan?: number;
-					reps?: number[];
-					rpe?: number;
-					target_reps?: number[];
-				};
-				Relationships: [
-					{
-						foreignKeyName: 'Exercises_day_fkey';
-						columns: ['day'];
-						referencedRelation: 'Days';
-						referencedColumns: ['id'];
-					},
-					{
-						foreignKeyName: 'Exercises_detail_fkey';
-						columns: ['detail'];
-						referencedRelation: 'Exercise_Detail';
-						referencedColumns: ['id'];
-					},
-					{
-						foreignKeyName: 'Exercises_plan_fkey';
-						columns: ['plan'];
-						referencedRelation: 'Plans';
-						referencedColumns: ['id'];
-					}
-				];
 			};
 			Periodization: {
 				Row: {
@@ -236,22 +202,28 @@ export interface Database {
 			Plans_Users: {
 				Row: {
 					creation_date: string;
-
+					current_day: number;
+					current_week: number;
 					id: number;
+					modification_date: string;
 					plan_id: number;
 					user_id: string;
 				};
 				Insert: {
 					creation_date?: string;
-
+					current_day?: number;
+					current_week?: number;
 					id?: number;
+					modification_date?: string;
 					plan_id: number;
 					user_id?: string;
 				};
 				Update: {
 					creation_date?: string;
-
+					current_day?: number;
+					current_week?: number;
 					id?: number;
+					modification_date?: string;
 					plan_id?: number;
 					user_id?: string;
 				};
