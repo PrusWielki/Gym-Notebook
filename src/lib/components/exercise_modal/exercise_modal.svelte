@@ -3,11 +3,20 @@
 	export let index: number;
 	export let exercises: Array<{ name: string }> | null;
 	export let exercise: { exercise_type_name: string | null };
+	let modal: HTMLDialogElement;
 
 	let queryPhrase = '';
+
+	$: {
+		if (modal) {
+			if (dialogOpened[index]) {
+				modal.showModal();
+			} else modal.close();
+		}
+	}
 </script>
 
-<dialog id="exercise_type_name_dialog" open={dialogOpened[index]}>
+<dialog id="exercise_type_name_dialog" bind:this={modal}>
 	<div class="dialog-content-container">
 		<input bind:value={queryPhrase} placeholder="Search" />
 		<div class="types-container">
