@@ -1,4 +1,5 @@
 <script lang="ts">
+	import { browser } from '$app/environment';
 	import type { GetPlansResponse } from '../../../../routes/api/plans/[planId]/+server';
 
 	let plans: Array<{ id: number; name: string }> | null;
@@ -12,14 +13,19 @@
 		if (event.target)
 			await fetch(`/api/plans/${(event.target as HTMLInputElement).value}`, { method: 'GET' }).then(
 				async (response) => {
-					await response.json().then((result) => (plan = result));
+					await response.json().then((result) => (plan = result.data));
 				}
 			);
 		chosenPlanId = +(event.target as HTMLInputElement).value;
 		requestState = 'Done';
 	};
+	if (browser) {
+		fetch(`/api/plans/author`, { method: 'GET' }).then(async (response) => {
+			await response.json().then((result) => (plans = result.data.data));
+		});
+	}
+
 	// TODO
-	// 1. Fetch plans list corresponding to user
 	// 2. Collect new data
 	// 3. Create endpoint to update a plan
 	//
