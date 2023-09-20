@@ -30,8 +30,8 @@
 	$: console.log(plan);
 
 	// TODO
-	// 3. Create endpoint to update a plan
-	//
+	// 1. Extract new and exisitng components
+	// 2. Fill this component to be able to add weeks etc
 </script>
 
 <div class="edit-plan-container">
