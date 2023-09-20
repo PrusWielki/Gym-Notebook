@@ -9,16 +9,14 @@
 
 <dialog id="exercise_type_name_dialog" open={dialogOpened[index]}>
 	<div class="dialog-content-container">
-		<input bind:value={queryPhrase} placeholder="Search" />
+		<input bind:value={queryPhrase} placeholder="Search" autofocus />
 		<div class="types-container">
 			{#if exercises}
 				{#each exercises.filter((exercise_type) => exercise_type.name
 						.toLowerCase()
 						.includes(queryPhrase)) as exercise_types}
-					<!-- svelte-ignore a11y-click-events-have-key-events -->
-					<!-- svelte-ignore a11y-no-static-element-interactions -->
-					<div
-						on:click={() => {
+					<button
+						on:click|preventDefault={() => {
 							exercise.exercise_type_name = exercise_types.name;
 							console.log(exercise.exercise_type_name);
 
@@ -28,7 +26,7 @@
 						class="exercise"
 					>
 						{exercise_types.name}
-					</div>
+					</button>
 				{/each}
 			{/if}
 		</div>
@@ -59,8 +57,15 @@
 	}
 	input {
 		text-align: center;
+		&::placeholder {
+			color: var(--text-1);
+		}
 	}
 	.exercise {
 		cursor: pointer;
+	}
+	button {
+		appearance: none;
+		background: var(--surface-1);
 	}
 </style>

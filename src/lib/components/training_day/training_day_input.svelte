@@ -21,15 +21,9 @@
 				<input
 					on:click|preventDefault={() => (dialogOpened[exercise_index] = true)}
 					value={exercise.exercise_type_name ? exercise.exercise_type_name : 'Exercise'}
+					readonly
 				/>
-				<!-- 				<select required bind:value={exercise.exercise_type_name}>
-					<option value="" disabled selected>Exercise</option>
-					{#if exercises}
-						{#each exercises as exercise}
-							<option value={exercise.name}>{exercise.name}</option>
-						{/each}
-					{/if}
-				</select> -->
+
 				<input required bind:value={exercise.sets} placeholder="Sets" />
 				<input required bind:value={exercise.target_reps} placeholder="Reps" />
 				<input required bind:value={exercise.target_rpe} placeholder="RPE" />
@@ -159,17 +153,7 @@
 			}
 		}
 	}
-	select {
-		appearance: none;
-		text-align: center;
-		padding: var(--size-1);
-		width: var(--size-11);
-		font-size: var(--font-size-1);
-		width: 100%;
-		@media (--md-n-below) {
-			font-size: var(--font-size-0);
-		}
-	}
+
 	.input-day-name {
 		width: 50%;
 		justify-self: center;
