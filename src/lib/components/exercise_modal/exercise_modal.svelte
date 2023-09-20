@@ -1,8 +1,8 @@
 <script lang="ts">
 	export let dialogOpened: Array<boolean>;
 	export let index: number;
-	export let exercises: Array<{ name: string }>;
-	export let exercise: { exercise_type_name: string };
+	export let exercises: Array<{ name: string }> | null;
+	export let exercise: { exercise_type_name: string | null };
 
 	let queryPhrase = '';
 </script>
@@ -25,6 +25,7 @@
 							dialogOpened[index] = false;
 							queryPhrase = '';
 						}}
+						class="exercise"
 					>
 						{exercise_types.name}
 					</div>
@@ -58,5 +59,8 @@
 	}
 	input {
 		text-align: center;
+	}
+	.exercise {
+		cursor: pointer;
 	}
 </style>
