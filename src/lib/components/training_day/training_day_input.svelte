@@ -3,7 +3,6 @@
 
 	export let exercises: Array<{ name: string; id: number }> | null;
 	export let day: App.TrainingDay;
-	let queryPhrase = '';
 	const dialogOpened: Array<boolean> = new Array(day.Exercise_Detail.length).fill(false);
 </script>
 
@@ -18,7 +17,7 @@
 		</div>
 		{#each day.Exercise_Detail as exercise, exercise_index}
 			<div class="day-row-input">
-				<ExerciseModal dialogOpened={dialogOpened[exercise_index]} bind:exercise {exercises} />
+				<ExerciseModal {dialogOpened} index={exercise_index} bind:exercise {exercises} />
 				<input
 					on:click|preventDefault={() => (dialogOpened[exercise_index] = true)}
 					value={exercise.exercise_type_name ? exercise.exercise_type_name : 'Exercise'}

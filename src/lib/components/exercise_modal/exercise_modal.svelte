@@ -1,24 +1,25 @@
 <script lang="ts">
-	export let dialogOpened = false;
-	export let exercises: any;
+	export let dialogOpened: Array<boolean>;
+	export let index: number;
+	export let exercises: Array<any>;
 	export let exercise: any;
 
 	let queryPhrase = '';
 </script>
 
-<dialog id="exercise_type_name_dialog" open={dialogOpened}>
+<dialog id="exercise_type_name_dialog" open={dialogOpened[index]}>
 	<div class="dialog-content-container">
 		<input bind:value={queryPhrase} placeholder="Search" />
 		<div class="types-container">
 			{#if exercises}
-				{#each exercises as exercise_types}
+				{#each exercises.filter( (exercise_type) => exercise_type.name.includes(queryPhrase) ) as exercise_types}
 					<!-- svelte-ignore a11y-click-events-have-key-events -->
 					<!-- svelte-ignore a11y-no-static-element-interactions -->
 					<div
 						on:click={() => {
 							exercise.exercise_type_name = exercise_types.name;
 							console.log(exercise.exercise_type_name);
-							dialogOpened = false;
+							dialogOpened[index] = false;
 						}}
 					>
 						{exercise_types.name}
@@ -34,6 +35,8 @@
 		background-color: var(--surface-1);
 		z-index: 10;
 		width: 50%;
+		top: 50%;
+		max-height: 50%;
 		@media (--md-n-below) {
 			width: 90%;
 		}
