@@ -30,11 +30,13 @@
 	let weeks: Array<App.Week> = [
 		{
 			order: 1,
+			id: null,
 			Days: [
 				{
 					name: '',
 					notes: '',
 					order: 1,
+					id: null,
 					Exercise_Detail: [
 						{
 							order: 1,
@@ -166,6 +168,7 @@
 											name: '',
 											notes: '',
 											order: week.Days.length + 1,
+											id: null,
 											Exercise_Detail: [
 												{
 													order: 1,
@@ -191,11 +194,13 @@
 									...weeks,
 									{
 										order: weeks.length + 1,
+										id: null,
 										Days: [
 											{
 												order: 1,
 												name: '',
 												notes: '',
+												id: null,
 												Exercise_Detail: [
 													{
 														order: 1,

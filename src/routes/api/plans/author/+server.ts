@@ -1,7 +1,7 @@
 import { getPlansAuthor } from '$lib/query/get.js';
-import { saveThePlan } from '$lib/query/post.js';
 import { error, json } from '@sveltejs/kit';
 import type { PostgrestMaybeSingleResponse } from '@supabase/supabase-js';
+import { updateThePlan } from '$lib/query/update.js';
 
 type PlansPostResponse = {
 	success: boolean;
@@ -21,9 +21,9 @@ export type PlansPostRequest = {
 	periodization: string;
 };
 export async function POST({ request, locals: { supabase } }) {
-	const { weeks, planName, custom, periodization } = await request.json();
+	const { weeks, planName, custom, periodization, planId } = await request.json();
 	const response: PlansPostResponse = { success: true, reason: '' };
-	await saveThePlan(weeks, planName, supabase, custom, periodization).catch((reason) => {
+	await updateThePlan(weeks, planName, supabase, custom, periodization, planId).catch((reason) => {
 		response.success = false;
 		response.reason = reason.message;
 	});

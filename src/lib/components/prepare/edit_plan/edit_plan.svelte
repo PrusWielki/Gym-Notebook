@@ -27,6 +27,7 @@
 			await response.json().then((result) => (plans = result.data.data));
 		});
 	}
+	$: console.log(plan);
 
 	// TODO
 	// 3. Create endpoint to update a plan
