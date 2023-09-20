@@ -1,6 +1,9 @@
 <script lang="ts">
 	import { browser } from '$app/environment';
 	import type { GetPlansResponse } from '../../../../routes/api/plans/[planId]/+server';
+	import TrainingDayInput from '$lib/components/training_day/training_day_input.svelte';
+
+	export let exercises: Array<{ name: string; id: number }> | null;
 
 	let plans: Array<{ id: number; name: string }> | null;
 
@@ -13,7 +16,7 @@
 		if (event.target)
 			await fetch(`/api/plans/${(event.target as HTMLInputElement).value}`, { method: 'GET' }).then(
 				async (response) => {
-					await response.json().then((result) => (plan = result.data));
+					await response.json().then((result) => (plan = result));
 				}
 			);
 		chosenPlanId = +(event.target as HTMLInputElement).value;
@@ -26,7 +29,6 @@
 	}
 
 	// TODO
-	// 2. Collect new data
 	// 3. Create endpoint to update a plan
 	//
 </script>
@@ -40,6 +42,14 @@
 				<option value={plan.id}>{plan.name}</option>
 			{/each}
 		</select>
+	{/if}
+	{#if plan?.data}
+		{#each plan.data[0].Weeks as week}
+			<h4>Week {week.order}</h4>
+			{#each week.Days as day}
+				<TrainingDayInput bind:day {exercises} />
+			{/each}
+		{/each}
 	{/if}
 </div>
 
