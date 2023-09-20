@@ -1,7 +1,7 @@
 <script lang="ts">
 	import TrainingDayInput from '$lib/components/training_day/training_day_input.svelte';
 	import TrainingDayShow from '$lib/components/training_day/training_day_show.svelte';
-
+	import EditPlan from '$lib/components/prepare/edit_plan/edit_plan.svelte';
 	import type { PageData } from './$types';
 	import type { GetPlansResponse } from '../../api/plans/[planId]/+server';
 	import notificationMessage from '$lib/store/notifications';
@@ -23,7 +23,7 @@
 		requestState = 'Done';
 	};
 
-	let checked = true;
+	let checked: 'New' | 'Edit' | 'Existing' = 'Existing';
 	let planName: string;
 	let periodization: string;
 	let requestState: 'Saving' | 'Loading' | 'Done';
@@ -70,23 +70,27 @@
 						type="radio"
 						name="tab-input"
 						bind:group={checked}
-						value={true}
+						value="Existing"
 						class="tab-input"
 					/>
 					<div class="tab-box">Existing Plan</div>
 				</label>
 				<label class="tab">
+					<input type="radio" name="tab-input" class="tab-input" bind:group={checked} value="New" />
+					<div class="tab-box">New Plan</div>
+				</label>
+				<label class="tab">
 					<input
 						type="radio"
 						name="tab-input"
-						class="tab-input"
 						bind:group={checked}
-						value={false}
+						value="Edit"
+						class="tab-input"
 					/>
-					<div class="tab-box">New Plan</div>
+					<div class="tab-box">Edit Plan</div>
 				</label>
 			</div>
-			<div class={` ${!checked ? 'hidden' : 'choose-plan-container'} `}>
+			<div class={` ${checked === 'Existing' ? 'choose-plan-container' : ' hidden'} `}>
 				{#if data.plans.data}
 					<h4>Choose an exisitng plan:</h4>
 					<select on:change={handleSelectChange}>
@@ -122,7 +126,7 @@
 				{/if}
 			</div>
 
-			<form class={`${checked ? 'hidden' : ''}`}>
+			<form class={`${checked === 'New' ? '' : 'hidden'}`}>
 				<h4>Or create a new plan:</h4>
 				<input required bind:value={planName} type="text" placeholder="Plan Name" />
 
@@ -255,6 +259,9 @@
 					{/if}</button
 				>
 			</form>
+			<div class={`${checked === 'Edit' ? '' : 'hidden'}`}>
+				<EditPlan />
+			</div>
 		</div>
 	</div>
 </div>
