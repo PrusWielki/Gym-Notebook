@@ -1,4 +1,6 @@
 <script lang="ts">
+	import ExerciseModal from '../exercise_modal/exercise_modal.svelte';
+
 	export let exercises: Array<{ name: string; id: number }> | null;
 	export let day: App.TrainingDay;
 	let queryPhrase = '';
@@ -16,27 +18,7 @@
 		</div>
 		{#each day.Exercise_Detail as exercise, exercise_index}
 			<div class="day-row-input">
-				<dialog id="exercise_type_name_dialog" open={dialogOpened[exercise_index]}>
-					<div class="dialog-content-container">
-						<input bind:value={queryPhrase} placeholder="Search" />
-						<div class="types-container">
-							{#if exercises}
-								{#each exercises as exercise_types}
-									<!-- svelte-ignore a11y-click-events-have-key-events -->
-									<!-- svelte-ignore a11y-no-static-element-interactions -->
-									<div
-										on:click={() => {
-											exercise.exercise_type_name = exercise_types.name;
-											dialogOpened[exercise_index] = false;
-										}}
-									>
-										{exercise_types.name}
-									</div>
-								{/each}
-							{/if}
-						</div>
-					</div>
-				</dialog>
+				<ExerciseModal dialogOpened={dialogOpened[exercise_index]} bind:exercise {exercises} />
 				<input
 					on:click|preventDefault={() => (dialogOpened[exercise_index] = true)}
 					value={exercise.exercise_type_name ? exercise.exercise_type_name : 'Exercise'}
@@ -120,25 +102,6 @@
 {/if}
 
 <style lang="postcss">
-	dialog {
-		background-color: var(--surface-1);
-		z-index: 10;
-		width: 50%;
-		@media (--md-n-below) {
-			width: 90%;
-		}
-	}
-	.types-container {
-		display: flex;
-		flex-direction: column;
-		gap: var(--size-2);
-		overflow-y: auto;
-	}
-	.dialog-content-container {
-		display: flex;
-		flex-direction: column;
-		gap: var(--size-4);
-	}
 	.day-container {
 		display: flex;
 		flex-direction: column;
