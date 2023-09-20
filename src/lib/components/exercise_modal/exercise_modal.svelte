@@ -9,7 +9,7 @@
 
 <dialog id="exercise_type_name_dialog" open={dialogOpened[index]}>
 	<div class="dialog-content-container">
-		<input bind:value={queryPhrase} placeholder="Search" autofocus />
+		<input bind:value={queryPhrase} placeholder="Search" />
 		<div class="types-container">
 			{#if exercises}
 				{#each exercises.filter((exercise_type) => exercise_type.name
