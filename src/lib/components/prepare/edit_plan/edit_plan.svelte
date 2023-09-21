@@ -32,7 +32,8 @@
 	}
 
 	// TODO
-	// 1. Fill this component to be able to add weeks etc
+	// 1. Upsert doesnt work as I thought, might need to do ifs and then insert or update
+	// 2. styles
 </script>
 
 <div class="edit-plan-container">
