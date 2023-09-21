@@ -3,7 +3,7 @@
 	import type { GetPlansResponse } from '../../../../routes/api/plans/[planId]/+server';
 	import { showNotification } from '$lib/utils/show-notification';
 	import notificationMessage from '$lib/store/notifications';
-	import type { PageData } from '../../../../routes/$types';
+
 	export let plans: Array<{ id: number; name: string }> | null;
 
 	let requestState: 'Loading' | 'Done' | 'Saving' = 'Done';
@@ -59,3 +59,41 @@
 		{/if}</button
 	>
 {/if}
+
+<style lang="postcss">
+	h4 {
+		@media (--md-n-below) {
+			font-size: var(--font-size-3);
+		}
+	}
+	select {
+		padding: var(--size-fluid-1) var(--size-fluid-2);
+		font-size: var(--font-size-fluid-1);
+		background-color: var(--button-2);
+		color: var(--text-1);
+		@media (--md-n-above) {
+			max-width: 50%;
+		}
+	}
+
+	button {
+		background-color: var(--button-1);
+		border-radius: var(--radius-1);
+		padding: var(--size-fluid-1) var(--size-fluid-2);
+		transition: background-color 0.5s var(--ease-3);
+		font-size: var(--font-size-fluid-1);
+		color: var(--text-1);
+		font-weight: var(--font-weight-7);
+
+		&.accent {
+			background-color: var(--accent);
+		}
+		&:hover {
+			background-color: var(--button-2);
+		}
+	}
+	.loading {
+		font-size: var(--font-size-fluid-2);
+		padding: 0 var(--size-fluid-6);
+	}
+</style>
