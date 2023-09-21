@@ -55,7 +55,7 @@
 			</div>
 
 			<div class={`${checked === 'Edit' ? '' : 'hidden'}`}>
-				<EditPlan exercises={data.exercises.data} />
+				<EditPlan periodizations={data.periodizations.data} exercises={data.exercises.data} />
 			</div>
 		</div>
 	</div>
