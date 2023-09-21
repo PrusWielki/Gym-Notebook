@@ -14,16 +14,14 @@ export const updateThePlan = async (
 
 	const { error, data: result } = await supabase
 		.from('Plans')
-		.update({ name: planName, custom, periodization })
-		.eq('id', planId)
+		.upsert({ id: planId, name: planName, custom, periodization })
 		.select();
 	if (error) throw new Error('Query Error');
 	weeks.forEach(async (week) => {
 		if (week) {
 			const { error, data: weekId } = await supabase
 				.from('Weeks')
-				.update({ order: week.order, plan_id: result[0].id })
-				.eq('id', week.id)
+				.upsert({ id: week.id, order: week.order, plan_id: result[0].id })
 				.select();
 
 			if (error) throw new Error('Query Error');
@@ -32,8 +30,13 @@ export const updateThePlan = async (
 				if (day) {
 					const { error, data: dayId } = await supabase
 						.from('Days')
-						.update({ name: day.name, order: day.order, notes: day.notes, week_id: weekId[0].id })
-						.eq('id', day.id)
+						.update({
+							id: day.id,
+							name: day.name,
+							order: day.order,
+							notes: day.notes,
+							week_id: weekId[0].id
+						})
 						.select();
 					if (error) throw new Error('Query Error');
 
@@ -44,17 +47,15 @@ export const updateThePlan = async (
 							exercise.target_reps &&
 							exercise.target_rpe
 						) {
-							const { error } = await supabase
-								.from('Exercise_Detail')
-								.update({
-									exercise_type_name: exercise.exercise_type_name,
-									order: exercise.order,
-									sets: exercise.sets,
-									target_reps: exercise.target_reps,
-									target_rpe: exercise.target_rpe,
-									day_id: dayId[0].id
-								})
-								.eq('id', exercise.id);
+							const { error } = await supabase.from('Exercise_Detail').upsert({
+								id: exercise.id,
+								exercise_type_name: exercise.exercise_type_name,
+								order: exercise.order,
+								sets: exercise.sets,
+								target_reps: exercise.target_reps,
+								target_rpe: exercise.target_rpe,
+								day_id: dayId[0].id
+							});
 							if (error) throw new Error('Query Error');
 						}
 					});

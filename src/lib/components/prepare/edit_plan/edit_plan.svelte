@@ -48,6 +48,32 @@
 			{#each week.Days as day}
 				<TrainingDayInput bind:day {exercises} />
 			{/each}
+			<button
+				on:click|preventDefault={() => {
+					if (week?.Days)
+						week.Days = [
+							...week.Days,
+
+							{
+								name: '',
+								notes: '',
+								order: week.Days.length + 1,
+								id: null,
+								Exercise_Detail: [
+									{
+										order: 1,
+										sets: null,
+										target_reps: null,
+										target_rpe: null,
+										exercise_type_name: null,
+										Exercise_Detail_Sets: null,
+										id: null
+									}
+								]
+							}
+						];
+				}}>Add a day</button
+			>
 		{/each}
 	{/if}
 </div>
