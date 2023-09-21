@@ -25,7 +25,7 @@ export async function POST({ request, locals: { supabase } }) {
 	const response: PlansPostResponse = { success: true, reason: '' };
 	await updateThePlan(weeks, planName, supabase, custom, periodization, planId).catch((reason) => {
 		response.success = false;
-		response.reason = reason.message;
+		response.reason = reason;
 	});
 	if (!response.success) throw error(400, response.reason);
 	else return json({ code: 200 });
@@ -35,10 +35,12 @@ export async function GET({ locals: { supabase, getSession } }) {
 	const session = await getSession();
 	await getPlansAuthor(supabase, session)
 		.catch((reason) => {
+			console.log(reason);
 			response.success = false;
 			response.reason = reason;
 		})
 		.then((data) => (response.data = data));
+
 	if (!response.success) return json({ code: 400, response });
 
 	return json({ code: 200, data: response.data });

@@ -33,7 +33,7 @@
 		box-shadow: var(--shadow-1);
 		gap: var(--size-fluid-2);
 		max-width: var(--size-md);
-		width: 100%;
+		width: var(--size-md);
 		h5 {
 			font-size: var(--font-size-fluid-1);
 			align-self: center;

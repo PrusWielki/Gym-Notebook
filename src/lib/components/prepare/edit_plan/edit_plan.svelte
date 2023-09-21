@@ -166,17 +166,16 @@
 </div>
 
 <style lang="postcss">
-	.edit-plan-container {
-		display: flex;
-		flex-direction: column;
-		gap: var(--size-4);
-		justify-content: center;
-		align-items: center;
-	}
 	h4 {
 		@media (--md-n-below) {
 			font-size: var(--font-size-3);
 		}
+	}
+	.edit-plan-container {
+		display: flex;
+		flex-direction: column;
+		gap: var(--size-4);
+		align-items: center;
 	}
 	select {
 		padding: var(--size-fluid-1) var(--size-fluid-2);
@@ -185,6 +184,31 @@
 		color: var(--text-1);
 		@media (--md-n-above) {
 			max-width: 50%;
+		}
+	}
+
+	form {
+		display: flex;
+		flex-direction: column;
+		align-items: center;
+		width: 100%;
+		gap: var(--size-4);
+	}
+
+	button {
+		background-color: var(--button-1);
+		border-radius: var(--radius-1);
+		padding: var(--size-fluid-1) var(--size-fluid-2);
+		transition: background-color 0.5s var(--ease-3);
+		font-size: var(--font-size-fluid-1);
+		color: var(--text-1);
+		font-weight: var(--font-weight-7);
+
+		&.accent {
+			background-color: var(--accent);
+		}
+		&:hover {
+			background-color: var(--button-2);
 		}
 	}
 </style>
