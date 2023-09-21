@@ -1,7 +1,7 @@
 <script lang="ts">
 	import { browser } from '$app/environment';
-	import type { GetPlansResponse } from '../../../../routes/api/plans/[planId]/+server';
 	import TrainingDayInput from '$lib/components/training_day/training_day_input.svelte';
+	import type { UpdatePlan } from './types';
 
 	export let exercises: Array<{ name: string; id: number }> | null;
 
@@ -9,7 +9,7 @@
 
 	let requestState: 'Loading' | 'Done';
 	let chosenPlanId: number;
-	let plan: GetPlansResponse;
+	let plan: UpdatePlan;
 
 	const handleSelectChange = async (event: Event) => {
 		requestState = 'Loading';
