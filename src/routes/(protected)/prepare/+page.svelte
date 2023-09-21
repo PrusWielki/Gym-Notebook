@@ -26,7 +26,6 @@
 							await fetch('api/plans', { method: 'GET' }).then(async (response) => {
 								await response.json().then((result) => {
 									data.plans = result.data;
-									console.log(data.plans);
 								});
 							});
 						}}

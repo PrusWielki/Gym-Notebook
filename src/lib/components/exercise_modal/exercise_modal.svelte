@@ -27,7 +27,6 @@
 					<button
 						on:click|preventDefault={() => {
 							exercise.exercise_type_name = exercise_types.name;
-							console.log(exercise.exercise_type_name);
 
 							dialogOpened[index] = false;
 							queryPhrase = '';

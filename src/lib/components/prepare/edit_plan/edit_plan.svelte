@@ -27,11 +27,9 @@
 			await response.json().then((result) => (plans = result.data.data));
 		});
 	}
-	$: console.log(plan);
 
 	// TODO
-	// 1. Extract new and exisitng components
-	// 2. Fill this component to be able to add weeks etc
+	// 1. Fill this component to be able to add weeks etc
 </script>
 
 <div class="edit-plan-container">
