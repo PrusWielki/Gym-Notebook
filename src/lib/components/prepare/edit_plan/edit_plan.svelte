@@ -135,9 +135,10 @@
 							method: 'POST',
 							body: JSON.stringify({
 								weeks: plan.data[0].Weeks,
-								planName: planName,
+								planName: plan.data[0].name,
 								custom: isCustom,
-								periodization: chosenPeriodization
+								periodization: chosenPeriodization,
+								planId: plan.data[0].id
 							})
 						})
 							.then((response) => {

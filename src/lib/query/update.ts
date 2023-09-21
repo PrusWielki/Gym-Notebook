@@ -1,5 +1,6 @@
 import type { SupabaseClient } from '@supabase/supabase-js';
 import { validateData } from './validators';
+import { error } from '@sveltejs/kit';
 
 export const updateThePlan = async (
 	weeks: Array<App.Week>,
@@ -12,23 +13,23 @@ export const updateThePlan = async (
 	const validationResult = validateData(weeks, planName, periodization, custom);
 	if (validationResult.result !== true) throw new Error(validationResult.message);
 
-	const { error, data: result } = await supabase
+	const { error: upsertError, data: result } = await supabase
 		.from('Plans')
 		.upsert({ id: planId, name: planName, custom, periodization })
 		.select();
-	if (error) throw new Error('Query Error');
+	if (upsertError) throw error(400, upsertError.details);
 	weeks.forEach(async (week) => {
 		if (week) {
-			const { error, data: weekId } = await supabase
+			const { error: upsertError, data: weekId } = await supabase
 				.from('Weeks')
 				.upsert({ id: week.id, order: week.order, plan_id: result[0].id })
 				.select();
 
-			if (error) throw new Error('Query Error');
+			if (upsertError) throw error(400, upsertError.details);
 
 			week.Days.forEach(async (day) => {
 				if (day) {
-					const { error, data: dayId } = await supabase
+					const { error: upsertError, data: dayId } = await supabase
 						.from('Days')
 						.update({
 							id: day.id,
@@ -38,7 +39,7 @@ export const updateThePlan = async (
 							week_id: weekId[0].id
 						})
 						.select();
-					if (error) throw new Error('Query Error');
+					if (upsertError) throw error(400, upsertError.details);
 
 					day.Exercise_Detail.forEach(async (exercise) => {
 						if (
@@ -47,7 +48,7 @@ export const updateThePlan = async (
 							exercise.target_reps &&
 							exercise.target_rpe
 						) {
-							const { error } = await supabase.from('Exercise_Detail').upsert({
+							const { error: upsertError } = await supabase.from('Exercise_Detail').upsert({
 								id: exercise.id,
 								exercise_type_name: exercise.exercise_type_name,
 								order: exercise.order,
@@ -56,7 +57,7 @@ export const updateThePlan = async (
 								target_rpe: exercise.target_rpe,
 								day_id: dayId[0].id
 							});
-							if (error) throw new Error('Query Error');
+							if (upsertError) throw error(400, upsertError.details);
 						}
 					});
 				}
