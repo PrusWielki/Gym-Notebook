@@ -156,6 +156,7 @@
 			})
 				.then((response) => {
 					if (response.ok) {
+						showNotification('Plan Saved', 2000, notificationMessage);
 						return response.json();
 					}
 					throw new Error();
