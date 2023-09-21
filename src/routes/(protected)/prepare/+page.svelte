@@ -6,22 +6,9 @@
 	import type { GetPlansResponse } from '../../api/plans/[planId]/+server';
 	import notificationMessage from '$lib/store/notifications';
 	import { showNotification } from '$lib/utils/show-notification';
+	import ExistingPlan from '$lib/components/prepare/existing_plan/existing_plan.svelte';
 
 	export let data: PageData;
-	let premadePlan: GetPlansResponse;
-	let chosenPlanId: number = -1;
-
-	const handleSelectChange = async (event: Event) => {
-		requestState = 'Loading';
-		if (event.target)
-			await fetch(`/api/plans/${(event.target as HTMLInputElement).value}`, { method: 'GET' }).then(
-				async (response) => {
-					await response.json().then((result) => (premadePlan = result));
-				}
-			);
-		chosenPlanId = +(event.target as HTMLInputElement).value;
-		requestState = 'Done';
-	};
 
 	let checked: 'New' | 'Edit' | 'Existing' = 'Existing';
 	let planName: string;
@@ -93,39 +80,7 @@
 				</label>
 			</div>
 			<div class={` ${checked === 'Existing' ? 'choose-plan-container' : ' hidden'} `}>
-				{#if data.plans.data}
-					<h4>Choose an exisitng plan:</h4>
-					<select on:change={handleSelectChange}>
-						<option value="" disabled selected>Plan</option>
-						{#each data.plans.data as plan}
-							<option value={plan.id}>{plan.name}</option>
-						{/each}
-					</select>
-				{/if}
-				{#if requestState === 'Loading'}
-					<h3 class="loading">Loading...</h3>
-				{:else if premadePlan?.data}
-					{#each premadePlan.data[0].Weeks as week}
-						<h4>Week {week.order}</h4>
-						{#each week.Days as day}
-							<TrainingDayShow {day} />
-						{/each}
-					{/each}
-					<button
-						class="accent"
-						on:click={async () => {
-							const { error: plansUsersError } = await data.supabase
-								.from('Plans_Users')
-								.insert({ plan_id: chosenPlanId });
-							if (!plansUsersError) showNotification('Program chosen', 2000, notificationMessage);
-						}}
-						>{#if requestState === 'Saving'}
-							Saving...
-						{:else}
-							Save the plan
-						{/if}</button
-					>
-				{/if}
+				<ExistingPlan plans={data.plans.data} />
 			</div>
 
 			<form class={`${checked === 'New' ? '' : 'hidden'}`}>
