@@ -32,8 +32,7 @@
 	}
 
 	// TODO
-	// 1. Upsert doesnt work as I thought, might need to do ifs and then insert or update
-	// 2. styles
+	// 1. Add deleting. Maybe compare old and new plan filter the old plan and delete each element.
 </script>
 
 <div class="edit-plan-container">

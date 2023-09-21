@@ -5,7 +5,7 @@ export type ExerciseDetailPostRequest = {
 };
 export async function POST({ request, locals: { supabase } }) {
 	const { exerciseDetailSets, plansUsersId, newCurrentWeek, newCurrentDay } = await request.json();
-
+	console.log(exerciseDetailSets);
 	const { error: insertError } = await supabase
 		.from('Exercise_Detail_Sets')
 		.insert(exerciseDetailSets);
