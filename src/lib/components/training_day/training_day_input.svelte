@@ -3,6 +3,8 @@
 
 	export let exercises: Array<{ name: string; id: number }> | null;
 	export let day: App.TrainingDay;
+	export let toRemove: Array<{ type: 'Day' | 'Week' | 'Exercise_Detail'; id: number }> | null =
+		null;
 	const dialogOpened: Array<boolean> = new Array(day.Exercise_Detail.length).fill(false);
 </script>
 
@@ -30,12 +32,16 @@
 				<!-- svelte-ignore a11y-no-static-element-interactions -->
 				<svg
 					on:click={() => {
-						day.Exercise_Detail.splice(exercise_index, 1);
+						let removed = day.Exercise_Detail.splice(exercise_index, 1);
 						day = day;
+						if (removed[0].id && toRemove !== null)
+							toRemove.push({ type: 'Exercise_Detail', id: +removed[0].id });
 					}}
 					on:keydown={() => {
-						day.Exercise_Detail.splice(exercise_index, 1);
+						let removed = day.Exercise_Detail.splice(exercise_index, 1);
 						day = day;
+						if (removed[0].id && toRemove !== null)
+							toRemove.push({ type: 'Exercise_Detail', id: +removed[0].id });
 					}}
 					xmlns="http://www.w3.org/2000/svg"
 					fill="currentColor"

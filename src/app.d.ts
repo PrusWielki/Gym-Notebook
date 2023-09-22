@@ -14,6 +14,7 @@ declare global {
 			name: string | null;
 			notes: string | null;
 			order: number;
+			id: number | null;
 			Exercise_Detail: {
 				order: number;
 				id: string | null;
@@ -35,6 +36,7 @@ declare global {
 		type Week = {
 			order: number;
 			Days: Array<TrainingDay>;
+			id: number | null;
 		} | null;
 
 		type Plans = Array<{

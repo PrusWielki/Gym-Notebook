@@ -27,7 +27,6 @@
 					<button
 						on:click|preventDefault={() => {
 							exercise.exercise_type_name = exercise_types.name;
-							console.log(exercise.exercise_type_name);
 
 							dialogOpened[index] = false;
 							queryPhrase = '';
@@ -47,10 +46,11 @@
 		background-color: var(--surface-1);
 		z-index: 10;
 		width: 50%;
-		top: 50%;
 		max-height: 50%;
 		@media (--md-n-below) {
 			width: 90%;
+			top: 5%;
+			margin-top: 0;
 		}
 	}
 	.types-container {
