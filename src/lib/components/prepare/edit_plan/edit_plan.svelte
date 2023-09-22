@@ -8,7 +8,7 @@
 	export let periodizations: Array<{ type: string }> | null;
 
 	let plans: Array<{ id: number; name: string }> | null;
-	let periodization: string;
+	let periodization: string = '';
 	let requestState: 'Saving' | 'Loading' | 'Done';
 	let chosenPlanId: number;
 	let plan: UpdatePlan;
