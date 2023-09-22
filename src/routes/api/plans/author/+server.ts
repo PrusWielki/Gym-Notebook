@@ -35,7 +35,6 @@ export async function GET({ locals: { supabase, getSession } }) {
 	const session = await getSession();
 	await getPlansAuthor(supabase, session)
 		.catch((reason) => {
-			console.log(reason);
 			response.success = false;
 			response.reason = reason;
 		})

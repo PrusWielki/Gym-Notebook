@@ -12,7 +12,6 @@
 	let requestState: 'Saving' | 'Loading' | 'Done';
 	let chosenPlanId: number;
 	let plan: UpdatePlan;
-	let planName: string;
 
 	const handleSelectChange = async (event: Event) => {
 		requestState = 'Loading';
