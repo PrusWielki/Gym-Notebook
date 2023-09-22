@@ -3,8 +3,6 @@
 	import type { PageData } from './$types';
 	import ExistingPlan from '$lib/components/prepare/existing_plan/existing_plan.svelte';
 	import NewPlan from '$lib/components/prepare/new_plan/new_plan.svelte';
-	import { parse } from 'svelte/compiler';
-	import { json } from '@sveltejs/kit';
 
 	export let data: PageData;
 	let checked: 'New' | 'Edit' | 'Existing' = 'Existing';
@@ -43,6 +41,13 @@
 						bind:group={checked}
 						value="Edit"
 						class="tab-input"
+						on:change={async () => {
+							await fetch('api/plans', { method: 'GET' }).then(async (response) => {
+								await response.json().then((result) => {
+									data.plans = result.data;
+								});
+							});
+						}}
 					/>
 					<div class="tab-box">Edit Plan</div>
 				</label>
