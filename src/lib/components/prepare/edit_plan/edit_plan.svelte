@@ -12,13 +12,20 @@
 	let requestState: 'Saving' | 'Loading' | 'Done';
 	let chosenPlanId: number;
 	let plan: UpdatePlan;
+	let originalPlan: UpdatePlan;
+	let dialog: HTMLDialogElement;
+	let deleteInput = '';
+	const allowDelete = false;
 
 	const handleSelectChange = async (event: Event) => {
 		requestState = 'Loading';
 		if (event.target)
 			await fetch(`/api/plans/${(event.target as HTMLInputElement).value}`, { method: 'GET' }).then(
 				async (response) => {
-					await response.json().then((result) => (plan = result));
+					await response.json().then((result) => {
+						plan = result;
+						originalPlan = result;
+					});
 				}
 			);
 		chosenPlanId = +(event.target as HTMLInputElement).value;
@@ -159,11 +166,52 @@
 					Save the plan
 				{/if}</button
 			>
+			{#if allowDelete}
+				<button
+					class="delete-button"
+					on:click={() => {
+						dialog.showModal();
+					}}>Delete</button
+				>
+				<dialog bind:this={dialog}>
+					<div class="modal-container">
+						<h4>Type Delete below</h4>
+						<input bind:value={deleteInput} />
+						<button class="delete-button" disabled={deleteInput !== 'Delete'}> Delete </button>
+						<button
+							class="accent"
+							on:click={() => {
+								dialog.close();
+							}}
+						>
+							Cancel
+						</button>
+					</div>
+				</dialog>
+			{/if}
 		</form>
 	{/if}
 </div>
 
 <style lang="postcss">
+	.delete-button {
+		background-color: var(--red-8);
+		&:disabled {
+			background-color: var(--button-1);
+		}
+	}
+	dialog {
+		@media (--md-n-below) {
+			top: 10%;
+			margin-top: 0;
+		}
+	}
+	.modal-container {
+		display: flex;
+		flex-direction: column;
+		gap: var(--size-4);
+		padding: var(--size-2);
+	}
 	h4 {
 		@media (--md-n-below) {
 			font-size: var(--font-size-3);
