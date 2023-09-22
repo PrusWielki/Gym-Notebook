@@ -5,6 +5,7 @@ export interface Database {
 		Tables: {
 			Days: {
 				Row: {
+					created_by: string;
 					id: number;
 					name: string;
 					notes: string | null;
@@ -12,6 +13,7 @@ export interface Database {
 					week_id: number;
 				};
 				Insert: {
+					created_by?: string;
 					id?: number;
 					name: string;
 					notes?: string | null;
@@ -19,6 +21,7 @@ export interface Database {
 					week_id: number;
 				};
 				Update: {
+					created_by?: string;
 					id?: number;
 					name?: string;
 					notes?: string | null;
@@ -26,6 +29,12 @@ export interface Database {
 					week_id?: number;
 				};
 				Relationships: [
+					{
+						foreignKeyName: 'Days_created_by_fkey';
+						columns: ['created_by'];
+						referencedRelation: 'users';
+						referencedColumns: ['id'];
+					},
 					{
 						foreignKeyName: 'Days_week_id_fkey';
 						columns: ['week_id'];
@@ -36,6 +45,7 @@ export interface Database {
 			};
 			Exercise_Detail: {
 				Row: {
+					created_by: string | null;
 					day_id: number;
 					exercise_type_name: string;
 					id: number;
@@ -45,6 +55,7 @@ export interface Database {
 					target_rpe: number;
 				};
 				Insert: {
+					created_by?: string | null;
 					day_id: number;
 					exercise_type_name: string;
 					id?: number;
@@ -54,6 +65,7 @@ export interface Database {
 					target_rpe: number;
 				};
 				Update: {
+					created_by?: string | null;
 					day_id?: number;
 					exercise_type_name?: string;
 					id?: number;
@@ -63,6 +75,12 @@ export interface Database {
 					target_rpe?: number;
 				};
 				Relationships: [
+					{
+						foreignKeyName: 'Exercise_Detail_created_by_fkey';
+						columns: ['created_by'];
+						referencedRelation: 'users';
+						referencedColumns: ['id'];
+					},
 					{
 						foreignKeyName: 'Exercise_Detail_day_id_fkey';
 						columns: ['day_id'];
@@ -80,9 +98,9 @@ export interface Database {
 			Exercise_Detail_Sets: {
 				Row: {
 					creation_date: string | null;
-					exercise_detail_id: number;
+					exercise_detail_id: number | null;
 					id: number;
-					plans_users_id: number;
+					plans_users_id: number | null;
 					reps: number;
 					rpe: number;
 					set: number;
@@ -93,9 +111,9 @@ export interface Database {
 				};
 				Insert: {
 					creation_date?: string | null;
-					exercise_detail_id: number;
+					exercise_detail_id?: number | null;
 					id?: number;
-					plans_users_id: number;
+					plans_users_id?: number | null;
 					reps: number;
 					rpe: number;
 					set: number;
@@ -106,9 +124,9 @@ export interface Database {
 				};
 				Update: {
 					creation_date?: string | null;
-					exercise_detail_id?: number;
+					exercise_detail_id?: number | null;
 					id?: number;
-					plans_users_id?: number;
+					plans_users_id?: number | null;
 					reps?: number;
 					rpe?: number;
 					set?: number;
@@ -173,24 +191,33 @@ export interface Database {
 			};
 			Plans: {
 				Row: {
+					created_by: string | null;
 					custom: boolean;
 					id: number;
 					name: string;
 					periodization: string;
 				};
 				Insert: {
+					created_by?: string | null;
 					custom: boolean;
 					id?: number;
 					name: string;
 					periodization: string;
 				};
 				Update: {
+					created_by?: string | null;
 					custom?: boolean;
 					id?: number;
 					name?: string;
 					periodization?: string;
 				};
 				Relationships: [
+					{
+						foreignKeyName: 'Plans_created_by_fkey';
+						columns: ['created_by'];
+						referencedRelation: 'users';
+						referencedColumns: ['id'];
+					},
 					{
 						foreignKeyName: 'Plans_periodization_fkey';
 						columns: ['periodization'];
@@ -244,21 +271,30 @@ export interface Database {
 			};
 			Weeks: {
 				Row: {
+					created_by: string;
 					id: number;
 					order: number;
 					plan_id: number;
 				};
 				Insert: {
+					created_by?: string;
 					id?: number;
 					order: number;
 					plan_id: number;
 				};
 				Update: {
+					created_by?: string;
 					id?: number;
 					order?: number;
 					plan_id?: number;
 				};
 				Relationships: [
+					{
+						foreignKeyName: 'Weeks_created_by_fkey';
+						columns: ['created_by'];
+						referencedRelation: 'users';
+						referencedColumns: ['id'];
+					},
 					{
 						foreignKeyName: 'Weeks_plan_id_fkey';
 						columns: ['plan_id'];
