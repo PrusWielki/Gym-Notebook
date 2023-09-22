@@ -24,7 +24,7 @@
 				async (response) => {
 					await response.json().then((result) => {
 						plan = result;
-						originalPlan = result;
+						originalPlan = JSON.parse(JSON.stringify(result));
 					});
 				}
 			);
@@ -35,6 +35,16 @@
 		fetch(`/api/plans/author`, { method: 'GET' }).then(async (response) => {
 			await response.json().then((result) => (plans = result.data.data));
 		});
+	}
+	$: {
+		plan?.data &&
+			plan.data[0].Weeks.forEach((week) => {
+				if (week?.Days) week.Days = week?.Days.filter((day) => day.Exercise_Detail.length > 0);
+			});
+		if (plan?.data)
+			plan.data[0].Weeks = plan.data[0].Weeks.filter((week) => {
+				if (week?.Days) return week?.Days.length > 0;
+			});
 	}
 
 	// TODO
@@ -144,7 +154,8 @@
 								planName: plan.data[0].name,
 								custom: isCustom,
 								periodization: chosenPeriodization,
-								planId: plan.data[0].id
+								planId: plan.data[0].id,
+								toRemove: originalPlan.data && originalPlan.data[0]
 							})
 						})
 							.then((response) => {

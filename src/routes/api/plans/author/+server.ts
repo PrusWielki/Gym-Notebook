@@ -21,12 +21,13 @@ export type PlansPostRequest = {
 	periodization: string;
 };
 export async function POST({ request, locals: { supabase } }) {
-	const { weeks, planName, custom, periodization, planId } = await request.json();
+	const { weeks, planName, custom, periodization, planId, toRemove } = await request.json();
 	const response: PlansPostResponse = { success: true, reason: '' };
 	await updateThePlan(weeks, planName, supabase, custom, periodization, planId).catch((reason) => {
 		response.success = false;
 		response.reason = reason;
 	});
+
 	if (!response.success) throw error(400, response.reason);
 	else return json({ code: 200 });
 }

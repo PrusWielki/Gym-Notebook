@@ -32,6 +32,7 @@
 					on:click={() => {
 						day.Exercise_Detail.splice(exercise_index, 1);
 						day = day;
+						console.log(day);
 					}}
 					on:keydown={() => {
 						day.Exercise_Detail.splice(exercise_index, 1);
