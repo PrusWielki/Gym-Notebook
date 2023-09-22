@@ -2,6 +2,7 @@ import { getPlansAuthor } from '$lib/query/get.js';
 import { error, json } from '@sveltejs/kit';
 import type { PostgrestMaybeSingleResponse } from '@supabase/supabase-js';
 import { updateThePlan } from '$lib/query/update.js';
+import { deletePlanElementsAfterUpdate } from '$lib/query/delete.js';
 
 type PlansPostResponse = {
 	success: boolean;
@@ -24,6 +25,10 @@ export async function POST({ request, locals: { supabase } }) {
 	const { weeks, planName, custom, periodization, planId, toRemove } = await request.json();
 	const response: PlansPostResponse = { success: true, reason: '' };
 	await updateThePlan(weeks, planName, supabase, custom, periodization, planId).catch((reason) => {
+		response.success = false;
+		response.reason = reason;
+	});
+	await deletePlanElementsAfterUpdate(toRemove, supabase).catch((reason) => {
 		response.success = false;
 		response.reason = reason;
 	});

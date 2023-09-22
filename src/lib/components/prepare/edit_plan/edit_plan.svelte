@@ -16,6 +16,7 @@
 	let dialog: HTMLDialogElement;
 	let deleteInput = '';
 	const allowDelete = false;
+	let toRemove: Array<{ type: 'Day' | 'Week' | 'Exercise_Detail'; id: number }> | null = [];
 
 	const handleSelectChange = async (event: Event) => {
 		requestState = 'Loading';
@@ -39,11 +40,22 @@
 	$: {
 		plan?.data &&
 			plan.data[0].Weeks.forEach((week) => {
-				if (week?.Days) week.Days = week?.Days.filter((day) => day.Exercise_Detail.length > 0);
+				if (week?.Days)
+					week.Days = week?.Days.filter((day) => {
+						if (day.Exercise_Detail.length <= 0 && day.id) {
+							toRemove?.push({ type: 'Day', id: day.id });
+							return false;
+						} else return true;
+					});
 			});
 		if (plan?.data)
 			plan.data[0].Weeks = plan.data[0].Weeks.filter((week) => {
-				if (week?.Days) return week?.Days.length > 0;
+				if (week?.Days) {
+					if (week?.Days.length <= 0 && week.id) {
+						toRemove?.push({ type: 'Week', id: week.id });
+						return false;
+					} else return true;
+				}
 			});
 	}
 
@@ -75,7 +87,7 @@
 			{#each plan.data[0].Weeks as week}
 				<h4>Week {week.order}</h4>
 				{#each week.Days as day}
-					<TrainingDayInput bind:day {exercises} />
+					<TrainingDayInput bind:day {exercises} bind:toRemove />
 				{/each}
 				<button
 					on:click|preventDefault={() => {
@@ -155,7 +167,7 @@
 								custom: isCustom,
 								periodization: chosenPeriodization,
 								planId: plan.data[0].id,
-								toRemove: originalPlan.data && originalPlan.data[0]
+								toRemove
 							})
 						})
 							.then((response) => {
