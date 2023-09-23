@@ -29,6 +29,7 @@ declare global {
 							rpe: number;
 							target_reps: number;
 							target_rpe: number;
+							weight: number;
 					  }[]
 					| null;
 			}[];

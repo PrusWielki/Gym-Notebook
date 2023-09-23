@@ -1,17 +1,17 @@
 <script lang="ts">
+	import TrainingDayBrowse from '$lib/components/training_day/training_day_browse.svelte';
+
 	export let day: App.TrainingDay;
 	export let modal: HTMLDialogElement;
 </script>
 
-{#if day && day.Exercise_Detail}
-	<dialog bind:this={modal}>
-		{#each day.Exercise_Detail as exercise}
-			{exercise.exercise_type_name}
-		{/each}
-	</dialog>
-{/if}
-
-<style lang="postcss">
-	h3 {
-	}
-</style>
+<dialog bind:this={modal}>
+	{#if day && day.Exercise_Detail}
+		<TrainingDayBrowse {day} />
+	{/if}
+	<button
+		on:click={() => {
+			modal.close();
+		}}>Close</button
+	>
+</dialog>
