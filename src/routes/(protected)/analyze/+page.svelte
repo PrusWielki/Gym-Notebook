@@ -4,6 +4,7 @@
 
 	let modal: HTMLDialogElement;
 	export let data: PageData;
+	let modalDay: App.TrainingDay;
 	let checked: 'Browse' | 'Statistics' = 'Browse';
 </script>
 
@@ -38,14 +39,17 @@
 					Loading...
 				{:then value}
 					{#if value.data}
-						<div
-							on:click={() => {
-								modal.showModal();
-							}}
-						>
-							{value.data[0].name}
-						</div>
-						<BrowseDayModal bind:modal planName={value.data[0].name} />
+						{#each value.data as plan}
+							{#each plan.Weeks as week}
+								{#each week.Days as day}
+									<button
+										on:click={() => {
+											modalDay = day;
+											modal.showModal();
+										}}
+									>
+										{day.name}
+									</button>{/each}{/each}{/each}
 					{/if}
 				{:catch error}
 					{error.message}
@@ -56,6 +60,7 @@
 		</div>
 	</div>
 </div>
+<BrowseDayModal bind:modal day={modalDay} />
 
 <style lang="postcss">
 	.analyze-container {
