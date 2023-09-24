@@ -29,6 +29,7 @@ export type UpdatePlan = {
 										rpe: number;
 										target_reps: number;
 										target_rpe: number;
+										weight: number;
 								  }[]
 								| null;
 						}[];

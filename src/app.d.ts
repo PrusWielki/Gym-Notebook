@@ -10,6 +10,7 @@ declare global {
 		interface PageData {
 			session: Session | null;
 		}
+
 		type TrainingDay = {
 			name: string | null;
 			notes: string | null;
@@ -29,6 +30,7 @@ declare global {
 							rpe: number;
 							target_reps: number;
 							target_rpe: number;
+							weight: number;
 					  }[]
 					| null;
 			}[];

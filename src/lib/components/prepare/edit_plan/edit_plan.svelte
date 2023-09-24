@@ -85,7 +85,18 @@
 				</select>
 			{/if}
 			{#each plan.data[0].Weeks as week}
-				<h4>Week {week.order}</h4>
+				<h4>
+					Week <input
+						bind:value={week.order}
+						on:blur={() => {
+							if (plan.data)
+								plan.data[0].Weeks = plan.data[0].Weeks.sort((a, b) => {
+									if (a && b && a.order > b.order) return 1;
+									else return -1;
+								});
+						}}
+					/>
+				</h4>
 				{#each week.Days as day}
 					<TrainingDayInput bind:day {exercises} bind:toRemove />
 				{/each}
@@ -236,8 +247,16 @@
 		padding: var(--size-2);
 	}
 	h4 {
+		display: flex;
+		justify-content: center;
+		align-items: center;
+		gap: var(--size-3);
 		@media (--md-n-below) {
 			font-size: var(--font-size-3);
+		}
+		input {
+			text-align: center;
+			width: 10%;
 		}
 	}
 	.edit-plan-container {
