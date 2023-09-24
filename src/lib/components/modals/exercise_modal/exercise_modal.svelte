@@ -39,7 +39,7 @@
 			{#if exercises}
 				{#each exercises.filter((exercise_type) => exercise_type.name
 						.toLowerCase()
-						.includes(queryPhrase)) as exercise_types}
+						.includes(queryPhrase.toLowerCase())) as exercise_types}
 					<button
 						on:click|preventDefault={() => {
 							exercise.exercise_type_name = exercise_types.name;
