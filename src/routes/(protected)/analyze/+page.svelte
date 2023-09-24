@@ -47,6 +47,7 @@
 								<h5>Reps</h5>
 								<h5>RPE</h5>
 								<h5>Weight</h5>
+								<h5 class="desktop-only">Date</h5>
 							</div>
 							{#each value.data as plan}
 								{#each plan.Weeks as week}
@@ -58,6 +59,9 @@
 													<h5>{set.reps}</h5>
 													<h5>{set.rpe}</h5>
 													<h5>{set.weight}</h5>
+													<h5 class="desktop-only">
+														{set.creation_date.slice(0, 16).replace('T', ' ')}
+													</h5>
 												</div>
 											{/each}{/each}{/each}{/each}{/each}
 						</div>
@@ -82,15 +86,19 @@
 		align-items: center;
 		padding: var(--size-fluid-6) 0;
 	}
+	.desktop-only {
+		display: block;
+		@media (--sm-n-below) {
+			display: none;
+		}
+	}
 	.browse-container {
 		display: flex;
 		flex-direction: column;
 		padding: var(--size-4) 0;
 		align-items: center;
-		width: 90%;
-		@media (--md-n-below) {
-			width: 100%;
-		}
+		width: 100%;
+
 		div {
 			padding: var(--size-5) 0;
 			border-bottom: var(--border-size-2) var(--accent) dashed;
@@ -98,10 +106,14 @@
 	}
 	.set-container {
 		display: grid;
-		grid-template-columns: 1.2fr 0.4fr 0.4fr 0.6fr;
+		grid-template-columns: 1.2fr 0.4fr 0.4fr 0.6fr 1fr;
 		text-align: center;
 		gap: var(--size-fluid-2);
 		width: 100%;
+
+		@media (--sm-n-below) {
+			grid-template-columns: 1.2fr 0.4fr 0.4fr 0.6fr;
+		}
 		h5 {
 			text-overflow: ellipsis;
 			width: 100%;
