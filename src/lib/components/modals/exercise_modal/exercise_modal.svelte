@@ -1,9 +1,12 @@
 <script lang="ts">
+	import { browser } from '$app/environment';
+
 	export let dialogOpened: Array<boolean>;
 	export let index: number;
 	export let exercises: Array<{ name: string }> | null;
 	export let exercise: { exercise_type_name: string | null };
 	let modal: HTMLDialogElement;
+	const eventSet: boolean = false;
 
 	let queryPhrase = '';
 
@@ -11,6 +14,19 @@
 		if (modal) {
 			if (dialogOpened[index]) {
 				modal.showModal();
+				if (!eventSet) {
+					modal.addEventListener('click', function (event) {
+						var rect = modal.getBoundingClientRect();
+						var isInDialog =
+							rect.top <= event.clientY &&
+							event.clientY <= rect.top + rect.height &&
+							rect.left <= event.clientX &&
+							event.clientX <= rect.left + rect.width;
+						if (!isInDialog) {
+							modal.close();
+						}
+					});
+				}
 			} else modal.close();
 		}
 	}
@@ -46,7 +62,7 @@
 		background-color: var(--surface-1);
 		z-index: 10;
 		width: 50%;
-		max-height: 50%;
+		height: 50%;
 		@media (--md-n-below) {
 			width: 90%;
 			top: 5%;
@@ -57,12 +73,14 @@
 		display: flex;
 		flex-direction: column;
 		gap: var(--size-2);
+		height: 100%;
 		overflow-y: auto;
 	}
 	.dialog-content-container {
 		display: flex;
 		flex-direction: column;
 		gap: var(--size-4);
+		height: 100%;
 	}
 	input {
 		text-align: center;

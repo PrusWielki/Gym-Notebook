@@ -1,5 +1,5 @@
 <script lang="ts">
-	import ExerciseModal from '../exercise_modal/exercise_modal.svelte';
+	import ExerciseModal from '../modals/exercise_modal/exercise_modal.svelte';
 
 	export let exercises: Array<{ name: string; id: number }> | null;
 	export let day: App.TrainingDay;
