@@ -2,6 +2,7 @@
 	import notificationMessage from '$lib/store/notifications';
 	import { showNotification } from '$lib/utils/show-notification';
 	import { browser } from '$app/environment';
+	import { json } from '@sveltejs/kit';
 	export let day: App.TrainingDay;
 	// export let targetReps: number;
 	// export let targetRpe: number;
@@ -11,7 +12,7 @@
 	export let currentWeek: number;
 	export let numberOfDays: number;
 
-	const exerciseDetailSetsArray: Array<App.ExerciseDetailSet> = [];
+	let exerciseDetailSetsArray: Array<App.ExerciseDetailSet> = [];
 
 	let repsArray: Array<number> = [];
 	let rpeArray: Array<number> = [];
@@ -43,8 +44,11 @@
 				});
 			}
 		});
+		exerciseDetailSetsArray = exerciseDetailSetsArray.filter((set) => set.reps);
+		if (exerciseDetailSetsArray.length <= 0) return;
 		let newCurrentWeek = 0;
 		let newCurrentDay = 0;
+
 		if (day.order >= numberOfDays && currentWeek + 1 < numberOfWeeks) {
 			newCurrentWeek = currentWeek + 1;
 		} else newCurrentDay = day.order;
@@ -56,11 +60,18 @@
 				newCurrentDay,
 				newCurrentWeek
 			})
-		}).then(() => {
-			showNotification('Day Saved', 2000, notificationMessage);
-			window.localStorage.removeItem('repsArray');
-			window.localStorage.removeItem('rpeArray');
-			window.localStorage.removeItem('weightArray');
+		}).then(async (response) => {
+			if (response)
+				await response.json().then((result) => {
+					if (result.message) {
+						showNotification('Error', 2000, notificationMessage);
+					} else {
+						showNotification('Day Saved', 2000, notificationMessage);
+						window.localStorage.removeItem('repsArray');
+						window.localStorage.removeItem('rpeArray');
+						window.localStorage.removeItem('weightArray');
+					}
+				});
 		});
 	};
 	$: window.localStorage.setItem('repsArray', JSON.stringify(repsArray));
@@ -89,7 +100,6 @@
 					{/if}
 					<h5>{(index + 1).toString()}</h5>
 					<input
-						required
 						bind:value={repsArray[day.Exercise_Detail.length * index + exerciseIndex]}
 						placeholder={exercise.target_reps?.toString()}
 					/>
