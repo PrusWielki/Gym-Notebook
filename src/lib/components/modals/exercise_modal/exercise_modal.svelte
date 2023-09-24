@@ -1,6 +1,4 @@
 <script lang="ts">
-	import { browser } from '$app/environment';
-
 	export let dialogOpened: Array<boolean>;
 	export let index: number;
 	export let exercises: Array<{ name: string }> | null;
