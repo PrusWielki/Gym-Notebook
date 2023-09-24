@@ -39,19 +39,26 @@
 					Loading...
 				{:then value}
 					{#if value.data}
-						{#each value.data as plan}
-							{#each plan.Weeks as week}
-								{#each week.Days as day}
-									{#each day.Exercise_Detail as exercise}
-										{#if exercise.Exercise_Detail_Sets.length > 0}
-											<button
-												on:click={() => {
-													modalDay = day;
-													modal.showModal();
-												}}
-											>
-												{exercise.exercise_type_name}
-											</button>{/if}{/each}{/each}{/each}{/each}
+						<div class="browse-container">
+							<div class="set-container">
+								<h5>Exercise</h5>
+								<h5>Reps</h5>
+								<h5>RPE</h5>
+								<h5>Weight</h5>
+							</div>
+							{#each value.data as plan}
+								{#each plan.Weeks as week}
+									{#each week.Days as day}
+										{#each day.Exercise_Detail as exercise}
+											{#each exercise.Exercise_Detail_Sets as set}
+												<div class="set-container">
+													<h5>{exercise.exercise_type_name}</h5>
+													<h5>{set.reps}</h5>
+													<h5>{set.rpe}</h5>
+													<h5>{set.weight}</h5>
+												</div>
+											{/each}{/each}{/each}{/each}{/each}
+						</div>
 					{/if}
 				{:catch error}
 					{error.message}
@@ -62,7 +69,8 @@
 		</div>
 	</div>
 </div>
-<BrowseDayModal bind:modal day={modalDay} />
+
+<!-- <BrowseDayModal bind:modal day={modalDay} /> -->
 
 <style lang="postcss">
 	.analyze-container {
@@ -71,6 +79,33 @@
 		justify-content: center;
 		align-items: center;
 		padding: var(--size-fluid-6) 0;
+	}
+	.browse-container {
+		display: flex;
+		flex-direction: column;
+		gap: var(--size-fluid-4);
+		padding: var(--size-4) 0;
+		align-items: center;
+		width: 90%;
+		@media (--md-n-below) {
+			width: 100%;
+		}
+	}
+	.set-container {
+		display: grid;
+		grid-template-columns: 1.2fr 0.4fr 0.4fr 0.6fr;
+		text-align: center;
+		gap: var(--size-fluid-2);
+		width: 100%;
+		h5 {
+			text-overflow: ellipsis;
+			width: 100%;
+			overflow: hidden;
+			white-space: nowrap;
+			@media (--md-n-below) {
+				font-size: var(--font-size-1);
+			}
+		}
 	}
 	h3 {
 		margin-top: var(--size-fluid-6);
