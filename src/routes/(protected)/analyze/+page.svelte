@@ -42,14 +42,16 @@
 						{#each value.data as plan}
 							{#each plan.Weeks as week}
 								{#each week.Days as day}
-									<button
-										on:click={() => {
-											modalDay = day;
-											modal.showModal();
-										}}
-									>
-										{day.name}
-									</button>{/each}{/each}{/each}
+									{#each day.Exercise_Detail as exercise}
+										{#if exercise.Exercise_Detail_Sets.length > 0}
+											<button
+												on:click={() => {
+													modalDay = day;
+													modal.showModal();
+												}}
+											>
+												{exercise.exercise_type_name}
+											</button>{/if}{/each}{/each}{/each}{/each}
 					{/if}
 				{:catch error}
 					{error.message}

@@ -102,12 +102,12 @@
 						placeholder={exercise.target_reps?.toString()}
 					/>
 					<input
-						required
+						required={!!repsArray[day.Exercise_Detail.length * index + exerciseIndex]}
 						bind:value={rpeArray[day.Exercise_Detail.length * index + exerciseIndex]}
 						placeholder={exercise.target_rpe?.toString()}
 					/>
 					<input
-						required
+						required={!!repsArray[day.Exercise_Detail.length * index + exerciseIndex]}
 						bind:value={weightArray[day.Exercise_Detail.length * index + exerciseIndex]}
 						placeholder=""
 					/>
