@@ -2,7 +2,6 @@
 	import notificationMessage from '$lib/store/notifications';
 	import { showNotification } from '$lib/utils/show-notification';
 	import { browser } from '$app/environment';
-	import { json } from '@sveltejs/kit';
 	export let day: App.TrainingDay;
 	// export let targetReps: number;
 	// export let targetRpe: number;
@@ -95,8 +94,7 @@
 					{#if index === 0}
 						<h5>{exercise.exercise_type_name}</h5>
 					{:else}
-						<!-- svelte-ignore a11y-missing-content -->
-						<h5 />
+						<div />
 					{/if}
 					<h5>{(index + 1).toString()}</h5>
 					<input
