@@ -89,10 +89,11 @@
 					Week <input
 						bind:value={week.order}
 						on:blur={() => {
-							weeks = weeks.sort((a, b) => {
-								if (a && b && a.order > b.order) return 1;
-								else return -1;
-							});
+							if (plan.data)
+								plan.data[0].Weeks = plan.data[0].Weeks.sort((a, b) => {
+									if (a && b && a.order > b.order) return 1;
+									else return -1;
+								});
 						}}
 					/>
 				</h4>
