@@ -10,6 +10,7 @@ declare global {
 		interface PageData {
 			session: Session | null;
 		}
+
 		type TrainingDay = {
 			name: string | null;
 			notes: string | null;
