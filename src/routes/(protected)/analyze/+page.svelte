@@ -85,12 +85,15 @@
 	.browse-container {
 		display: flex;
 		flex-direction: column;
-		gap: var(--size-fluid-4);
 		padding: var(--size-4) 0;
 		align-items: center;
 		width: 90%;
 		@media (--md-n-below) {
 			width: 100%;
+		}
+		div {
+			padding: var(--size-5) 0;
+			border-bottom: var(--border-size-2) var(--accent) dashed;
 		}
 	}
 	.set-container {
