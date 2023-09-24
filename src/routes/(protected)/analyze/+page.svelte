@@ -6,6 +6,8 @@
 	export let data: PageData;
 	let modalDay: App.TrainingDay;
 	let checked: 'Browse' | 'Statistics' = 'Browse';
+
+	// 1. Add sorting and filtering.
 </script>
 
 <div class="wrapper">
