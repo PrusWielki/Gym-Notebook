@@ -1,5 +1,6 @@
 <script lang="ts">
 	import Statistics from '$lib/components/analyze/statistics/statistics.svelte';
+
 	import BrowseDayModal from '$lib/components/modals/browse_day_modal/browse_day_modal.svelte';
 	import type { PageData } from './$types';
 
@@ -42,7 +43,9 @@
 					Loading...
 				{:then value}
 					{#if value.data}
+
 						<div class="labels-container">
+
 							<div class="set-container">
 								<h5>Exercise</h5>
 								<h5>Reps</h5>
@@ -53,6 +56,7 @@
 						</div>
 
 						<div class="browse-container">
+
 							{#each value.data as plan}
 								{#each plan.Weeks as week}
 									{#each week.Days as day}
@@ -74,6 +78,7 @@
 					{error.message}
 				{/await}
 			{:else if checked === 'Statistics'}
+
 				{#await data.allData}
 					Loading...
 				{:then value}
@@ -83,6 +88,7 @@
 				{:catch error}
 					{error.message}
 				{/await}
+
 			{/if}
 		</div>
 	</div>
@@ -91,10 +97,12 @@
 <!-- <BrowseDayModal bind:modal day={modalDay} /> -->
 
 <style lang="postcss">
+
 	.labels-container {
 		padding-top: var(--size-6);
 		width: 100%;
 	}
+
 	.analyze-container {
 		display: flex;
 		flex-direction: column;
@@ -125,6 +133,7 @@
 			background: var(--surface-4);
 			border-radius: 2px;
 		}
+
 
 		div {
 			padding: var(--size-5) 0;

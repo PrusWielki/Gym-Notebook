@@ -12,5 +12,6 @@ export const load: PageServerLoad = async ({ locals: { supabase } }) => {
 				foreignTable: 'Weeks.Days.Exercise_Detail.Exercise_Detail_Sets'
 			}),
 		exerciseTypes: supabase.from('Exercise_Types').select()
+
 	};
 };

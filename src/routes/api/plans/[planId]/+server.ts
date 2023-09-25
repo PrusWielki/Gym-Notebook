@@ -32,6 +32,7 @@ export type GetPlansResponse = {
 								target_rpe: number;
 								weight: number;
 								creation_date:string;
+
 							}[];
 						}[];
 					}[];

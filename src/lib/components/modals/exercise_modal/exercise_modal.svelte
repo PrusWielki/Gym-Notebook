@@ -6,6 +6,7 @@
 	let modal: HTMLDialogElement;
 	let eventSet: boolean = false;
 
+
 	let queryPhrase = '';
 
 	$: {
@@ -25,6 +26,7 @@
 						}
 					});
 					eventSet = true;
+
 				}
 			} else modal.close();
 		}
