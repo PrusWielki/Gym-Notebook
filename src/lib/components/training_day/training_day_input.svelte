@@ -5,7 +5,7 @@
 	export let day: App.TrainingDay;
 	export let toRemove: Array<{ type: 'Day' | 'Week' | 'Exercise_Detail'; id: number }> | null =
 		null;
-	const dialogOpened: Array<boolean> = new Array(day.Exercise_Detail.length).fill(false);
+	let dialogOpened: Array<boolean> = new Array(day.Exercise_Detail.length).fill(false);
 </script>
 
 {#if day.Exercise_Detail.length > 0}
@@ -19,7 +19,7 @@
 		</div>
 		{#each day.Exercise_Detail as exercise, exercise_index}
 			<div class="day-row-input">
-				<ExerciseModal {dialogOpened} index={exercise_index} bind:exercise {exercises} />
+				<ExerciseModal bind:dialogOpened index={exercise_index} bind:exercise {exercises} />
 				<input
 					on:click|preventDefault={() => (dialogOpened[exercise_index] = true)}
 					value={exercise.exercise_type_name ? exercise.exercise_type_name : 'Exercise'}

@@ -42,7 +42,7 @@
 					Loading...
 				{:then value}
 					{#if value.data}
-						<div class="browse-container">
+						<div class="labels-container">
 							<div class="set-container">
 								<h5>Exercise</h5>
 								<h5>Reps</h5>
@@ -50,6 +50,9 @@
 								<h5>Weight</h5>
 								<h5 class="desktop-only">Date</h5>
 							</div>
+						</div>
+
+						<div class="browse-container">
 							{#each value.data as plan}
 								{#each plan.Weeks as week}
 									{#each week.Days as day}
@@ -88,6 +91,10 @@
 <!-- <BrowseDayModal bind:modal day={modalDay} /> -->
 
 <style lang="postcss">
+	.labels-container {
+		padding-top: var(--size-6);
+		width: 100%;
+	}
 	.analyze-container {
 		display: flex;
 		flex-direction: column;
@@ -107,6 +114,17 @@
 		padding: var(--size-4) 0;
 		align-items: center;
 		width: 100%;
+		overflow-y: auto;
+		max-height: 70lvh;
+		&::-webkit-scrollbar {
+			width: 4px;
+			height: 4px;
+			margin-left: 10px;
+		}
+		&::-webkit-scrollbar-thumb {
+			background: var(--surface-4);
+			border-radius: 2px;
+		}
 
 		div {
 			padding: var(--size-5) 0;

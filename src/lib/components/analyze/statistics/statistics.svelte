@@ -13,9 +13,10 @@
 	import { Line } from 'svelte-chartjs';
 	import { lineData } from '$lib/const/statistics';
 	import type { GetPlansResponse } from '../../../../routes/api/plans/[planId]/+server';
+	import ExerciseModal from '$lib/components/modals/exercise_modal/exercise_modal.svelte';
 	export let allData: GetPlansResponse['data'];
 	export let exerciseTypes: Array<{ name: string }> | null;
-	let chosenExercise: string;
+	let chosenExercise: { exercise_type_name: string | null } = { exercise_type_name: null };
 	ChartJS.register(
 		Title,
 		Tooltip,
@@ -29,9 +30,9 @@
 	let repsArray: Array<number> = [];
 	let weightsArray: Array<number> = [];
 	let datesArray: Array<string> = [];
-	let showWeight = false;
+	let dialogOpen: Array<boolean> = [false];
 
-	const extractData = (data: GetPlansResponse['data'], chosenExercise: string) => {
+	const extractData = (data: GetPlansResponse['data'], chosenExercise: string | null) => {
 		repsArray = [];
 		weightsArray = [];
 		datesArray = [];
@@ -42,13 +43,14 @@
 					day.Exercise_Detail.forEach((exercise) => {
 						if (
 							(chosenExercise && chosenExercise === exercise.exercise_type_name) ||
-							!chosenExercise
-						)
+							chosenExercise === null
+						) {
 							exercise.Exercise_Detail_Sets.forEach((set) => {
 								repsArray.push(set.reps);
 								weightsArray.push(set.weight);
 								datesArray.push(set.creation_date.slice(5, 10).replace('T', ' '));
 							});
+						}
 					});
 				});
 			});
@@ -57,23 +59,21 @@
 		lineData.datasets[0].data = repsArray;
 		lineData.datasets[1].data = weightsArray;
 	};
-	$: extractData(allData, chosenExercise);
-	$: console.log(exerciseTypes);
+	$: extractData(allData, chosenExercise.exercise_type_name);
 
 	// 1. Create a select for choosing exercise type
-	// 2. Create a checkbox for showing or not showing weights data
 </script>
 
 <div class="line-container">
-	{#if exerciseTypes}
-		<select bind:value={chosenExercise}>
-			<option value="" disabled selected>Exercise</option>
-			{#each exerciseTypes as exercise}
-				<option value={exercise.name}>{exercise.name}</option>
-			{/each}
-		</select>
-	{/if}
-
+	<button on:click={() => (dialogOpen[0] = true)}
+		>{chosenExercise.exercise_type_name || 'All'}</button
+	>
+	<ExerciseModal
+		index={0}
+		bind:dialogOpened={dialogOpen}
+		exercises={exerciseTypes}
+		bind:exercise={chosenExercise}
+	/>
 	<Line
 		data={{ labels: lineData.labels, datasets: lineData.datasets.slice(1, 2) }}
 		options={{
@@ -115,5 +115,18 @@
 		display: flex;
 		flex-direction: column;
 		align-items: center;
+	}
+	button {
+		all: unset;
+		width: 40%;
+		background-color: var(--surface-3);
+		font-size: var(--font-size-4);
+		padding: var(--size-3) var(--size-2);
+		text-align: center;
+		@media (--md-n-below) {
+			width: 80%;
+			font-size: var(--font-size-1);
+			padding: var(--size-2) var(--size-1);
+		}
 	}
 </style>
