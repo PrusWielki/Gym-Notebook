@@ -4,7 +4,8 @@
 	export let exercises: Array<{ name: string }> | null;
 	export let exercise: { exercise_type_name: string | null };
 	let modal: HTMLDialogElement;
-	const eventSet: boolean = false;
+	let eventSet: boolean = false;
+
 
 	let queryPhrase = '';
 
@@ -24,6 +25,8 @@
 							modal.close();
 						}
 					});
+					eventSet = true;
+
 				}
 			} else modal.close();
 		}
