@@ -1,4 +1,5 @@
 <script lang="ts">
+	import Statistics from '$lib/components/analyze/statistics/statistics.svelte';
 	import BrowseDayModal from '$lib/components/modals/browse_day_modal/browse_day_modal.svelte';
 	import type { PageData } from './$types';
 
@@ -70,7 +71,7 @@
 					{error.message}
 				{/await}
 			{:else if checked === 'Statistics'}
-				Here
+				<Statistics />
 			{/if}
 		</div>
 	</div>
