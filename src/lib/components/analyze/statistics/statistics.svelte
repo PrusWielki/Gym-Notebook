@@ -14,6 +14,8 @@
 	import { lineData } from '$lib/const/statistics';
 	import type { GetPlansResponse } from '../../../../routes/api/plans/[planId]/+server';
 	export let allData: GetPlansResponse['data'];
+	export let exerciseTypes: Array<{ name: string }> | null;
+	let chosenExercise: string;
 	ChartJS.register(
 		Title,
 		Tooltip,
@@ -24,20 +26,29 @@
 		CategoryScale,
 		Filler
 	);
-	const repsArray: Array<number> = [];
-	const weightsArray: Array<number> = [];
-	const datesArray: Array<string> = [];
+	let repsArray: Array<number> = [];
+	let weightsArray: Array<number> = [];
+	let datesArray: Array<string> = [];
+	let showWeight = false;
 
-	const extractData = (data: GetPlansResponse['data']) => {
+	const extractData = (data: GetPlansResponse['data'], chosenExercise: string) => {
+		repsArray = [];
+		weightsArray = [];
+		datesArray = [];
+
 		data?.forEach((plan) => {
 			plan.Weeks.forEach((week) => {
 				week.Days.forEach((day) => {
 					day.Exercise_Detail.forEach((exercise) => {
-						exercise.Exercise_Detail_Sets.forEach((set) => {
-							repsArray.push(set.reps);
-							weightsArray.push(set.weight);
-							datesArray.push(set.creation_date.slice(0, 16).replace('T', ' '));
-						});
+						if (
+							(chosenExercise && chosenExercise === exercise.exercise_type_name) ||
+							!chosenExercise
+						)
+							exercise.Exercise_Detail_Sets.forEach((set) => {
+								repsArray.push(set.reps);
+								weightsArray.push(set.weight);
+								datesArray.push(set.creation_date.slice(0, 16).replace('T', ' '));
+							});
 					});
 				});
 			});
@@ -46,11 +57,27 @@
 		lineData.datasets[0].data = repsArray;
 		lineData.datasets[1].data = weightsArray;
 	};
-	$: extractData(allData);
+	$: extractData(allData, chosenExercise);
+	$: console.log(exerciseTypes);
+
+	// 1. Create a select for choosing exercise type
+	// 2. Create a checkbox for showing or not showing weights data
 </script>
 
+{#if exerciseTypes}
+	<select bind:value={chosenExercise}>
+		<option value="" disabled selected>Exercise</option>
+		{#each exerciseTypes as exercise}
+			<option value={exercise.name}>{exercise.name}</option>
+		{/each}
+	</select>
+{/if}
+
+<input type="checkbox" bind:value={showWeight} />
 <Line
-	data={lineData}
+	data={showWeight
+		? lineData
+		: { labels: lineData.labels, datasets: lineData.datasets.slice(0, 1) }}
 	options={{
 		responsive: true,
 		color: '#E4E4E7',

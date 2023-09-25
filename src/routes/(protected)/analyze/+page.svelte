@@ -74,7 +74,9 @@
 				{#await data.allData}
 					Loading...
 				{:then value}
-					<Statistics allData={value.data} />
+					{#await data.exerciseTypes then exercises}
+						<Statistics allData={value.data} exerciseTypes={exercises.data} />
+					{/await}
 				{:catch error}
 					{error.message}
 				{/await}

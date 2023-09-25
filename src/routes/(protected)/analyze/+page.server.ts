@@ -10,6 +10,7 @@ export const load: PageServerLoad = async ({ locals: { supabase } }) => {
 			.order('creation_date', {
 				ascending: false,
 				foreignTable: 'Weeks.Days.Exercise_Detail.Exercise_Detail_Sets'
-			})
+			}),
+		exerciseTypes: supabase.from('Exercise_Types').select()
 	};
 };
