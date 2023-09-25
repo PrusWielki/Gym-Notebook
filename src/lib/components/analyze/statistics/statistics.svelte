@@ -47,7 +47,7 @@
 							exercise.Exercise_Detail_Sets.forEach((set) => {
 								repsArray.push(set.reps);
 								weightsArray.push(set.weight);
-								datesArray.push(set.creation_date.slice(0, 16).replace('T', ' '));
+								datesArray.push(set.creation_date.slice(5, 10).replace('T', ' '));
 							});
 					});
 				});
@@ -64,38 +64,56 @@
 	// 2. Create a checkbox for showing or not showing weights data
 </script>
 
-{#if exerciseTypes}
-	<select bind:value={chosenExercise}>
-		<option value="" disabled selected>Exercise</option>
-		{#each exerciseTypes as exercise}
-			<option value={exercise.name}>{exercise.name}</option>
-		{/each}
-	</select>
-{/if}
+<div class="line-container">
+	{#if exerciseTypes}
+		<select bind:value={chosenExercise}>
+			<option value="" disabled selected>Exercise</option>
+			{#each exerciseTypes as exercise}
+				<option value={exercise.name}>{exercise.name}</option>
+			{/each}
+		</select>
+	{/if}
 
-<input type="checkbox" bind:value={showWeight} />
-<Line
-	data={showWeight
-		? lineData
-		: { labels: lineData.labels, datasets: lineData.datasets.slice(0, 1) }}
-	options={{
-		responsive: true,
-		color: '#E4E4E7',
-		scales: {
-			y: {
-				ticks: { color: '#E4E4E7' }
-			},
-			x: {
-				ticks: { color: '#E4E4E7' }
+	<Line
+		data={{ labels: lineData.labels, datasets: lineData.datasets.slice(1, 2) }}
+		options={{
+			responsive: true,
+			color: '#E4E4E7',
+			scales: {
+				y: {
+					ticks: { color: '#E4E4E7' }
+				},
+				x: {
+					ticks: { color: '#E4E4E7' }
+				}
 			}
-		}
-	}}
-/>
+		}}
+	/>
+	<Line
+		data={{ labels: lineData.labels, datasets: lineData.datasets.slice(0, 1) }}
+		options={{
+			responsive: true,
+			color: '#E4E4E7',
+			scales: {
+				y: {
+					ticks: { color: '#E4E4E7' }
+				},
+				x: {
+					ticks: { color: '#E4E4E7' }
+				}
+			}
+		}}
+	/>
+</div>
 
 <style lang="postcss">
 	.line-container {
 		padding: var(--size-fluid-2) 0;
 		height: 100%;
 		width: 100%;
+		gap: var(--size-4);
+		display: flex;
+		flex-direction: column;
+		align-items: center;
 	}
 </style>
