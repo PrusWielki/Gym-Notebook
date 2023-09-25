@@ -71,7 +71,13 @@
 					{error.message}
 				{/await}
 			{:else if checked === 'Statistics'}
-				<Statistics />
+				{#await data.allData}
+					Loading...
+				{:then value}
+					<Statistics allData={value.data} />
+				{:catch error}
+					{error.message}
+				{/await}
 			{/if}
 		</div>
 	</div>
