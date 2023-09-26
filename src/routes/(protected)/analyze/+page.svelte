@@ -43,9 +43,7 @@
 					Loading...
 				{:then value}
 					{#if value.data}
-
 						<div class="labels-container">
-
 							<div class="set-container">
 								<h5>Exercise</h5>
 								<h5>Reps</h5>
@@ -56,7 +54,6 @@
 						</div>
 
 						<div class="browse-container">
-
 							{#each value.data as plan}
 								{#each plan.Weeks as week}
 									{#each week.Days as day}
@@ -78,7 +75,6 @@
 					{error.message}
 				{/await}
 			{:else if checked === 'Statistics'}
-
 				{#await data.allData}
 					Loading...
 				{:then value}
@@ -88,7 +84,6 @@
 				{:catch error}
 					{error.message}
 				{/await}
-
 			{/if}
 		</div>
 	</div>
@@ -97,7 +92,6 @@
 <!-- <BrowseDayModal bind:modal day={modalDay} /> -->
 
 <style lang="postcss">
-
 	.labels-container {
 		padding-top: var(--size-6);
 		width: 100%;
@@ -119,11 +113,12 @@
 	.browse-container {
 		display: flex;
 		flex-direction: column;
-		padding: var(--size-4) 0;
+		padding: var(--size-4) 0 var(--size-1) 0;
 		align-items: center;
 		width: 100%;
 		overflow-y: auto;
-		max-height: 70lvh;
+		max-height: 58lvh;
+
 		&::-webkit-scrollbar {
 			width: 4px;
 			height: 4px;
@@ -133,7 +128,6 @@
 			background: var(--surface-4);
 			border-radius: 2px;
 		}
-
 
 		div {
 			padding: var(--size-5) 0;
@@ -178,6 +172,7 @@
 		width: 100%;
 		border: var(--border-size-1) solid var(--accent);
 		color: var(--text-1);
+		margin-top: var(--size-1);
 	}
 
 	.tabs > .tab {

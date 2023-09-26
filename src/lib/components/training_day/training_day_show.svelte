@@ -32,8 +32,13 @@
 		border-radius: var(--radius-2);
 		box-shadow: var(--shadow-1);
 		gap: var(--size-fluid-2);
-		max-width: var(--size-md);
 		width: var(--size-md);
+		max-width: var(--size-md);
+
+		@media (--lg-n-below) {
+			width: 100%;
+		}
+
 		h5 {
 			font-size: var(--font-size-fluid-1);
 			align-self: center;
