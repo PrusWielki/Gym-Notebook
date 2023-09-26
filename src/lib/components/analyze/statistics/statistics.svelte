@@ -64,8 +64,6 @@
 		lineData.datasets[2].data = rpeArray;
 	};
 	$: extractData(allData, chosenExercise.exercise_type_name);
-
-	// 1. Create a select for choosing exercise type
 </script>
 
 <div class="line-container">
