@@ -1,38 +1,32 @@
 <script lang="ts">
-	export let dialogOpened: Array<boolean>;
-	export let index: number;
 	export let exercises: Array<{ name: string }> | null;
 	export let exercise: { exercise_type_name: string | null };
 	let modal: HTMLDialogElement;
-	let eventSet: boolean = false;
-
 
 	let queryPhrase = '';
 
 	$: {
 		if (modal) {
-			if (dialogOpened[index]) {
-				modal.showModal();
-				if (!eventSet) {
-					modal.addEventListener('click', function (event) {
-						var rect = modal.getBoundingClientRect();
-						var isInDialog =
-							rect.top <= event.clientY &&
-							event.clientY <= rect.top + rect.height &&
-							rect.left <= event.clientX &&
-							event.clientX <= rect.left + rect.width;
-						if (!isInDialog) {
-							modal.close();
-						}
-					});
-					eventSet = true;
-
+			modal.addEventListener('click', function (event) {
+				var rect = modal.getBoundingClientRect();
+				var isInDialog =
+					rect.top <= event.clientY &&
+					event.clientY <= rect.top + rect.height &&
+					rect.left <= event.clientX &&
+					event.clientX <= rect.left + rect.width;
+				if (!isInDialog) {
+					modal.close();
 				}
-			} else modal.close();
+			});
 		}
 	}
 </script>
 
+<input
+	on:click|preventDefault={() => modal.showModal()}
+	value={exercise.exercise_type_name ? exercise.exercise_type_name : 'Exercise'}
+	readonly
+/>
 <dialog id="exercise_type_name_dialog" bind:this={modal}>
 	<div class="dialog-content-container">
 		<input bind:value={queryPhrase} placeholder="Search" />
@@ -44,8 +38,7 @@
 					<button
 						on:click|preventDefault={() => {
 							exercise.exercise_type_name = exercise_types.name;
-
-							dialogOpened[index] = false;
+							modal.close();
 							queryPhrase = '';
 						}}
 						class="exercise"

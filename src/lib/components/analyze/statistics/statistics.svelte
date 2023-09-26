@@ -67,15 +67,7 @@
 </script>
 
 <div class="line-container">
-	<button on:click={() => (dialogOpen[0] = true)}
-		>{chosenExercise.exercise_type_name || 'All'}</button
-	>
-	<ExerciseModal
-		index={0}
-		bind:dialogOpened={dialogOpen}
-		exercises={exerciseTypes}
-		bind:exercise={chosenExercise}
-	/>
+	<ExerciseModal exercises={exerciseTypes} bind:exercise={chosenExercise} />
 	<Line
 		data={{ labels: lineData.labels, datasets: lineData.datasets.slice(1, 2) }}
 		options={{

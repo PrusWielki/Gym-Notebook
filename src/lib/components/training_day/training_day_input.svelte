@@ -19,12 +19,7 @@
 		</div>
 		{#each day.Exercise_Detail as exercise, exercise_index}
 			<div class="day-row-input">
-				<ExerciseModal bind:dialogOpened index={exercise_index} bind:exercise {exercises} />
-				<input
-					on:click|preventDefault={() => (dialogOpened[exercise_index] = true)}
-					value={exercise.exercise_type_name ? exercise.exercise_type_name : 'Exercise'}
-					readonly
-				/>
+				<ExerciseModal bind:exercise {exercises} />
 
 				<input required bind:value={exercise.sets} placeholder="Sets" />
 				<input required bind:value={exercise.target_reps} placeholder="Reps" />
