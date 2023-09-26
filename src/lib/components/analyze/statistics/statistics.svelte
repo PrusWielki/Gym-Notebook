@@ -30,12 +30,14 @@
 	let repsArray: Array<number> = [];
 	let weightsArray: Array<number> = [];
 	let datesArray: Array<string> = [];
+	let rpeArray: Array<number> = [];
 	let dialogOpen: Array<boolean> = [false];
 
 	const extractData = (data: GetPlansResponse['data'], chosenExercise: string | null) => {
 		repsArray = [];
 		weightsArray = [];
 		datesArray = [];
+		rpeArray = [];
 
 		data?.forEach((plan) => {
 			plan.Weeks.forEach((week) => {
@@ -48,6 +50,7 @@
 							exercise.Exercise_Detail_Sets.forEach((set) => {
 								repsArray.push(set.reps);
 								weightsArray.push(set.weight);
+								rpeArray.push(set.rpe);
 								datesArray.push(set.creation_date.slice(5, 10).replace('T', ' '));
 							});
 						}
@@ -58,6 +61,7 @@
 		lineData.labels = datesArray;
 		lineData.datasets[0].data = repsArray;
 		lineData.datasets[1].data = weightsArray;
+		lineData.datasets[2].data = rpeArray;
 	};
 	$: extractData(allData, chosenExercise.exercise_type_name);
 
@@ -91,6 +95,21 @@
 	/>
 	<Line
 		data={{ labels: lineData.labels, datasets: lineData.datasets.slice(0, 1) }}
+		options={{
+			responsive: true,
+			color: '#E4E4E7',
+			scales: {
+				y: {
+					ticks: { color: '#E4E4E7' }
+				},
+				x: {
+					ticks: { color: '#E4E4E7' }
+				}
+			}
+		}}
+	/>
+	<Line
+		data={{ labels: lineData.labels, datasets: lineData.datasets.slice(2, 3) }}
 		options={{
 			responsive: true,
 			color: '#E4E4E7',
