@@ -69,6 +69,16 @@
 		gap: var(--size-2);
 		height: 100%;
 		overflow-y: auto;
+
+		&::-webkit-scrollbar {
+			width: 4px;
+			height: 4px;
+			margin-left: 10px;
+		}
+		&::-webkit-scrollbar-thumb {
+			background: var(--surface-4);
+			border-radius: 2px;
+		}
 	}
 	.dialog-content-container {
 		display: flex;

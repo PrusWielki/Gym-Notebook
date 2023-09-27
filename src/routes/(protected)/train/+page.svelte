@@ -102,6 +102,7 @@
 		width: var(--size-11);
 		font-size: var(--font-size-1);
 		width: var(--size-fluid-8);
+		background-color: var(--surface-2);
 		@media (--md-n-below) {
 			font-size: var(--font-size-0);
 		}

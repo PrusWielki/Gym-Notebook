@@ -14,6 +14,7 @@
 	import { lineData } from '$lib/const/statistics';
 	import type { GetPlansResponse } from '../../../../routes/api/plans/[planId]/+server';
 	import ExerciseModal from '$lib/components/modals/exercise_modal/exercise_modal.svelte';
+	import { browser } from '$app/environment';
 	export let allData: GetPlansResponse['data'];
 	export let exerciseTypes: Array<{ name: string }> | null;
 	let chosenExercise: { exercise_type_name: string | null } = { exercise_type_name: null };
@@ -31,7 +32,8 @@
 	let weightsArray: Array<number> = [];
 	let datesArray: Array<string> = [];
 	let rpeArray: Array<number> = [];
-	let dialogOpen: Array<boolean> = [false];
+	let color: string;
+	let colorScheme: 'dark' | 'light' = 'dark';
 
 	const extractData = (data: GetPlansResponse['data'], chosenExercise: string | null) => {
 		repsArray = [];
@@ -63,7 +65,18 @@
 		lineData.datasets[1].data = weightsArray;
 		lineData.datasets[2].data = rpeArray;
 	};
+	const changeColor = (colorScheme: 'dark' | 'light') => {
+		if (colorScheme === 'dark') {
+			color = '#E4E4E7';
+		} else color = '#212529';
+	};
+	if (browser) {
+		window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', (event) => {
+			colorScheme = event.matches ? 'dark' : 'light';
+		});
+	}
 	$: extractData(allData, chosenExercise.exercise_type_name);
+	$: changeColor(colorScheme);
 </script>
 
 <div class="line-container">
@@ -72,13 +85,13 @@
 		data={{ labels: lineData.labels, datasets: lineData.datasets.slice(1, 2) }}
 		options={{
 			responsive: true,
-			color: '#E4E4E7',
+			color: color,
 			scales: {
 				y: {
-					ticks: { color: '#E4E4E7' }
+					ticks: { color: color }
 				},
 				x: {
-					ticks: { color: '#E4E4E7' }
+					ticks: { color: color }
 				}
 			}
 		}}
@@ -87,13 +100,13 @@
 		data={{ labels: lineData.labels, datasets: lineData.datasets.slice(0, 1) }}
 		options={{
 			responsive: true,
-			color: '#E4E4E7',
+			color: color,
 			scales: {
 				y: {
-					ticks: { color: '#E4E4E7' }
+					ticks: { color: color }
 				},
 				x: {
-					ticks: { color: '#E4E4E7' }
+					ticks: { color: color }
 				}
 			}
 		}}
@@ -102,13 +115,13 @@
 		data={{ labels: lineData.labels, datasets: lineData.datasets.slice(2, 3) }}
 		options={{
 			responsive: true,
-			color: '#E4E4E7',
+			color: color,
 			scales: {
 				y: {
-					ticks: { color: '#E4E4E7' }
+					ticks: { color: color }
 				},
 				x: {
-					ticks: { color: '#E4E4E7' }
+					ticks: { color: color }
 				}
 			}
 		}}

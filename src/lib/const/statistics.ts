@@ -6,7 +6,7 @@ export const lineData = {
 			label: 'Reps',
 			lineTension: 0.3,
 			fill: true,
-			borderColor: '#ffff',
+			borderColor: '#1971c2',
 			borderDash: [],
 			borderDashOffset: 0.0,
 			pointBorderColor: '#fffff',

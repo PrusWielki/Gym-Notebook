@@ -192,7 +192,7 @@
 	select {
 		padding: var(--size-fluid-1) var(--size-fluid-2);
 		font-size: var(--font-size-fluid-1);
-		background-color: var(--button-2);
+		background-color: var(--surface-2);
 		color: var(--text-1);
 		@media (--md-n-above) {
 			max-width: 50%;
