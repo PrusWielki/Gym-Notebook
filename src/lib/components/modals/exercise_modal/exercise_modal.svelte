@@ -22,11 +22,9 @@
 	}
 </script>
 
-<input
-	on:click|preventDefault={() => modal.showModal()}
-	value={exercise.exercise_type_name ? exercise.exercise_type_name : 'Exercise'}
-	readonly
-/>
+<button class="main-button" on:click|preventDefault={() => modal.showModal()}
+	>{exercise.exercise_type_name ? exercise.exercise_type_name : 'Exercise'}
+</button>
 <dialog id="exercise_type_name_dialog" bind:this={modal}>
 	<div class="dialog-content-container">
 		<input bind:value={queryPhrase} placeholder="Search" />
@@ -86,14 +84,21 @@
 		gap: var(--size-4);
 		height: 100%;
 	}
-	input {
-		text-align: center;
-		&::placeholder {
-			color: var(--text-1);
-		}
-	}
+
 	.exercise {
 		cursor: pointer;
+	}
+	input {
+		text-align: center;
+	}
+	.main-button {
+		appearance: none;
+		background: #17191c;
+		padding: var(--size-1);
+		border-radius: var(--radius-1);
+		@media (--OSlight) {
+			background: #e0e4e5;
+		}
 	}
 	button {
 		appearance: none;
