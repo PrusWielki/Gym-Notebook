@@ -5,7 +5,6 @@
 	export let day: App.TrainingDay;
 	export let toRemove: Array<{ type: 'Day' | 'Week' | 'Exercise_Detail'; id: number }> | null =
 		null;
-	let dialogOpened: Array<boolean> = new Array(day.Exercise_Detail.length).fill(false);
 </script>
 
 {#if day.Exercise_Detail.length > 0}
@@ -25,18 +24,23 @@
 				<input required bind:value={exercise.target_reps} placeholder="Reps" />
 				<input required bind:value={exercise.target_rpe} placeholder="RPE" />
 				<!-- svelte-ignore a11y-no-static-element-interactions -->
+				<!-- svelte-ignore a11y-no-noninteractive-tabindex -->
 				<svg
+					tabindex="0"
 					on:click={() => {
 						let removed = day.Exercise_Detail.splice(exercise_index, 1);
 						day = day;
 						if (removed[0].id && toRemove !== null)
 							toRemove.push({ type: 'Exercise_Detail', id: +removed[0].id });
 					}}
-					on:keydown={() => {
-						let removed = day.Exercise_Detail.splice(exercise_index, 1);
-						day = day;
-						if (removed[0].id && toRemove !== null)
-							toRemove.push({ type: 'Exercise_Detail', id: +removed[0].id });
+					on:keydown={(e) => {
+						let removed;
+						if (e.key === 'Enter') {
+							removed = day.Exercise_Detail.splice(exercise_index, 1);
+							day = day;
+							if (removed[0].id && toRemove !== null)
+								toRemove.push({ type: 'Exercise_Detail', id: +removed[0].id });
+						}
 					}}
 					xmlns="http://www.w3.org/2000/svg"
 					fill="currentColor"
@@ -55,6 +59,7 @@
 		{/each}
 		<!-- svelte-ignore a11y-interactive-supports-focus -->
 		<svg
+			tabindex="0"
 			on:click={() => {
 				day.Exercise_Detail = [
 					...day.Exercise_Detail,
@@ -69,19 +74,21 @@
 					}
 				];
 			}}
-			on:keydown={() => {
-				day.Exercise_Detail = [
-					...day.Exercise_Detail,
-					{
-						order: day.Exercise_Detail.length + 1,
-						id: null,
-						sets: null,
-						target_reps: null,
-						target_rpe: null,
-						exercise_type_name: null,
-						Exercise_Detail_Sets: null
-					}
-				];
+			on:keydown={(e) => {
+				if (e.key === 'Enter') {
+					day.Exercise_Detail = [
+						...day.Exercise_Detail,
+						{
+							order: day.Exercise_Detail.length + 1,
+							id: null,
+							sets: null,
+							target_reps: null,
+							target_rpe: null,
+							exercise_type_name: null,
+							Exercise_Detail_Sets: null
+						}
+					];
+				}
 			}}
 			role="button"
 			xmlns="http://www.w3.org/2000/svg"
