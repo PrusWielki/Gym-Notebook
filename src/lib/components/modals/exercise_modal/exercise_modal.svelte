@@ -96,6 +96,14 @@
 		background: #17191c;
 		padding: var(--size-1);
 		border-radius: var(--radius-1);
+		height: 32px;
+		text-overflow: ellipsis;
+		overflow: hidden;
+		text-wrap: nowrap;
+		@media (--md-n-below) {
+			height: 26px;
+			font-size: var(--font-size-0);
+		}
 		@media (--OSlight) {
 			background: #e0e4e5;
 		}
