@@ -100,6 +100,7 @@
 		text-overflow: ellipsis;
 		overflow: hidden;
 		text-wrap: nowrap;
+		width: 100%;
 		@media (--md-n-below) {
 			height: 26px;
 			font-size: var(--font-size-0);

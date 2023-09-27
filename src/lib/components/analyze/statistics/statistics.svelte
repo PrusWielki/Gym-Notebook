@@ -80,7 +80,10 @@
 </script>
 
 <div class="line-container">
-	<ExerciseModal exercises={exerciseTypes} bind:exercise={chosenExercise} />
+	<div class="modal-container">
+		<ExerciseModal exercises={exerciseTypes} bind:exercise={chosenExercise} />
+	</div>
+
 	<Line
 		data={{ labels: lineData.labels, datasets: lineData.datasets.slice(1, 2) }}
 		options={{
@@ -129,6 +132,12 @@
 </div>
 
 <style lang="postcss">
+	.modal-container {
+		width: 50%;
+		@media (--md-n-below) {
+			width: 70%;
+		}
+	}
 	.line-container {
 		padding: var(--size-fluid-2) 0;
 		height: 100%;
