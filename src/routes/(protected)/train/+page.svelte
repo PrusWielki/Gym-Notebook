@@ -103,8 +103,11 @@
 		font-size: var(--font-size-1);
 		width: var(--size-fluid-8);
 		background-color: var(--surface-2);
-		@media (--md-n-below) {
-			font-size: var(--font-size-0);
+		text-align-last: center;
+		text-overflow: ellipsis;
+		width: var(--size-xxs);
+		@media (--md-n-above) {
+			width: var(--size-sm);
 		}
 	}
 </style>

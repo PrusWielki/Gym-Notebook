@@ -269,9 +269,12 @@
 		padding: var(--size-fluid-1) var(--size-fluid-2);
 		font-size: var(--font-size-fluid-1);
 		background-color: var(--surface-2);
+		text-align-last: center;
+		text-overflow: ellipsis;
 		color: var(--text-1);
+		width: var(--size-xxs);
 		@media (--md-n-above) {
-			width: 100%;
+			width: var(--size-sm);
 		}
 	}
 

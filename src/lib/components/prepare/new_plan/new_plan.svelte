@@ -194,8 +194,13 @@
 		font-size: var(--font-size-fluid-1);
 		background-color: var(--surface-2);
 		color: var(--text-1);
+
+		text-align-last: center;
+		text-overflow: ellipsis;
+
+		width: var(--size-xxs);
 		@media (--md-n-above) {
-			max-width: 50%;
+			width: var(--size-sm);
 		}
 	}
 	input {
