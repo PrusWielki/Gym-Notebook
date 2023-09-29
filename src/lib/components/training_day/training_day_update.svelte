@@ -10,6 +10,7 @@
 	export let numberOfWeeks: number;
 	export let currentWeek: number;
 	export let numberOfDays: number;
+	let status: 'Saving'|'Done'='Done';
 
 	let exerciseDetailSetsArray: Array<App.ExerciseDetailSet> = [];
 
@@ -26,6 +27,7 @@
 	}
 
 	const onSave = async () => {
+		
 		day.Exercise_Detail.forEach((exercise, exerciseIndex) => {
 			if (exercise.sets) {
 				let arr = new Array(exercise.sets).fill(0);
@@ -51,6 +53,7 @@
 		if (day.order >= numberOfDays && currentWeek + 1 < numberOfWeeks) {
 			newCurrentWeek = currentWeek + 1;
 		} else newCurrentDay = day.order;
+		status='Saving'
 		await fetch('api/exercise_detail_sets', {
 			method: 'POST',
 			body: JSON.stringify({
@@ -69,9 +72,13 @@
 						window.localStorage.removeItem('repsArray');
 						window.localStorage.removeItem('rpeArray');
 						window.localStorage.removeItem('weightArray');
+						repsArray=[];
+						rpeArray=[];
+						weightArray=[];
+						exerciseDetailSetsArray=[];
 					}
 				});
-		});
+		status='Done'});
 	};
 	$: window.localStorage.setItem('repsArray', JSON.stringify(repsArray));
 	$: window.localStorage.setItem('rpeArray', JSON.stringify(rpeArray));
@@ -115,7 +122,7 @@
 			{/each}
 		{/each}
 	</div>
-	<button on:click={onSave}>save</button>
+	<button disabled={status==='Saving'} on:click={onSave}>save</button>
 {/if}
 
 <style lang="postcss">
