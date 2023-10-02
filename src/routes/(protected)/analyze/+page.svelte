@@ -3,12 +3,43 @@
 
 	import BrowseDayModal from '$lib/components/modals/browse_day_modal/browse_day_modal.svelte';
 	import type { PageData } from './$types';
+	import type { Exercises } from './types';
 
-	let modal: HTMLDialogElement;
 	export let data: PageData;
+	let modal: HTMLDialogElement;
+
 	let modalDay: App.TrainingDay;
 	let checked: 'Browse' | 'Statistics' = 'Browse';
+	let exercises: Array<{
+		creation_date: string;
+		exercise_type_name: string;
+		reps: number;
+		rpe: number;
+		weight: number;
+	}> = [];
 
+	const mapAndSortArray = (data: Exercises) => {
+		data.forEach((plan) => {
+			plan.Weeks.forEach((week) => {
+				week.Days.forEach((day) => {
+					day.Exercise_Detail.forEach((exerciseDetail) => {
+						exerciseDetail.Exercise_Detail_Sets.forEach((set) => {
+							exercises.push({ ...set, exercise_type_name: exerciseDetail.exercise_type_name });
+						});
+					});
+				});
+			});
+		});
+		exercises.sort((a, b) => {
+			if (a.creation_date > b.creation_date) return -1;
+			else return 1;
+		});
+	};
+	$: {
+		if (data.allData.data) {
+			mapAndSortArray(data.allData.data);
+		}
+	}
 	// 1. Add sorting and filtering.
 </script>
 
@@ -54,21 +85,17 @@
 						</div>
 
 						<div class="browse-container">
-							{#each value.data as plan}
-								{#each plan.Weeks as week}
-									{#each week.Days as day}
-										{#each day.Exercise_Detail as exercise}
-											{#each exercise.Exercise_Detail_Sets as set}
-												<div class="set-container">
-													<h5>{exercise.exercise_type_name}</h5>
-													<h5>{set.reps}</h5>
-													<h5>{set.rpe}</h5>
-													<h5>{set.weight}</h5>
-													<h5 class="desktop-only">
-														{set.creation_date.slice(0, 16).replace('T', ' ')}
-													</h5>
-												</div>
-											{/each}{/each}{/each}{/each}{/each}
+							{#each exercises as set}
+								<div class="set-container">
+									<h5>{set.exercise_type_name}</h5>
+									<h5>{set.reps}</h5>
+									<h5>{set.rpe}</h5>
+									<h5>{set.weight}</h5>
+									<h5 class="desktop-only">
+										{set.creation_date.slice(0, 16).replace('T', ' ')}
+									</h5>
+								</div>
+							{/each}
 						</div>
 					{/if}
 				{:catch error}
