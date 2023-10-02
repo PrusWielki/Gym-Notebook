@@ -15,7 +15,8 @@
 	import type { GetPlansResponse } from '../../../../routes/api/plans/[planId]/+server';
 	import ExerciseModal from '$lib/components/modals/exercise_modal/exercise_modal.svelte';
 	import { browser } from '$app/environment';
-	export let allData: GetPlansResponse['data'];
+	import type { ExtractedExercises } from '../../../../routes/(protected)/analyze/types';
+	export let allData: ExtractedExercises;
 	export let exerciseTypes: Array<{ name: string }> | null;
 	let chosenExercise: { exercise_type_name: string | null } = { exercise_type_name: null };
 	ChartJS.register(
@@ -35,31 +36,24 @@
 	let color: string;
 	let colorScheme: 'dark' | 'light' = 'dark';
 
-	const extractData = (data: GetPlansResponse['data'], chosenExercise: string | null) => {
+	const extractData = (data: ExtractedExercises, chosenExercise: string | null) => {
 		repsArray = [];
 		weightsArray = [];
 		datesArray = [];
 		rpeArray = [];
 
-		data?.forEach((plan) => {
-			plan.Weeks.forEach((week) => {
-				week.Days.forEach((day) => {
-					day.Exercise_Detail.forEach((exercise) => {
-						if (
-							(chosenExercise && chosenExercise === exercise.exercise_type_name) ||
-							chosenExercise === null
-						) {
-							exercise.Exercise_Detail_Sets.forEach((set) => {
-								repsArray.push(set.reps);
-								weightsArray.push(set.weight);
-								rpeArray.push(set.rpe);
-								datesArray.push(set.creation_date.slice(5, 10).replace('T', ' '));
-							});
-						}
-					});
-				});
-			});
+		data.forEach((exercise) => {
+			if (
+				(chosenExercise && chosenExercise === exercise.exercise_type_name) ||
+				chosenExercise === null
+			) {
+				repsArray.push(exercise.reps);
+				weightsArray.push(exercise.weight);
+				rpeArray.push(exercise.rpe);
+				datesArray.push(exercise.creation_date.slice(5, 10).replace('T', ' '));
+			}
 		});
+
 		lineData.labels = datesArray;
 		lineData.datasets[0].data = repsArray;
 		lineData.datasets[1].data = weightsArray;

@@ -13,3 +13,10 @@ export type Exercises = Array<{
 		}>;
 	}>;
 }>;
+export type ExtractedExercises = Array<{
+	creation_date: string;
+	exercise_type_name: string;
+	reps: number;
+	rpe: number;
+	weight: number;
+}>;

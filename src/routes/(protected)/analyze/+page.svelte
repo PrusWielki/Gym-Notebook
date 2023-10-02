@@ -3,20 +3,14 @@
 
 	import BrowseDayModal from '$lib/components/modals/browse_day_modal/browse_day_modal.svelte';
 	import type { PageData } from './$types';
-	import type { Exercises } from './types';
+	import type { Exercises, ExtractedExercises } from './types';
 
 	export let data: PageData;
 	let modal: HTMLDialogElement;
 
 	let modalDay: App.TrainingDay;
 	let checked: 'Browse' | 'Statistics' = 'Browse';
-	let exercises: Array<{
-		creation_date: string;
-		exercise_type_name: string;
-		reps: number;
-		rpe: number;
-		weight: number;
-	}> = [];
+	let exercises: ExtractedExercises = [];
 
 	const mapAndSortArray = (data: Exercises) => {
 		data.forEach((plan) => {
@@ -105,8 +99,14 @@
 				{#await data.allData}
 					Loading...
 				{:then value}
-					{#await data.exerciseTypes then exercises}
-						<Statistics allData={value.data} exerciseTypes={exercises.data} />
+					{#await data.exerciseTypes then exerciseTypes}
+						<Statistics
+							allData={exercises.sort((a, b) => {
+								if (a.creation_date > b.creation_date) return 1;
+								else return -1;
+							})}
+							exerciseTypes={exerciseTypes.data}
+						/>
 					{/await}
 				{:catch error}
 					{error.message}
