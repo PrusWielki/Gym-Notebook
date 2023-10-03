@@ -13,6 +13,7 @@
 	let exercises: ExtractedExercises = [];
 
 	const mapAndSortArray = (data: Exercises) => {
+		exercises = [];
 		data.forEach((plan) => {
 			plan.Weeks.forEach((week) => {
 				week.Days.forEach((day) => {
@@ -25,8 +26,7 @@
 			});
 		});
 		exercises.sort((a, b) => {
-			if (a.creation_date > b.creation_date) return -1;
-			else return 1;
+			return new Date(b.creation_date).getTime() - new Date(a.creation_date).getTime();
 		});
 	};
 	$: {
@@ -101,9 +101,8 @@
 				{:then value}
 					{#await data.exerciseTypes then exerciseTypes}
 						<Statistics
-							allData={exercises.sort((a, b) => {
-								if (a.creation_date > b.creation_date) return 1;
-								else return -1;
+							allData={exercises.toSorted((a, b) => {
+								return new Date(a.creation_date).getTime() - new Date(b.creation_date).getTime();
 							})}
 							exerciseTypes={exerciseTypes.data}
 						/>
