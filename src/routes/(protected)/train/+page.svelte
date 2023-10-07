@@ -34,7 +34,9 @@
 				<h4>Loading...</h4>
 			{:else if plan?.data && data?.plan}
 				<h4>{plan.data[0].name}</h4>
-				<h5>Week {plan.data[0].Weeks[data?.plan.current_week].order}</h5>
+				{#if chosenWeek}
+					<h5>Week {chosenWeek.order}</h5>
+				{/if}
 				<select required bind:value={chosenWeek}>
 					<option value="" disabled>Week</option>
 					{#each plan.data[0].Weeks as week}
@@ -49,12 +51,12 @@
 						{/each}
 					</select>
 				{/if}
-				{#if chosenDay}
+				{#if chosenDay && chosenWeek}
 					<form>
 						<TrainingDayUpdate
 							day={chosenDay}
 							plansUsersId={data.plan.id}
-							currentWeek={data.plan.current_week}
+							currentWeek={chosenWeek.order - 1}
 							numberOfDays={plan.data[0].Weeks[data?.plan.current_week].Days.length}
 							numberOfWeeks={plan.data[0].Weeks.length}
 						/>
