@@ -46,17 +46,18 @@
 		datesArray = [];
 		rpeArray = [];
 
-		data.forEach((exercise) => {
-			if (
-				(chosenExercise && chosenExercise === exercise.exercise_type_name) ||
-				chosenExercise === null
-			) {
-				repsArray.push(exercise.reps);
-				weightsArray.push(exercise.weight);
-				rpeArray.push(exercise.rpe);
-				datesArray.push(exercise.creation_date.slice(5, 10).replace('T', ' '));
-			}
-		});
+		data &&
+			data.forEach((exercise) => {
+				if (
+					(chosenExercise && chosenExercise === exercise.exercise_type_name) ||
+					chosenExercise === null
+				) {
+					repsArray.push(exercise.reps);
+					weightsArray.push(exercise.weight);
+					rpeArray.push(exercise.rpe);
+					datesArray.push(exercise.creation_date.slice(5, 10).replace('T', ' '));
+				}
+			});
 
 		lineData.labels = datesArray;
 		lineData.datasets[0].data = repsArray;

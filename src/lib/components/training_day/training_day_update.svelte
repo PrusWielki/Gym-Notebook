@@ -108,7 +108,7 @@
 							on:click={() => {
 								if (modal && exercise.exercise_type_name) {
 									currentExercise = exercise.exercise_type_name;
-									modal.show();
+									modal.showModal();
 								}
 							}}>{exercise.exercise_type_name}</button
 						>
@@ -135,10 +135,15 @@
 		{/each}
 	</div>
 	<button disabled={status === 'Saving'} on:click={onSave}>save</button>
-	<RecentHistoryModal {modal} exerciseType={currentExercise} />
+	<RecentHistoryModal bind:modal exerciseType={currentExercise} />
 {/if}
 
 <style lang="postcss">
+	.exercise_type_button {
+		all: unset;
+		appearance: none;
+		font-size: var(--font-size-fluid-0);
+	}
 	.day-container {
 		display: flex;
 		flex-direction: column;
