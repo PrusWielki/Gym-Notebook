@@ -1,15 +1,12 @@
 <script lang="ts">
 	import Statistics from '$lib/components/analyze/statistics/statistics.svelte';
 
-	import BrowseDayModal from '$lib/components/modals/browse_day_modal/browse_day_modal.svelte';
 	import { convertTZ } from '$lib/utils/convert-timezones';
 	import type { PageData } from './$types';
 	import type { Exercises, ExtractedExercises } from './types';
 
 	export let data: PageData;
-	let modal: HTMLDialogElement;
 
-	let modalDay: App.TrainingDay;
 	let checked: 'Browse' | 'Statistics' = 'Browse';
 	let exercises: ExtractedExercises = [];
 
