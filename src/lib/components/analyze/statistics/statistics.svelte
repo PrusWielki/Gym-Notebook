@@ -12,7 +12,6 @@
 	} from 'chart.js';
 	import { Line } from 'svelte-chartjs';
 	import { lineData } from '$lib/const/statistics';
-	import type { GetPlansResponse } from '../../../../routes/api/plans/[planId]/+server';
 	import ExerciseModal from '$lib/components/modals/exercise_modal/exercise_modal.svelte';
 	import { browser } from '$app/environment';
 	import type { ExtractedExercises } from '../../../../routes/(protected)/analyze/types';

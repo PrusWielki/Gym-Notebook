@@ -3,7 +3,6 @@
 	import TrainingDayUpdate from '$lib/components/training_day/training_day_update.svelte';
 	import type { GetPlansResponse } from '../../api/plans/[planId]/+server';
 	import { browser } from '$app/environment';
-	import { error } from '@sveltejs/kit';
 
 	export let data: PageData;
 	let plan: GetPlansResponse;

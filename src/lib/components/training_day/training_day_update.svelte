@@ -2,6 +2,7 @@
 	import notificationMessage from '$lib/store/notifications';
 	import { showNotification } from '$lib/utils/show-notification';
 	import { browser } from '$app/environment';
+	import RecentHistoryModal from '../modals/recent_history_modal/recent_history_modal.svelte';
 	export let day: App.TrainingDay;
 	// export let targetReps: number;
 	// export let targetRpe: number;
@@ -11,6 +12,9 @@
 	export let currentWeek: number;
 	export let numberOfDays: number;
 	let status: 'Saving' | 'Done' = 'Done';
+
+	let modal: HTMLDialogElement;
+	let currentExercise: string = '';
 
 	let exerciseDetailSetsArray: Array<App.ExerciseDetailSet> = [];
 
@@ -99,7 +103,15 @@
 			{#each Array(exercise.sets) as _, index}
 				<div class="day-row-input">
 					{#if index === 0}
-						<h5>{exercise.exercise_type_name}</h5>
+						<button
+							class="exercise-type-button"
+							on:click={() => {
+								if (modal && exercise.exercise_type_name) {
+									currentExercise = exercise.exercise_type_name;
+									modal.show();
+								}
+							}}>{exercise.exercise_type_name}</button
+						>
 					{:else}
 						<div />
 					{/if}
@@ -123,6 +135,7 @@
 		{/each}
 	</div>
 	<button disabled={status === 'Saving'} on:click={onSave}>save</button>
+	<RecentHistoryModal {modal} exerciseType={currentExercise} />
 {/if}
 
 <style lang="postcss">
