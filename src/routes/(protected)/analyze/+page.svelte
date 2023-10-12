@@ -1,6 +1,5 @@
 <script lang="ts">
 	import Statistics from '$lib/components/analyze/statistics/statistics.svelte';
-
 	import { convertTZ } from '$lib/utils/convert-timezones';
 	import type { PageData } from './$types';
 	import type { Exercises, ExtractedExercises } from './types';
