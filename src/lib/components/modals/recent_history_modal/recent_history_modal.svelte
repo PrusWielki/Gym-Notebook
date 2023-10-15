@@ -179,7 +179,19 @@
 </dialog>
 
 <style lang="postcss">
+	dialog {
+		&::-webkit-scrollbar {
+			width: 4px;
+			height: 4px;
+			margin-left: 10px;
+		}
+		&::-webkit-scrollbar-thumb {
+			background: var(--surface-4);
+			border-radius: 2px;
+		}
+	}
 	.stats-container {
+		overflow: auto;
 		display: flex;
 		flex-direction: column;
 		gap: var(--size-4);
@@ -197,7 +209,7 @@
 		}
 
 		width: 22vw;
-		height: fit-content;
+		height: 100%;
 		align-items: center;
 	}
 	.close-button {
