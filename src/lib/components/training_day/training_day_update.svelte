@@ -104,7 +104,7 @@
 				<div class="day-row-input">
 					{#if index === 0}
 						<button
-							class="exercise-type-button"
+							class="exercise_type_button"
 							on:click={() => {
 								if (modal && exercise.exercise_type_name) {
 									currentExercise = exercise.exercise_type_name;
@@ -134,15 +134,19 @@
 			{/each}
 		{/each}
 	</div>
-	<button disabled={status === 'Saving'} on:click={onSave}>save</button>
+	<button class="save-button" disabled={status === 'Saving'} on:click={onSave}>save</button>
 	<RecentHistoryModal bind:modal exerciseType={currentExercise} />
 {/if}
 
 <style lang="postcss">
 	.exercise_type_button {
 		all: unset;
-		appearance: none;
 		font-size: var(--font-size-fluid-0);
+		padding: 0;
+		background: transparent;
+		color: var(--text-1);
+		font-weight: var(--font-weight-8);
+		text-wrap: balance;
 	}
 	.day-container {
 		display: flex;
@@ -159,7 +163,7 @@
 			font-size: var(--font-size-fluid-0);
 		}
 	}
-	button {
+	.save-button {
 		background-color: var(--button-1);
 		border-radius: var(--radius-1);
 		padding: var(--size-fluid-1) var(--size-fluid-2);

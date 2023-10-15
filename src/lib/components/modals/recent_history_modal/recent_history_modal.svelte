@@ -74,6 +74,7 @@
 			.then((response) => {
 				response.json().then((response) => {
 					data = response.data;
+					console.log(data);
 				});
 			})
 			.catch((error) => showNotification('fetch error' + error, 2000, notificationMessage));
