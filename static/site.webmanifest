@@ -58,6 +58,6 @@
 	"description": "A replacement for my gym notebook",
 	"dir": "ltr",
 	"lang": "en",
-	"orientation": "any",
+	"orientation": "portrait",
 	"categories": ["education", "fitness", "health", "lifestyle", "productivity", "social"]
 }
