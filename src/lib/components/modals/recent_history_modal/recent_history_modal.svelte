@@ -59,7 +59,7 @@
 			});
 		extractedData &&
 			extractedData.sort((a, b) => {
-				return new Date(b.creation_date).getTime() - new Date(a.creation_date).getTime();
+				return new Date(a.creation_date).getTime() - new Date(b.creation_date).getTime();
 			});
 	};
 	const extractData = (data: Exercises) => {
