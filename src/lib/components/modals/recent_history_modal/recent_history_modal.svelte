@@ -124,6 +124,7 @@
 
 <dialog bind:this={modal}>
 	<div class="stats-container">
+		<h5>{exerciseType}</h5>
 		<Line
 			data={{ labels: lineData.labels, datasets: lineData.datasets.slice(1, 2) }}
 			options={{
@@ -168,14 +169,13 @@
 					}
 				}
 			}}
-		/>
+		/><button
+			class="close-button"
+			on:click|preventDefault={() => {
+				modal.close();
+			}}>close</button
+		>
 	</div>
-	<button
-		class="close-button"
-		on:click|preventDefault={() => {
-			modal.close();
-		}}>close</button
-	>
 </dialog>
 
 <style lang="postcss">
@@ -183,8 +183,22 @@
 		display: flex;
 		flex-direction: column;
 		gap: var(--size-4);
-		width: 80vw;
-		height: 80vh;
+		@media (--sm-n-below) {
+			width: 80vw;
+		}
+		@media (--md-only) {
+			width: 70vw;
+		}
+		@media (--lg-only) {
+			width: 50vw;
+		}
+		@media (--xl-only) {
+			width: 38vw;
+		}
+
+		width: 22vw;
+		height: fit-content;
+		align-items: center;
 	}
 	.close-button {
 		background-color: var(--button-1);
