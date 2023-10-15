@@ -105,7 +105,7 @@
 					{#if index === 0}
 						<button
 							class="exercise_type_button"
-							on:click={() => {
+							on:click|preventDefault={() => {
 								if (modal && exercise.exercise_type_name) {
 									currentExercise = exercise.exercise_type_name;
 									modal.showModal();

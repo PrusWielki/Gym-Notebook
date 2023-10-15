@@ -6,7 +6,6 @@ export const deletePlanElementsAfterUpdate = async (
 	supabase: SupabaseClient
 ) => {
 	const erred: Array<PostgrestError> = [];
-	console.log(toRemove);
 	toRemove.forEach(async (element) => {
 		switch (element.type) {
 			case 'Day':
