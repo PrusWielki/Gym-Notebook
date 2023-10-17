@@ -5,7 +5,7 @@
 	import { showNotification } from '$lib/utils/show-notification';
 	import notificationMessage from '$lib/store/notifications';
 	export let exercises: Array<{ name: string; id: number }> | null;
-	export let periodizations: Array<{ type: string }> | null;
+	export let periodizations: Array<{ type: string }> | null = null;
 
 	let plans: Array<{ id: number; name: string }> | null;
 	let periodization: string = '';

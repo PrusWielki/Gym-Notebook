@@ -3,7 +3,7 @@
 	import notificationMessage from '$lib/store/notifications';
 	import TrainingDayInput from '$lib/components/training_day/training_day_input.svelte';
 
-	export let periodizations: Array<{ type: string }> | null;
+	export let periodizations: Array<{ type: string }> | null = null;
 	export let exercises: Array<{ name: string; id: number }> | null;
 
 	let periodization: string;
@@ -103,7 +103,7 @@
 			>
 		{/if}
 	{/each}
-	{#if periodization === 'None' || periodization === ''}
+	{#if periodization === 'None' || periodization === '' || !periodization}
 		<button
 			on:click|preventDefault={() => {
 				if (weeks)

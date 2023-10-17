@@ -56,11 +56,11 @@
 				<ExistingPlan plans={data.plans.data} />
 			</div>
 			<div class={`${checked === 'New' ? '' : 'hidden'}`}>
-				<NewPlan periodizations={data.periodizations.data} exercises={data.exercises.data} />
+				<NewPlan exercises={data.exercises.data} />
 			</div>
 
 			<div class={`${checked === 'Edit' ? '' : 'hidden'}`}>
-				<EditPlan periodizations={data.periodizations.data} exercises={data.exercises.data} />
+				<EditPlan exercises={data.exercises.data} />
 			</div>
 		</div>
 	</div>
