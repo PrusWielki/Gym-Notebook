@@ -64,6 +64,7 @@
 	};
 	const extractData = (data: Exercises) => {
 		mapAndSortArray(data);
+
 		repsArray = [];
 		weightsArray = [];
 		datesArray = [];
@@ -78,6 +79,7 @@
 					datesArray.push(exercise.creation_date.slice(5, 10).replace('T', ' '));
 				}
 			});
+
 		lineData.labels = datesArray.slice(datesArray.length - 3, datesArray.length);
 		lineData.datasets[0].data = repsArray.slice(repsArray.length - 3, repsArray.length);
 		lineData.datasets[1].data = weightsArray.slice(weightsArray.length - 3, weightsArray.length);
@@ -115,6 +117,7 @@
 					rect.left <= event.clientX &&
 					event.clientX <= rect.left + rect.width;
 				if (!isInDialog) {
+					extractedData = [];
 					modal.close();
 				}
 			});
@@ -172,6 +175,7 @@
 		/><button
 			class="close-button"
 			on:click|preventDefault={() => {
+				extractedData = [];
 				modal.close();
 			}}>close</button
 		>
