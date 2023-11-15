@@ -18,7 +18,7 @@
 				plan = result;
 				if (plan.data) {
 					chosenWeek = plan.data[0].Weeks[data?.plan.current_week];
-					chosenDay = chosenWeek.Days[data?.plan.current_day];
+					if (chosenWeek?.Days) chosenDay = chosenWeek.Days[data?.plan.current_day];
 				}
 			});
 			state = 'Done';
@@ -45,9 +45,11 @@
 				{#if chosenWeek}
 					<select required bind:value={chosenDay}>
 						<option value="" disabled selected>Day</option>
-						{#each chosenWeek.Days as day, index}
-							<option value={day}>{day.name}</option>
-						{/each}
+						{#if chosenWeek?.Days}
+							{#each chosenWeek.Days as day, index}
+								<option value={day}>{day.name}</option>
+							{/each}
+						{/if}
 					</select>
 				{/if}
 				{#if chosenDay && chosenWeek}
@@ -56,7 +58,7 @@
 							day={chosenDay}
 							plansUsersId={data.plan.id}
 							currentWeek={chosenWeek.order - 1}
-							numberOfDays={plan.data[0].Weeks[data?.plan.current_week].Days.length}
+							numberOfDays={plan.data[0].Weeks[data?.plan.current_week]?.Days?.length}
 							numberOfWeeks={plan.data[0].Weeks.length}
 						/>
 					</form>
