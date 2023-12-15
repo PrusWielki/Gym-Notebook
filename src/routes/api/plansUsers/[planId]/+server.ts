@@ -15,6 +15,6 @@ export async function POST({ locals: { supabase }, params }) {
 	const { planId } = params;
 	const { error: insertError } = await supabase.from('Plans_Users').insert({ plan_id: planId });
 
-	if (insertError) throw error(400, insertError.message);
+	if (insertError) error(400, insertError.message);
 	return json({ code: 200 });
 }

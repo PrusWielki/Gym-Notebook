@@ -16,6 +16,6 @@ export const actions: Actions = {
 			return fail(500, { message: 'Server error. Try again later.', success: false, email });
 		}
 
-		throw redirect(302, '/train');
+		redirect(302, '/train');
 	}
 };

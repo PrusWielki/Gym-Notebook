@@ -28,5 +28,5 @@ export const deletePlanElementsAfterUpdate = async (
 				break;
 		}
 	});
-	if (erred.length > 0) throw error(400, erred[0]);
+	if (erred.length > 0) error(400, erred[0]);
 };

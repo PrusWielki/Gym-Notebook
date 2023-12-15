@@ -17,7 +17,7 @@ export const updateThePlan = async (
 		.from('Plans')
 		.upsert({ id: planId, name: planName, custom, periodization })
 		.select();
-	if (upsertError) throw error(400, upsertError);
+	if (upsertError) error(400, upsertError);
 
 	weeks.forEach(async (week) => {
 		if (week) {

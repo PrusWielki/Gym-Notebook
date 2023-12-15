@@ -27,7 +27,7 @@ export async function POST({ request, locals: { supabase } }) {
 		response.success = false;
 		response.reason = reason.message;
 	});
-	if (!response.success) throw error(400, response.reason);
+	if (!response.success) error(400, response.reason);
 	else return json({ code: 200 });
 }
 export async function GET({ locals: { supabase } }) {

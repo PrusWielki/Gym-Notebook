@@ -5,6 +5,6 @@ export const load: LayoutServerLoad = async ({ locals: { getSession } }) => {
 	const session = await getSession();
 	if (!session) {
 		// the user is not signed in
-		throw error(401, { message: 'Unauthorized' });
+		error(401, { message: 'Unauthorized' });
 	}
 };
