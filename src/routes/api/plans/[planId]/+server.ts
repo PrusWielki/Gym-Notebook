@@ -31,8 +31,7 @@ export type GetPlansResponse = {
 								target_reps: number;
 								target_rpe: number;
 								weight: number;
-								creation_date:string;
-
+								creation_date: string;
 							}[];
 						}[];
 					}[];
@@ -48,9 +47,9 @@ export async function GET({ locals: { supabase }, params }) {
 			`id, name, periodization, custom, Weeks (id, order, Days (id, order, name, notes, Exercise_Detail (id, order, sets, target_reps, target_rpe, exercise_type_name, Exercise_Detail_Sets (id, set, reps, rpe, target_reps, target_rpe))))`
 		)
 		.eq('id', params.planId)
-		.order('order', { foreignTable: 'Weeks' })
-		.order('order', { foreignTable: 'Weeks.Days' })
-		.order('order', { foreignTable: 'Weeks.Days.Exercise_Detail' });
+		.order('order', { referencedTable: 'Weeks' })
+		.order('order', { referencedTable: 'Weeks.Days' })
+		.order('order', { referencedTable: 'Weeks.Days.Exercise_Detail' });
 	if (error) return json({ code: 400, error });
 
 	return json({ code: 200, data });
