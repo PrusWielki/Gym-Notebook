@@ -15,7 +15,7 @@
 		height: 100svh;
 		justify-content: center;
 		align-items: center;
-		gap: var(--size-fluid-4);
+		gap: var(--size-fluid-7);
 	}
 	.link-container {
 		display: flex;
@@ -25,7 +25,6 @@
 	}
 	a {
 		font-size: var(--font-size-fluid-2);
-		text-decoration: none;
 		color: var(--text-1);
 		font-weight: var(--font-weight-6);
 		transition: color var(--ease-4);
@@ -42,5 +41,6 @@
 	}
 	h1 {
 		text-align: center;
+		font-size: var(--font-size-fluid-3);
 	}
 </style>

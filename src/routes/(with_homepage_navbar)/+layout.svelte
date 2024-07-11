@@ -11,13 +11,9 @@
 		align-items: center;
 	}
 	a {
-		padding-left: var(--size-fluid-1);
+		padding: var(--size-fluid-1) var(--size-fluid-2);
 		color: var(--text-1);
-		font-size: var(--font-size-fluid-1);
+		font-size: var(--font-size-4);
 		font-weight: var(--font-weight-7);
-		text-decoration: none;
-		&:hover {
-			text-decoration: var(--accent) wavy underline;
-		}
 	}
 </style>
