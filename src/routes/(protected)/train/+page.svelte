@@ -33,25 +33,24 @@
 				<h4>Loading...</h4>
 			{:else if plan?.data && data?.plan}
 				<h4>{plan.data[0].name}</h4>
-				{#if chosenWeek}
-					<h5>Week {chosenWeek.order}</h5>
-				{/if}
-				<select required bind:value={chosenWeek}>
-					<option value="" disabled>Week</option>
-					{#each plan.data[0].Weeks as week}
-						<option value={week}>Week {week.order}</option>
-					{/each}
-				</select>
-				{#if chosenWeek}
-					<select required bind:value={chosenDay}>
-						<option value="" disabled selected>Day</option>
-						{#if chosenWeek?.Days}
-							{#each chosenWeek.Days as day, index}
-								<option value={day}>{day.name}</option>
-							{/each}
-						{/if}
+				<div class="select-container">
+					<select required bind:value={chosenWeek}>
+						<option value="" disabled>Week</option>
+						{#each plan.data[0].Weeks as week}
+							<option value={week}>Week {week.order}</option>
+						{/each}
 					</select>
-				{/if}
+					{#if chosenWeek}
+						<select required bind:value={chosenDay}>
+							<option value="" disabled selected>Day</option>
+							{#if chosenWeek?.Days}
+								{#each chosenWeek.Days as day, index}
+									<option value={day}>{day.name}</option>
+								{/each}
+							{/if}
+						</select>
+					{/if}
+				</div>
 				{#if chosenDay && chosenWeek}
 					<form>
 						<TrainingDayUpdate
@@ -78,6 +77,17 @@
 		width: 100%;
 		gap: var(--size-fluid-2);
 	}
+	.select-container {
+		display: flex;
+		width: 100%;
+		justify-content: space-between;
+		gap: var(--size-3);
+		@media (--md-n-above) {
+			flex-direction: column;
+			justify-content: center;
+			align-items: center;
+		}
+	}
 	form {
 		display: flex;
 		flex-direction: column;
@@ -89,26 +99,21 @@
 	}
 
 	h4 {
-		font-size: var(--font-size-fluid-3);
+		font-size: var(--font-size-4);
 		text-align: center;
 		background: var(--gradient-3);
 		-webkit-background-clip: text;
 		-webkit-text-fill-color: transparent;
 	}
-	h5 {
-		font-size: var(--font-size-fluid-2);
-	}
 	select {
 		appearance: none;
 		text-align: center;
 		padding: var(--size-1);
-		width: var(--size-11);
+		width: var(--size-12);
 		font-size: var(--font-size-1);
-		width: var(--size-fluid-8);
 		background-color: var(--surface-2);
 		text-align-last: center;
 		text-overflow: ellipsis;
-		width: var(--size-xxs);
 		@media (--md-n-above) {
 			width: var(--size-sm);
 		}

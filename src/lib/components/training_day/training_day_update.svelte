@@ -91,7 +91,6 @@
 
 {#if day.Exercise_Detail.length > 0}
 	<div class="day-container">
-		<h4>{day.name}</h4>
 		<div class="day-label-row">
 			<h5>Exercise</h5>
 			<h5>Sets</h5>
