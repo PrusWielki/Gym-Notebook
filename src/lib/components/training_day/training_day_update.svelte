@@ -49,7 +49,7 @@
 			}
 		});
 		exerciseDetailSetsArray = exerciseDetailSetsArray.filter((set) => set.reps);
-		if (exerciseDetailSetsArray.length <= 0) return;
+		// if (exerciseDetailSetsArray.length <= 0) return;
 		let newCurrentWeek = currentWeek;
 		let newCurrentDay = 0;
 

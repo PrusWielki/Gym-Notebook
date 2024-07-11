@@ -43,7 +43,7 @@
 					<form>
 						<TrainingDayUpdate
 							day={chosenDay}
-							plansUsersId={data?.planName[0].plan_id}
+							plansUsersId={data?.planName[0].id}
 							currentWeek={chosenWeek.order - 1}
 							numberOfDays={data.planData[0].Weeks[data?.planName[0].current_week]?.Days?.length}
 							numberOfWeeks={data.planData[0].Weeks.length}
