@@ -1,42 +1,30 @@
 <script lang="ts">
 	import type { PageData } from './$types';
 	import TrainingDayUpdate from '$lib/components/training_day/training_day_update.svelte';
-	import type { GetPlansResponse } from '../../api/plans/[planId]/+server';
 	import { browser } from '$app/environment';
 
 	export let data: PageData;
-	let plan: GetPlansResponse;
 	let chosenDay: App.TrainingDay;
 	let chosenWeek: App.Week;
 
-	let state: 'Loading' | 'Done' = 'Done';
-	if (data?.plan && browser) {
-		state = 'Loading';
+	let state: 'loading' | 'done' = 'loading';
 
-		fetch(`api/plans/${data.plan.plan_id}`, { method: 'GET' }).then(async (response) => {
-			await response.json().then((result) => {
-				plan = result;
-				if (plan.data) {
-					chosenWeek = plan.data[0].Weeks[data?.plan.current_week];
-					if (chosenWeek?.Days) chosenDay = chosenWeek.Days[data?.plan.current_day];
-				}
-			});
-			state = 'Done';
-		});
+	if (data.planData && data?.planName && browser) {
+		chosenWeek = data.planData[0].Weeks[data?.planName[0].current_week];
+		if (chosenWeek?.Days) chosenDay = chosenWeek.Days[data?.planName[0].current_day];
+		state = 'done';
 	}
 </script>
 
 <div class="wrapper">
 	<div class="container">
 		<div class="train-container">
-			{#if state === 'Loading'}
-				<h4>Loading...</h4>
-			{:else if plan?.data && data?.plan}
-				<h4>{plan.data[0].name}</h4>
+			{#if data.planData && data?.planName && state == 'done'}
+				<h4>{data.planData[0].name}</h4>
 				<div class="select-container">
 					<select required bind:value={chosenWeek}>
 						<option value="" disabled>Week</option>
-						{#each plan.data[0].Weeks as week}
+						{#each data.planData[0].Weeks as week}
 							<option value={week}>Week {week.order}</option>
 						{/each}
 					</select>
@@ -55,10 +43,10 @@
 					<form>
 						<TrainingDayUpdate
 							day={chosenDay}
-							plansUsersId={data.plan.id}
+							plansUsersId={data?.planName[0].plan_id}
 							currentWeek={chosenWeek.order - 1}
-							numberOfDays={plan.data[0].Weeks[data?.plan.current_week]?.Days?.length}
-							numberOfWeeks={plan.data[0].Weeks.length}
+							numberOfDays={data.planData[0].Weeks[data?.planName[0].current_week]?.Days?.length}
+							numberOfWeeks={data.planData[0].Weeks.length}
 						/>
 					</form>
 				{/if}
