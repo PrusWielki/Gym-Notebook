@@ -28,9 +28,5 @@
 	"dir": "ltr",
 	"lang": "en",
 	"orientation": "any",
-	"categories": [
-		"health",
-		"lifestyle",
-		"productivity"
-	]
+	"categories": ["health", "lifestyle", "productivity"]
 }

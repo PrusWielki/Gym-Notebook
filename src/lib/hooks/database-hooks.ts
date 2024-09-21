@@ -25,11 +25,13 @@ export const pushImage = async (image: File) => {
 				visionData: bodyToSend,
 				imageName: image.name,
 				imageType: (reader.result as string).split('base64,')[0]
-			}).then(() => {
-				showNotification('File processed!', 1000, 'Success');
-			}).catch(() => {
-				showNotification("Couldn't process file!", 2000, 'Failure');
-			});
+			})
+				.then(() => {
+					showNotification('File processed!', 1000, 'Success');
+				})
+				.catch(() => {
+					showNotification("Couldn't process file!", 2000, 'Failure');
+				});
 		} else showNotification("Couldn't process file!", 2000, 'Failure');
 	};
 };

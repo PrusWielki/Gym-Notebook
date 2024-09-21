@@ -75,7 +75,7 @@
 					rect.left <= event.clientX &&
 					event.clientX <= rect.left + rect.width;
 				if (!isInDialog) {
-					open = false
+					open = false;
 					handleCloseDialog();
 				}
 			});
@@ -100,7 +100,7 @@
 	<div class="relative w-full h-full py-10">
 		<button
 			on:click={() => {
-				open = false
+				open = false;
 				handleCloseDialog();
 			}}
 			class="absolute cursor-pointer fill-primary w-8 h-8 right-3 top-2 btn btn-ghost p-0"
@@ -153,8 +153,7 @@
 					<li>
 						<button
 							on:click={async () => {
-								if(docId)
-								{
+								if (docId) {
 									open = false;
 									handleCloseDialog();
 									let db = getFirestore();
@@ -177,7 +176,6 @@
 										.catch(() => {
 											showNotification("Couldn't delete note!", 2000, 'Failure');
 										});
-									
 								}
 							}}
 							class="btn btn-base-100 dropdown-content menu btn-small">Delete</button

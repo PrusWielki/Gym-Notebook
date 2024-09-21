@@ -25,7 +25,7 @@
 	let currentText = '';
 	let currentImage = '';
 	let currentSummary = '';
-	let currentId: string|null = null;
+	let currentId: string | null = null;
 	let unsubscribe: any = null;
 
 	const getData = (uid: string | null | undefined) => {
@@ -79,6 +79,6 @@
 		/>
 	</div>
 	<div class="fixed lg:hidden block right-6 bottom-[5lvh]">
-		<PlusButton/>
+		<PlusButton />
 	</div>
 </div>
