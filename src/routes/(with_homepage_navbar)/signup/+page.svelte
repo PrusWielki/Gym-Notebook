@@ -7,7 +7,7 @@
 		signInWithPopup
 	} from 'firebase/auth';
 	import { goto } from '$app/navigation';
-	import { session } from '$lib/session';
+	import { session, type SessionState } from '$lib/session';
 	import { showNotification } from '$lib/hooks/show-notification';
 
 	let email: string = '';
@@ -19,7 +19,7 @@
 			await createUserWithEmailAndPassword(auth, email, password)
 				.then((result) => {
 					const { user } = result;
-					session.update((cur: any) => {
+					session.update((cur: SessionState) => {
 						return {
 							...cur,
 							user,
@@ -41,18 +41,20 @@
 		const provider = new GoogleAuthProvider();
 		await signInWithPopup(auth, provider)
 			.then((result) => {
-				const { displayName, email, photoURL, uid } = result?.user;
-				session.set({
-					loggedIn: true,
-					user: {
-						displayName,
-						email,
-						photoURL,
-						uid
-					}
-				});
+				if (result && result.user) {
+					const { displayName, email, photoURL, uid } = result.user;
+					session.set({
+						loggedIn: true,
+						user: {
+							displayName,
+							email,
+							photoURL,
+							uid
+						}
+					});
 
-				goto('/main');
+					goto('/main');
+				}
 			})
 			.catch((error) => {
 				return error;

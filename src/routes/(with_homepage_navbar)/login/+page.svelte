@@ -37,18 +37,20 @@
 		const provider = new GoogleAuthProvider();
 		await signInWithPopup(auth, provider)
 			.then((result) => {
-				const { displayName, email, photoURL, uid } = result?.user;
-				session.set({
-					loggedIn: true,
-					user: {
-						displayName,
-						email,
-						photoURL,
-						uid
-					}
-				});
+				if (result && result.user) {
+					const { displayName, email, photoURL, uid } = result.user;
+					session.set({
+						loggedIn: true,
+						user: {
+							displayName,
+							email,
+							photoURL,
+							uid
+						}
+					});
 
-				goto('/main');
+					goto('/main');
+				}
 			})
 			.catch((error) => {
 				return error;

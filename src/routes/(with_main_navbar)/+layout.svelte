@@ -16,7 +16,7 @@
 		});
 	let resultsMenu: HTMLDetailsElement;
 	if (browser)
-		document.addEventListener('click', function (e) {
+		document.addEventListener('click', function () {
 			if (resultsMenu && resultsMenu.removeAttribute) resultsMenu.removeAttribute('open');
 		});
 </script>
@@ -25,6 +25,7 @@
 	<div class="w-full fixed top-0 font-montserrat z-10 backdrop-blur-md bg-transparent">
 		<div class="navbar max-w-screen-xl mx-auto px-4">
 			<div class="navbar-start">
+				<!-- svelte-ignore a11y_no_noninteractive_element_interactions -->
 				<details
 					class="dropdown"
 					on:click={(e) => {
@@ -54,6 +55,7 @@
 							/></svg
 						>
 					</summary>
+					<!-- svelte-ignore a11y_no_noninteractive_tabindex -->
 					<ul
 						tabindex="0"
 						class="menu menu-sm dropdown-content mt-3 z-[1] p-2 shadow gap-4 bg-base-200 rounded-box w-52"
@@ -69,7 +71,7 @@
 										.then(() => {
 											goto('/');
 										})
-										.catch((error) => {
+										.catch(() => {
 											showNotification('Logout Error!', 2000, 'Failure');
 										});
 								}}
@@ -103,7 +105,7 @@
 							.then(() => {
 								goto('/');
 							})
-							.catch((error) => {
+							.catch(() => {
 								showNotification('Logout Error!', 2000, 'Failure');
 							});
 					}}

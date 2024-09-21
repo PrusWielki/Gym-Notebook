@@ -15,6 +15,7 @@
 	}}
 />
 <button
+	aria-label="add a note"
 	on:click={() => {
 		const element = document.getElementById('fileInput');
 		if (element) element.click();

@@ -3,7 +3,7 @@
 	import CardModal from '$lib/components/card_modal/card_modal.svelte';
 	import PlusButton from '$lib/components/buttons/plus_button.svelte';
 	import { collection, getFirestore, onSnapshot, orderBy, query, where } from 'firebase/firestore';
-	import type { QueryDocumentSnapshot, QuerySnapshot } from 'firebase/firestore/lite';
+	import type { QueryDocumentSnapshot } from 'firebase/firestore/lite';
 	import { session } from '$lib/session';
 	import { app } from '$lib/firebase.client';
 	import { onDestroy } from 'svelte';
@@ -26,7 +26,7 @@
 	let currentImage = '';
 	let currentSummary = '';
 	let currentId: string | null = null;
-	let unsubscribe: any = null;
+	let unsubscribe: (() => void) | null = null;
 
 	const getData = (uid: string | null | undefined) => {
 		if (uid && uid !== '' && collectionRef) {

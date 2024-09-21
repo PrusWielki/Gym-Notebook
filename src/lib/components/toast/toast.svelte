@@ -1,5 +1,5 @@
 <script>
-	import { fade, fly } from 'svelte/transition';
+	import { fade } from 'svelte/transition';
 	import notificationMessage from '$lib/store/notification';
 	import { notificationType } from '$lib/store/notification';
 	let message = '';

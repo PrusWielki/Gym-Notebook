@@ -9,7 +9,7 @@
 
 	let dialogRef: HTMLDivElement;
 	let backdropRef: HTMLDivElement;
-	let imageSource: any = $state(null);
+	let imageSource: string | null = $state(null);
 	let loading: boolean = $state(true);
 	let failed: boolean = $state(false);
 	let resultsMenu: HTMLDetailsElement;
@@ -49,7 +49,6 @@
 		document.getElementsByTagName('body')[0].style.overflow = 'auto';
 	};
 	$effect(() => {
-		open;
 		imageSource = null;
 		loading = true;
 
@@ -83,7 +82,7 @@
 	});
 	$effect(() => {
 		if (browser)
-			document.addEventListener('click', function (e) {
+			document.addEventListener('click', function () {
 				if (resultsMenu && resultsMenu.removeAttribute) resultsMenu.removeAttribute('open');
 			});
 	});
@@ -99,6 +98,7 @@
 >
 	<div class="relative w-full h-full py-10">
 		<button
+			aria-label="Close Modal"
 			on:click={() => {
 				open = false;
 				handleCloseDialog();
@@ -121,7 +121,7 @@
 		</button>
 
 		<div class="absolute cursor-pointer w-6 h-6 right-4 top-14">
-			<!-- svelte-ignore a11y-no-noninteractive-element-interactions -->
+			<!-- svelte-ignore a11y_no_noninteractive_element_interactions -->
 			<details
 				class="dropdown dropdown-end w-full h-full"
 				on:click={(e) => {
@@ -167,7 +167,7 @@
 														.then(() => {
 															showNotification('Note deleted succesfully!', 2000, 'Success');
 														})
-														.catch((error) => {
+														.catch(() => {
 															showNotification("Couldn't delete note!", 2000, 'Failure');
 														});
 												}
