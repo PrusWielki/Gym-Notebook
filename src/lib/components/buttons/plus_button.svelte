@@ -1,5 +1,4 @@
 <script lang="ts">
-	import { pushImage } from '$lib/hooks/database-hooks';
 </script>
 
 <input
@@ -9,9 +8,6 @@
 	name="filename"
 	on:click={(e) => {
 		e.currentTarget.value = '';
-	}}
-	on:change={async (e) => {
-		if (e.currentTarget?.files) await pushImage(e.currentTarget.files[0]);
 	}}
 />
 <button

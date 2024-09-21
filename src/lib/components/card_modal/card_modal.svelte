@@ -99,7 +99,7 @@
 	<div class="relative w-full h-full py-10">
 		<button
 			aria-label="Close Modal"
-			on:click={() => {
+			onclick={() => {
 				open = false;
 				handleCloseDialog();
 			}}
@@ -124,12 +124,12 @@
 			<!-- svelte-ignore a11y_no_noninteractive_element_interactions -->
 			<details
 				class="dropdown dropdown-end w-full h-full"
-				on:click={(e) => {
+				onclick={(e) => {
 					if (resultsMenu.open) {
 						e.stopPropagation();
 					}
 				}}
-				on:keydown={(e) => {
+				onkeydown={(e) => {
 					if (resultsMenu.open) {
 						e.stopPropagation();
 					}
@@ -152,7 +152,7 @@
 				<ul class="dropdown-content menu">
 					<li>
 						<button
-							on:click={async () => {
+							onclick={async () => {
 								if (docId) {
 									open = false;
 									handleCloseDialog();

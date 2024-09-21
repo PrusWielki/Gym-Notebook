@@ -1,3 +1,6 @@
+import daisyui from 'daisyui';
+import tailwindTypography from '@tailwindcss/typography';
+
 /** @type {import('tailwindcss').Config} */
 module.exports = {
 	content: ['./src/**/*.{html,js,svelte,ts}'],
@@ -49,5 +52,5 @@ module.exports = {
 		darkTheme: 'dracula',
 		lightTheme: 'fantasy'
 	},
-	plugins: [require('@tailwindcss/typography'), require('daisyui')]
+	plugins: [tailwindTypography, daisyui]
 };
