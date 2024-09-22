@@ -1,8 +1,8 @@
 // Import the functions you need from the SDKs you need
 import { initializeApp } from 'firebase/app';
-import { getAuth } from 'firebase/auth';
+import { connectAuthEmulator, getAuth } from 'firebase/auth';
 import type { FirebaseApp } from 'firebase/app';
-import type { Firestore } from 'firebase/firestore';
+import { connectFirestoreEmulator, getFirestore, type Firestore } from 'firebase/firestore';
 import type { Auth } from 'firebase/auth';
 import { browser } from '$app/environment';
 // TODO: Add SDKs for Firebase products that you want to use
@@ -32,5 +32,11 @@ export const initializeFirebase = () => {
 	if (!app) {
 		app = initializeApp(firebaseConfig);
 		auth = getAuth(app);
+		db = getFirestore();
+
+		if (location.hostname === 'localhost' || location.hostname === '127.0.0.1') {
+			connectAuthEmulator(auth, 'http://127.0.0.1:9099');
+			connectFirestoreEmulator(db, '127.0.0.1', 8080);
+		}
 	}
 };
