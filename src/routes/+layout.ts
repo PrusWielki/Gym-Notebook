@@ -2,7 +2,7 @@
 
 import { initializeFirebase, auth } from '$lib/firebase.client';
 import { browser } from '$app/environment';
-import { onAuthStateChanged } from 'firebase/auth';
+import { connectAuthEmulator, onAuthStateChanged } from 'firebase/auth';
 
 export async function load({ url }) {
 	if (browser) {
@@ -11,7 +11,11 @@ export async function load({ url }) {
 		} catch (ex) {
 			console.error(ex);
 		}
+		if (location.hostname === "localhost"||location.hostname === "127.0.0.1") {
+			connectAuthEmulator(auth, "http://127.0.0.1:9099");
+		}
 	}
+
 
 	function getAuthUser() {
 		return new Promise((resolve) => {
