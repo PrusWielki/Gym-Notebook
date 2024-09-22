@@ -22,9 +22,9 @@
 </script>
 
 {#if loggedIn}
-	<div class="w-full fixed top-0 font-montserrat z-10 backdrop-blur-md bg-transparent">
-		<div class="navbar max-w-screen-xl mx-auto px-4">
-			<div class="navbar-start">
+	<div class="fixed top-0 z-10 w-full bg-transparent font-montserrat backdrop-blur-md">
+		<div class="navbar mx-auto max-w-screen-xl px-4">
+			<div class="navbar-start w-fit lg:w-1/2">
 				<!-- svelte-ignore a11y_no_noninteractive_element_interactions -->
 				<details
 					class="dropdown"
@@ -58,7 +58,7 @@
 					<!-- svelte-ignore a11y_no_noninteractive_tabindex -->
 					<ul
 						tabindex="0"
-						class="menu menu-sm dropdown-content mt-3 z-[1] p-2 shadow gap-4 bg-base-200 rounded-box w-52"
+						class="menu dropdown-content menu-sm z-[1] mt-3 w-52 gap-4 rounded-box bg-base-200 p-2 shadow"
 					>
 						<li>
 							<ThemePickerSelect class="" />
@@ -80,23 +80,15 @@
 						</li>
 					</ul>
 				</details>
-				<a href="/main" class="btn btn-ghost text-xl font-semibold">Notes Reader</a>
-				<!-- 				<input
-					class="input input-bordered input-secondary block lg:hidden"
-					placeholder="search..."
-				/> -->
+				<a href="/main" class="btn btn-ghost hidden text-xl font-semibold lg:flex">Gym Notebook</a>
 			</div>
-			<div class="navbar-center">
-				<button
-					on:click={() => {
-						const element = document.getElementById('fileInput');
-						if (element) element.click();
-					}}
-					class="btn btn-primary hidden lg:block mx-auto">Add a new note</button
-				>
+			<div class="navbar-center mx-auto gap-2 lg:mx-0">
+				<a href="/train" class="btn btn-ghost mx-auto text-base lg:text-lg">Train</a>
+				<a href="/train" class="btn btn-ghost mx-auto text-base lg:text-lg">Prepare</a>
+				<a href="/train" class="btn btn-ghost mx-auto text-base lg:text-lg">Reflect</a>
 			</div>
 
-			<div class="navbar-end hidden lg:flex gap-4">
+			<div class="navbar-end hidden gap-4 lg:flex">
 				<ThemePicker class="" />
 				<button
 					on:click={() => {

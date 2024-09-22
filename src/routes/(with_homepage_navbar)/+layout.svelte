@@ -5,7 +5,7 @@
 <nav class="w-full fixed top-0 font-montserrat z-10 backdrop-blur-md bg-transparent">
 	<div class="navbar max-w-screen-xl mx-auto px-4">
 		<div class="navbar-start">
-			<a href="/" class="btn btn-ghost text-xl font-semibold">Notes Reader</a>
+			<a href="/" class="btn btn-ghost text-xl font-semibold">Gym Notebook</a>
 		</div>
 
 		<div class="navbar-end gap-2">
