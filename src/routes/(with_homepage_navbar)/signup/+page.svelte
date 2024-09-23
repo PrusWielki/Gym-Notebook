@@ -27,7 +27,7 @@
 							loading: false
 						};
 					});
-					goto('/');
+					goto('/main');
 				})
 				.catch((error) => {
 					throw new Error(error);
@@ -62,23 +62,23 @@
 	}
 </script>
 
-<div class="w-full font-montserrat min-h-[100lvh] flex items-center">
+<div class="flex min-h-[100lvh] w-full items-center font-montserrat">
 	<form
-		class="max-w-md sm:w-full w-10/12 mx-auto px-4 flex flex-col items-center gap-4"
+		class="mx-auto flex w-10/12 max-w-md flex-col items-center gap-4 px-4 sm:w-full"
 		on:submit={handleRegister}
 	>
-		<h1 class="text-center text-xl font-bold sm:text-3xl mb-2">Glad to see You</h1>
-		<h2 class="text-center font-semibold max-w-lg w-fit [text-wrap:balance] mb-2">
+		<h1 class="mb-2 text-center text-xl font-bold sm:text-3xl">Glad to see You</h1>
+		<h2 class="mb-2 w-fit max-w-lg text-center font-semibold [text-wrap:balance]">
 			Just a few more steps before You can start converting Your notes
 		</h2>
 		<label
-			class="input input-bordered w-full input-neutral focus-within:input-primary flex items-center gap-2"
+			class="input-neutral input input-bordered flex w-full items-center gap-2 focus-within:input-primary"
 		>
 			<svg
 				xmlns="http://www.w3.org/2000/svg"
 				viewBox="0 0 16 16"
 				fill="currentColor"
-				class="w-4 h-4 opacity-70"
+				class="h-4 w-4 opacity-70"
 			>
 				<path
 					d="M2.5 3A1.5 1.5 0 0 0 1 4.5v.793c.026.009.051.02.076.032L7.674 8.51c.206.1.446.1.652 0l6.598-3.185A.755.755 0 0 1 15 5.293V4.5A1.5 1.5 0 0 0 13.5 3h-11Z"
@@ -89,12 +89,12 @@
 			</svg>
 			<input bind:value={email} type="text" class="grow text-lg" placeholder="Email" />
 		</label>
-		<label class="input input-bordered w-full flex items-center focus-within:input-primary gap-2">
+		<label class="input input-bordered flex w-full items-center gap-2 focus-within:input-primary">
 			<svg
 				xmlns="http://www.w3.org/2000/svg"
 				viewBox="0 0 16 16"
 				fill="currentColor"
-				class="w-4 h-4 opacity-70"
+				class="h-4 w-4 opacity-70"
 			>
 				<path
 					fill-rule="evenodd"
@@ -104,12 +104,12 @@
 			</svg>
 			<input bind:value={password} type="password" class="grow text-lg" placeholder="Password" />
 		</label>
-		<label class="input input-bordered w-full flex items-center focus-within:input-primary gap-2">
+		<label class="input input-bordered flex w-full items-center gap-2 focus-within:input-primary">
 			<svg
 				xmlns="http://www.w3.org/2000/svg"
 				viewBox="0 0 16 16"
 				fill="currentColor"
-				class="w-4 h-4 opacity-70"
+				class="h-4 w-4 opacity-70"
 			>
 				<path
 					fill-rule="evenodd"
@@ -124,15 +124,15 @@
 				class="grow text-lg"
 			/>
 		</label>
-		<button type="submit" class="btn w-full btn-primary text-lg">Sign up</button>
+		<button type="submit" class="btn btn-primary w-full text-lg">Sign up</button>
 		<p>Or</p>
 		<button
 			type="button"
 			on:click={loginWithGoogle}
-			class="btn w-full btn-neutral btn-outline gap-1 sm:gap-2"
+			class="btn btn-outline btn-neutral w-full gap-1 sm:gap-2"
 		>
 			<p
-				class="py-1 font-bold bg-[linear-gradient(to_right,theme(colors.red.500),theme(colors.yellow.500),theme(colors.green.500),theme(colors.blue.500))] inline-block text-transparent bg-clip-text"
+				class="inline-block bg-[linear-gradient(to_right,theme(colors.red.500),theme(colors.yellow.500),theme(colors.green.500),theme(colors.blue.500))] bg-clip-text py-1 font-bold text-transparent"
 			>
 				Sign up with Google
 			</p>
