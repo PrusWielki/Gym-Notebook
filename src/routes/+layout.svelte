@@ -21,7 +21,7 @@
 			});
 
 			if (loggedIn) {
-				goto('/main');
+				goto('/train');
 			}
 		} catch {
 			goto('/');

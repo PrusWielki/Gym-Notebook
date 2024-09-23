@@ -27,7 +27,7 @@
 							loading: false
 						};
 					});
-					goto('/main');
+					goto('/train');
 				})
 				.catch((error) => {
 					throw new Error(error);
@@ -53,7 +53,7 @@
 						}
 					});
 
-					goto('/main');
+					goto('/train');
 				}
 			})
 			.catch((error) => {

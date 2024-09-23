@@ -80,7 +80,7 @@
 						</li>
 					</ul>
 				</details>
-				<a href="/main" class="btn btn-ghost hidden text-xl font-semibold lg:flex">Gym Notebook</a>
+				<a href="/train" class="btn btn-ghost hidden text-xl font-semibold lg:flex">Gym Notebook</a>
 			</div>
 			<div class="navbar-center mx-auto gap-2 lg:mx-0">
 				<a href="/train" class="btn btn-ghost mx-auto text-base lg:text-lg">Train</a>
