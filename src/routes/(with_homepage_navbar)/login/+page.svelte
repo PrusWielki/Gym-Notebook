@@ -60,7 +60,7 @@
 
 <div class="flex min-h-[100lvh] w-full items-center font-montserrat">
 	<form
-		class="mx-auto flex w-10/12 max-w-md flex-col items-center gap-4 px-4 sm:w-full"
+		class="mx-auto flex w-10/12 max-w-md flex-col items-center gap-4 px-4 py-16 sm:w-full"
 		on:submit={loginWithMail}
 	>
 		<h1 class="mb-2 text-center text-2xl font-bold sm:text-3xl">Welcome back</h1>
