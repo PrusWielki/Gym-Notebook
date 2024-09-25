@@ -1,6 +1,9 @@
 <script lang="ts">
 	let selectedWeek = $state(0);
 	let selectedDay = $state(0);
+
+	// 1. Fetch the data
+	// 2. Map it
 </script>
 
 <section class="h-[100dvh] w-full">
@@ -35,11 +38,11 @@
 				<h2>Weight</h2>
 			</div>
 			<div class="grid w-full grid-cols-[2fr_1fr_1fr_1fr_1fr] gap-1">
-				<h2>asd</h2>
-				<h2>Set</h2>
-				<h2>asdasdad</h2>
-				<h2>RPE</h2>
-				<h2>Weight</h2>
+				<button class="btn btn-ghost">Dumbell Chest Press</button>
+				<h2>1</h2>
+				<h2>12-15</h2>
+				<h2>8-9</h2>
+				<h2>30</h2>
 			</div>
 		</section>
 	</div>
