@@ -83,9 +83,9 @@
 				<a href="/train" class="btn btn-ghost hidden text-xl font-semibold lg:flex">Gym Notebook</a>
 			</div>
 			<div class="navbar-center mx-auto gap-2 lg:mx-0">
-				<a href="/train" class="mx-autolg:text-lg btn btn-ghost btn-sm lg:btn-md">Train</a>
-				<a href="/train" class="mx-autolg:text-lg btn btn-ghost btn-sm lg:btn-md">Prepare</a>
-				<a href="/train" class="mx-autolg:text-lg btn btn-ghost btn-sm lg:btn-md">Reflect</a>
+				<a href="/train" class="btn btn-ghost btn-sm mx-auto lg:btn-md lg:text-lg">Train</a>
+				<a href="/train" class="btn btn-ghost btn-sm mx-auto lg:btn-md lg:text-lg">Prepare</a>
+				<a href="/train" class="btn btn-ghost btn-sm mx-auto lg:btn-md lg:text-lg">Reflect</a>
 			</div>
 
 			<div class="navbar-end hidden gap-4 lg:flex">
