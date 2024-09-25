@@ -23,7 +23,7 @@
 
 {#if loggedIn}
 	<div class="fixed top-0 z-10 w-full bg-transparent font-montserrat backdrop-blur-md">
-		<div class="navbar mx-auto max-w-screen-xl px-4">
+		<div class="navbar mx-auto min-h-0 max-w-screen-xl px-4">
 			<div class="navbar-start w-fit lg:w-1/2">
 				<!-- svelte-ignore a11y_no_noninteractive_element_interactions -->
 				<details
@@ -40,7 +40,7 @@
 					}}
 					bind:this={resultsMenu}
 				>
-					<summary tabindex="0" class="btn btn-ghost lg:hidden">
+					<summary tabindex="0" class="btn btn-ghost btn-sm lg:btn-md lg:hidden">
 						<svg
 							xmlns="http://www.w3.org/2000/svg"
 							class="h-5 w-5"
@@ -83,9 +83,9 @@
 				<a href="/train" class="btn btn-ghost hidden text-xl font-semibold lg:flex">Gym Notebook</a>
 			</div>
 			<div class="navbar-center mx-auto gap-2 lg:mx-0">
-				<a href="/train" class="btn btn-ghost mx-auto text-base lg:text-lg">Train</a>
-				<a href="/train" class="btn btn-ghost mx-auto text-base lg:text-lg">Prepare</a>
-				<a href="/train" class="btn btn-ghost mx-auto text-base lg:text-lg">Reflect</a>
+				<a href="/train" class="mx-autolg:text-lg btn btn-ghost btn-sm lg:btn-md">Train</a>
+				<a href="/train" class="mx-autolg:text-lg btn btn-ghost btn-sm lg:btn-md">Prepare</a>
+				<a href="/train" class="mx-autolg:text-lg btn btn-ghost btn-sm lg:btn-md">Reflect</a>
 			</div>
 
 			<div class="navbar-end hidden gap-4 lg:flex">
