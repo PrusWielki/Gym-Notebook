@@ -14,16 +14,18 @@
 				<select
 					class="select select-primary select-sm text-sm lg:select-md lg:text-base"
 					bind:value={selectedWeek}
-					onchange={(e) => {
+					onchange={(e: { currentTarget: { value: string | number } }) => {
 						selectedWeek = +e.currentTarget.value;
-					}}><option disabled value={0}>Week 1</option></select
+					}}><option value={0}>Week 1</option></select
 				>
 				<select
-					class="select select-primary select-sm text-sm lg:select-md lg:text-base"
+					class="select select-primary select-sm appearance-none text-sm lg:select-md lg:text-base"
 					bind:value={selectedDay}
-					onchange={(e) => {
+					onchange={(e: { currentTarget: { value: string | number } }) => {
 						selectedDay = +e.currentTarget.value;
-					}}><option disabled value={0}>Day 1</option></select
+					}}
+				>
+					<option value={0}>Day 1</option></select
 				>
 			</div>
 		</section>
@@ -39,10 +41,10 @@
 			</div>
 			<div class="grid w-full grid-cols-[2fr_1fr_1fr_1fr_1fr] gap-1">
 				<button class="btn btn-ghost">Dumbell Chest Press</button>
-				<h2>1</h2>
-				<h2>12-15</h2>
-				<h2>8-9</h2>
-				<h2>30</h2>
+				<h2 class="flex items-center justify-center">1</h2>
+				<h2 class="flex items-center justify-center">12-15</h2>
+				<h2 class="flex items-center justify-center">8-9</h2>
+				<h2 class="flex items-center justify-center">30</h2>
 			</div>
 		</section>
 	</div>
