@@ -1,0 +1,6 @@
+- [ ] Create pages for training, preparing and analyzing
+- [ ] Plan how you are going to store your data
+- [ ] Add offline data persistance
+- [ ] Add offline auth persistance
+- [ ] Test launch speeds on mobile
+- [ ] Test offline mode on mobile
