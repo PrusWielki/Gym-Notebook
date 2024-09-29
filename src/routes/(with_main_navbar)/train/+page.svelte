@@ -56,11 +56,27 @@
 				<h2>Weight</h2>
 			</div>
 			<div class="grid w-full grid-cols-[2fr_1fr_1fr_1fr_1fr] gap-1">
-				<button class="btn btn-ghost">Dumbell Chest Press</button>
-				<h2 class="flex items-center justify-center">1</h2>
-				<h2 class="flex items-center justify-center">12-15</h2>
-				<h2 class="flex items-center justify-center">8-9</h2>
-				<h2 class="flex items-center justify-center">30</h2>
+				<button class="btn btn-ghost btn-sm lg:btn-md">Dumbell Chest Press</button>
+				<input
+					class="input input-sm input-bordered flex w-full items-center justify-center text-center [appearance:textfield] lg:input-md [&::-webkit-inner-spin-button]:appearance-none [&::-webkit-outer-spin-button]:appearance-none"
+					type="number"
+					value="1"
+				/>
+				<input
+					class="input input-sm input-bordered flex w-full items-center justify-center text-center [appearance:textfield] lg:input-md [&::-webkit-inner-spin-button]:appearance-none [&::-webkit-outer-spin-button]:appearance-none"
+					type="number"
+					value="12"
+				/>
+				<input
+					class="input input-sm input-bordered flex w-full items-center justify-center text-center [appearance:textfield] lg:input-md [&::-webkit-inner-spin-button]:appearance-none [&::-webkit-outer-spin-button]:appearance-none"
+					type="number"
+					value="10"
+				/>
+				<input
+					class="input input-sm input-bordered flex w-full items-center justify-center text-center [appearance:textfield] lg:input-md [&::-webkit-inner-spin-button]:appearance-none [&::-webkit-outer-spin-button]:appearance-none"
+					type="number"
+					value="90"
+				/>
 			</div>
 		</section>
 	</div>
