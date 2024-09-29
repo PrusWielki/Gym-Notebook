@@ -9,6 +9,11 @@
 	let selectedDay = $state(0);
 	let weeksCount = $state(0);
 	let daysCount = $state(0);
+	let exerciseDataToSave: Record<
+		string,
+		{ sets: number; reps: number; rpe: number; weight: number }[]
+	> = $state({});
+
 	if (browser) {
 		getUserData()
 			.then((data) => {
@@ -29,6 +34,14 @@
 			})
 			.catch((e) => console.error('Error fetching user data:', e));
 	}
+
+	const updataDataArray = (exerciseName: string) => {
+		if (!(exerciseName in exerciseDataToSave)) {
+			exerciseDataToSave[exerciseName].push({ sets: 1, reps: 1, rpe: 1, weight: 1 });
+		} else {
+			exerciseDataToSave[exerciseName] = [{ sets: 1, reps: 1, rpe: 1, weight: 1 }];
+		}
+	};
 
 	$effect(() => {
 		// console.log(userData?.currentWeek);
