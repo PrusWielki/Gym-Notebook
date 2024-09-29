@@ -81,7 +81,7 @@
 						{#each Array(+exercise.sets) as _, i}
 							<div class="grid w-full grid-cols-[2fr_1fr_1fr_1fr_1fr] gap-1">
 								{#if i === 0}
-									<button class="btn btn-ghost btn-sm lg:btn-md">{exercise.exercise_name}</button>
+									<button class="btn btn-outline btn-sm lg:btn-md">{exercise.exercise_name}</button>
 								{:else}
 									<div></div>
 								{/if}
