@@ -3,8 +3,8 @@ import { doc, getDoc } from 'firebase/firestore';
 
 export type UserData = {
 	currentPlan: string;
-	currentWeek: string;
-	currentDay: string;
+	currentWeek: number;
+	currentDay: number;
 };
 
 /**

@@ -6,26 +6,32 @@
 
 	let exercises: Array<Exercise> | null = $state(null);
 	let userData: UserData | null = $state(null);
-	let plan: Plan[] | null = $state(null);
+	let plan: Plan | null = $state(null);
+	let selectedWeek = $state(0);
+	let selectedDay = $state(0);
 	if (browser) {
 		getExercises().then((data) => (exercises = data));
 		getUserData().then((data) => {
 			if (data) {
 				userData = data;
-				getPlan(userData.currentPlan, userData.currentWeek, userData.currentDay).then(
-					(data) => (plan = data)
-				);
+				selectedWeek = data.currentWeek;
+				selectedDay = data.currentDay;
+				getPlan(userData.currentPlan).then((data) => {
+					if (data) {
+						plan = data;
+						trainingData = data.weeks[selectedWeek].days[selectedDay].exercises;
+					}
+				});
 			}
 		});
 	}
-	let selectedWeek = $state(0);
-	let selectedDay = $state(0);
-	let trainingData: null | unknown = $state(null);
+
+	let trainingData: null | Plan['weeks']['0']['days']['0']['exercises'] = $state(null);
 
 	$effect(() => {
-		console.log(exercises && exercises[0].exercise_name);
-		console.log(userData?.currentWeek);
-		console.log(plan);
+		// console.log(exercises && exercises[0].exercise_name);
+		// console.log(userData?.currentWeek);
+		// console.log(plan?.weeks[selectedWeek].days[selectedDay].exercises[0].exercise_name);
 	});
 
 	// 1. First fetch the user's data, what plan is currently selected
@@ -72,7 +78,34 @@
 				<h2>RPE</h2>
 				<h2>Weight</h2>
 			</div>
-			<div class="grid w-full grid-cols-[2fr_1fr_1fr_1fr_1fr] gap-1">
+			{#if trainingData !== null}
+				{#each trainingData as exercise}
+					<div class="grid w-full grid-cols-[2fr_1fr_1fr_1fr_1fr] gap-1">
+						<button class="btn btn-ghost btn-sm lg:btn-md">{exercise.exercise_name}</button>
+						<input
+							class="input input-sm input-bordered flex w-full items-center justify-center text-center [appearance:textfield] lg:input-md [&::-webkit-inner-spin-button]:appearance-none [&::-webkit-outer-spin-button]:appearance-none"
+							type="number"
+							placeholder={exercise.sets}
+						/>
+						<input
+							class="input input-sm input-bordered flex w-full items-center justify-center text-center [appearance:textfield] lg:input-md [&::-webkit-inner-spin-button]:appearance-none [&::-webkit-outer-spin-button]:appearance-none"
+							type="number"
+							placeholder={exercise.reps}
+						/>
+						<input
+							class="input input-sm input-bordered flex w-full items-center justify-center text-center [appearance:textfield] lg:input-md [&::-webkit-inner-spin-button]:appearance-none [&::-webkit-outer-spin-button]:appearance-none"
+							type="number"
+							placeholder={exercise.rpe}
+						/>
+						<input
+							class="input input-sm input-bordered flex w-full items-center justify-center text-center [appearance:textfield] lg:input-md [&::-webkit-inner-spin-button]:appearance-none [&::-webkit-outer-spin-button]:appearance-none"
+							type="number"
+							placeholder={exercise.weight}
+						/>
+					</div>
+				{/each}
+			{/if}
+			<!-- <div class="grid w-full grid-cols-[2fr_1fr_1fr_1fr_1fr] gap-1">
 				<button class="btn btn-ghost btn-sm lg:btn-md">Dumbell Chest Press</button>
 				<input
 					class="input input-sm input-bordered flex w-full items-center justify-center text-center [appearance:textfield] lg:input-md [&::-webkit-inner-spin-button]:appearance-none [&::-webkit-outer-spin-button]:appearance-none"
@@ -94,7 +127,7 @@
 					type="number"
 					value="90"
 				/>
-			</div>
+			</div> -->
 		</section>
 	</div>
 </section>
