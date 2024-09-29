@@ -20,6 +20,12 @@
 	// 1. First fetch the user's data, what plan is currently selected
 	// 2. Fetch the specific week and day of the plan, don't fetch the whole plan
 	// 2. Map it
+
+	// Database structure:
+	// 1. Exercises table, simply a list of available exercises
+	// 2. Plans table, Plans that have a plan name, weeks and days with specific exercises
+	// 3. Users table that holds current day, week, plan
+	// 4. Exercises log table that holds exercise data for each user, each table is a separate exercise type that holds the log
 </script>
 
 <section class="h-[100dvh] w-full">
@@ -46,7 +52,7 @@
 			</div>
 		</section>
 		<section
-			class="flex w-full max-w-screen-xl flex-col items-center text-center text-sm lg:text-base"
+			class="flex w-full max-w-screen-xl flex-col items-center gap-1 text-center text-sm lg:text-base"
 		>
 			<div class="grid w-full grid-cols-[2fr_1fr_1fr_1fr_1fr] gap-1">
 				<h2>Exercise</h2>
