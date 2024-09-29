@@ -1,13 +1,22 @@
 <script lang="ts">
 	import { browser } from '$app/environment';
 	import { getExercises, type Exercise } from '$lib/hooks/get-exercises';
+	import { getPlan, type Plan } from '$lib/hooks/get-plan';
 	import { getUserData, type UserData } from '$lib/hooks/get-user-data';
 
 	let exercises: Array<Exercise> | null = $state(null);
 	let userData: UserData | null = $state(null);
+	let plan: Plan[] | null = $state(null);
 	if (browser) {
 		getExercises().then((data) => (exercises = data));
-		getUserData().then((data) => (userData = data));
+		getUserData().then((data) => {
+			if (data) {
+				userData = data;
+				getPlan(userData.currentPlan, userData.currentWeek, userData.currentDay).then(
+					(data) => (plan = data)
+				);
+			}
+		});
 	}
 	let selectedWeek = $state(0);
 	let selectedDay = $state(0);
@@ -16,6 +25,7 @@
 	$effect(() => {
 		console.log(exercises && exercises[0].exercise_name);
 		console.log(userData?.currentWeek);
+		console.log(plan);
 	});
 
 	// 1. First fetch the user's data, what plan is currently selected
