@@ -14,8 +14,8 @@
 	let trainingData: null | unknown = $state(null);
 
 	$effect(() => {
-		console.log(exercises);
-		console.log(userData);
+		console.log(exercises && exercises[0].exercise_name);
+		console.log(userData?.currentWeek);
 	});
 
 	// 1. First fetch the user's data, what plan is currently selected

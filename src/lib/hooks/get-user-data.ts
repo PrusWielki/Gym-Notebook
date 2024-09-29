@@ -2,10 +2,9 @@ import { auth, db } from "$lib/firebase.client";
 import { doc, getDoc } from "firebase/firestore";
 
 export type UserData = {
-    displayName: string;
-    email: string;
-    photoURL: string;
-    uid: string;
+    currentPlan: string;
+    currentWeek: string;
+    currentDay: string;
 }
 
 

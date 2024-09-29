@@ -3,7 +3,8 @@ import { collection, getDocs } from "firebase/firestore";
 
 export interface Exercise {
     id: string;
-    [key: string]: any;
+    exercise_name:string;
+    note: string;
   }
 
 /**
@@ -15,8 +16,9 @@ export const getExercises = async (): Promise<Exercise[]|null> => {
     const exercisesCollection = collection(db, "Exercises");
     const exercisesSnapshot = await getDocs(exercisesCollection);
     const exercises = exercisesSnapshot.docs.map((exercise) => ({
-      id: exercise.id,
-      ...exercise.data()
+        id: exercise.id,
+        exercise_name: exercise.data().exercise_name, 
+        note: exercise.data().note, 
     }));
     return exercises;
   } catch (error) {
