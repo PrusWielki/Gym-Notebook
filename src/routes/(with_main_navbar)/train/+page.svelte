@@ -1,21 +1,22 @@
 <script lang="ts">
-	import { db, auth } from '$lib/firebase.client';
-	import { doc, getDoc } from 'firebase/firestore';
+	import { browser } from '$app/environment';
+	import { getExercises, type Exercise } from '$lib/hooks/get-exercises';
+	import { getUserData, type UserData } from '$lib/hooks/get-user-data';
 
+	let exercises: Array<Exercise> | null = $state(null);
+	let userData: UserData | null = $state(null);
+	if (browser) {
+		getExercises().then((data) => (exercises = data));
+		getUserData().then((data) => (userData = data));
+	}
 	let selectedWeek = $state(0);
 	let selectedDay = $state(0);
-	let userData: null | unknown = $state(null);
 	let trainingData: null | unknown = $state(null);
 
-	const currentUserId = auth.currentUser?.uid;
-	if (currentUserId) {
-		const userDocumentRef = doc(db, 'UserData', currentUserId?.toString());
-		const userDocumentSnap = getDoc(userDocumentRef);
-		userDocumentSnap.then((result) => {
-			if (result.exists()) userData = result.data();
-		});
-		// I should get specific elements not all of the data, get currentPlan, currentWeek, currentDay and fetch the plan
-	}
+	$effect(() => {
+		console.log(exercises);
+		console.log(userData);
+	});
 
 	// 1. First fetch the user's data, what plan is currently selected
 	// 2. Fetch the specific week and day of the plan, don't fetch the whole plan
