@@ -62,7 +62,7 @@
 	}
 </script>
 
-<div class="flex min-h-[100lvh] w-full items-center font-montserrat">
+<div class="font-montserrat flex min-h-[100lvh] w-full items-center">
 	<form
 		class="mx-auto flex w-10/12 max-w-md flex-col items-center gap-4 px-4 py-16 sm:w-full"
 		on:submit={handleRegister}
@@ -71,9 +71,7 @@
 		<h2 class="mb-2 w-fit max-w-lg text-center font-semibold [text-wrap:balance]">
 			Just a few more steps before You can start converting Your notes
 		</h2>
-		<label
-			class="input-neutral input input-bordered flex w-full items-center gap-2 focus-within:input-primary"
-		>
+		<label class="input input-bordered focus-within:input-primary flex w-full items-center gap-2">
 			<svg
 				xmlns="http://www.w3.org/2000/svg"
 				viewBox="0 0 16 16"
@@ -89,7 +87,7 @@
 			</svg>
 			<input bind:value={email} type="text" class="grow text-lg" placeholder="Email" />
 		</label>
-		<label class="input input-bordered flex w-full items-center gap-2 focus-within:input-primary">
+		<label class="input input-bordered focus-within:input-primary flex w-full items-center gap-2">
 			<svg
 				xmlns="http://www.w3.org/2000/svg"
 				viewBox="0 0 16 16"
@@ -104,7 +102,7 @@
 			</svg>
 			<input bind:value={password} type="password" class="grow text-lg" placeholder="Password" />
 		</label>
-		<label class="input input-bordered flex w-full items-center gap-2 focus-within:input-primary">
+		<label class="input input-bordered focus-within:input-primary flex w-full items-center gap-2">
 			<svg
 				xmlns="http://www.w3.org/2000/svg"
 				viewBox="0 0 16 16"

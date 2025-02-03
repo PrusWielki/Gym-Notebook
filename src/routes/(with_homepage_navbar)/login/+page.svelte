@@ -58,15 +58,13 @@
 	}
 </script>
 
-<div class="flex min-h-[100lvh] w-full items-center font-montserrat">
+<div class="font-montserrat flex min-h-[100lvh] w-full items-center">
 	<form
 		class="mx-auto flex w-10/12 max-w-md flex-col items-center gap-4 px-4 py-16 sm:w-full"
 		on:submit={loginWithMail}
 	>
 		<h1 class="mb-2 text-center text-2xl font-bold sm:text-3xl">Welcome back</h1>
-		<label
-			class="input-neutral input input-bordered flex w-full items-center gap-2 focus-within:input-primary"
-		>
+		<label class="input input-bordered focus-within:input-primary flex w-full items-center gap-2">
 			<svg
 				xmlns="http://www.w3.org/2000/svg"
 				viewBox="0 0 16 16"
@@ -88,7 +86,7 @@
 				autocomplete="off"
 			/>
 		</label>
-		<label class="input input-bordered flex w-full items-center gap-2 focus-within:input-primary">
+		<label class="input input-bordered focus-within:input-primary flex w-full items-center gap-2">
 			<svg
 				xmlns="http://www.w3.org/2000/svg"
 				viewBox="0 0 16 16"
