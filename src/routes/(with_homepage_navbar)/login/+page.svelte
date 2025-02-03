@@ -111,7 +111,7 @@
 			class="btn btn-outline btn-neutral w-full gap-1 sm:gap-2"
 		>
 			<p
-				class="inline-block bg-[linear-gradient(to_right,theme(colors.red.500),theme(colors.yellow.500),theme(colors.green.500),theme(colors.blue.500))] bg-clip-text py-1 font-bold text-transparent"
+				class="inline-block bg-[linear-gradient(to_right,var(--color-red-500),var(--color-yellow-500),var(--color-green-500),var(--color-blue-500))] bg-clip-text py-1 font-bold text-transparent"
 			>
 				Login with Google
 			</p>

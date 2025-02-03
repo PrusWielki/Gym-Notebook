@@ -186,7 +186,7 @@
 		</div>
 
 		<div
-			class="h-full overflow-auto leanscroll px-8 sm:px-12 prose prose-h2:first-of-type:mt-0 max-w-[100%]"
+			class="h-full overflow-auto leanscroll px-8 sm:px-12 prose first-of-type:prose-h2:mt-0 max-w-[100%]"
 		>
 			<h2>Summary</h2>
 			<p>{summary}</p>

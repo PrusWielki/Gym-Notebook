@@ -42,7 +42,7 @@
 		></button
 	>
 	<ul
-		class="dropdown-content z-30 menu p-2 shadow bg-base-200 rounded-box w-fit overflow-x-hidden overflow-y-auto leanscroll flex-nowrap max-h-[50vh]"
+		class="dropdown-content z-30 menu p-2 shadow-sm bg-base-200 rounded-box w-fit overflow-x-hidden overflow-y-auto leanscroll flex-nowrap max-h-[50vh]"
 	>
 		{#each themes as themeName}
 			<li>

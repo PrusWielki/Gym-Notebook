@@ -50,7 +50,7 @@
 </script>
 
 <section class="h-[100dvh] w-full">
-	<div class="mx-auto flex max-w-screen-xl flex-col items-center gap-2 px-4 py-12 lg:py-20">
+	<div class="mx-auto flex max-w-(--breakpoint-xl) flex-col items-center gap-2 px-4 py-12 lg:py-20">
 		{#if plan}
 			<section class="flex flex-col items-center gap-2 lg:flex-row lg:justify-center">
 				<h1 class="text-base font-semibold lg:text-xl">{userData?.currentPlan}</h1>
@@ -80,7 +80,7 @@
 				</div>
 			</section>
 			<section
-				class="flex w-full max-w-screen-xl flex-col items-center gap-1 text-center text-sm lg:text-base"
+				class="flex w-full max-w-(--breakpoint-xl) flex-col items-center gap-1 text-center text-sm lg:text-base"
 			>
 				<div class="grid w-full grid-cols-[2fr_1fr_1fr_1fr_1fr] gap-1">
 					<h2>Exercise</h2>

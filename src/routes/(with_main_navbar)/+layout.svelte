@@ -23,7 +23,7 @@
 
 {#if loggedIn}
 	<div class="fixed top-0 z-10 w-full bg-transparent font-montserrat backdrop-blur-md">
-		<div class="navbar mx-auto min-h-0 max-w-screen-xl px-4">
+		<div class="navbar mx-auto min-h-0 max-w-(--breakpoint-xl) px-4">
 			<div class="navbar-start w-fit lg:w-1/2">
 				<!-- svelte-ignore a11y_no_noninteractive_element_interactions -->
 				<details
@@ -58,7 +58,7 @@
 					<!-- svelte-ignore a11y_no_noninteractive_tabindex -->
 					<ul
 						tabindex="0"
-						class="menu dropdown-content menu-sm z-[1] mt-3 w-52 gap-4 rounded-box bg-base-200 p-2 shadow"
+						class="menu dropdown-content menu-sm z-1 mt-3 w-52 gap-4 rounded-box bg-base-200 p-2 shadow-sm"
 					>
 						<li>
 							<ThemePickerSelect class="" />
