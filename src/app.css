@@ -1,8 +1,9 @@
 @import url('https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap')
 layer(base);
 @import 'tailwindcss';
+@plugin 'tailwindcss/typography';
+@plugin 'daisyui';
 
-@config '../tailwind.config.js';
 
 /*
   The default border color has changed to `currentColor` in Tailwind CSS v4,
