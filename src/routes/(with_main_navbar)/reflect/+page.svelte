@@ -31,7 +31,6 @@
 		querySnapshot.forEach((doc) => {
 			uniqueExercises.add(doc.data().exercise_name);
 		});
-		console.log(uniqueExercises);
 		exercises = Array.from(uniqueExercises).sort();
 	}
 

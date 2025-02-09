@@ -36,11 +36,6 @@
 			.catch((e) => console.error('Error fetching user data:', e));
 	}
 
-	$effect(() => {
-		// console.log(userData?.currentWeek);
-		// console.log(plan?.weeks[selectedWeek].days[selectedDay].exercises[0].exercise_name);
-	});
-
 	async function handleSaveTraining() {
 		if (!plan) return;
 
@@ -87,7 +82,7 @@
 	}
 </script>
 
-<section class="h-[100dvh] w-full">
+<section class="h-[100dvh] w-full py-4">
 	<div class="mx-auto flex max-w-(--breakpoint-xl) flex-col items-center gap-4 px-4 py-12 lg:py-20">
 		{#if !plan}
 			<div class="alert alert-info">
@@ -98,7 +93,7 @@
 				<h1 class="text-base font-semibold lg:text-xl">{userData?.currentPlan}</h1>
 				<div class="flex flex-row gap-2 lg:inline-flex">
 					<select
-						class="select select-primary select-sm lg:select-md text-sm lg:text-base"
+						class="select select-primary select-sm lg:select-md w-full text-sm lg:text-base"
 						bind:value={selectedWeek}
 						onclick={(e) => (selectedWeek = +e.currentTarget.value)}
 					>
