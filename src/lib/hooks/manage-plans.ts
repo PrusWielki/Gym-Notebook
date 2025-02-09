@@ -19,7 +19,10 @@ export type Exercise = {
 };
 
 export type Plan = {
+	id?: string;
 	name: string;
+	authorId: string;
+	isPredefined?: boolean;
 	weeks: {
 		days: {
 			exercises: Exercise[];
@@ -121,5 +124,19 @@ export async function getPlans() {
 				id: doc.id,
 				...doc.data()
 			}) as Plan & { id: string }
+	);
+}
+
+export async function getPredefinedPlans() {
+	const db = getFirestore(app);
+	const plansRef = collection(db, 'predefined_plans');
+	const plansSnapshot = await getDocs(plansRef);
+
+	return plansSnapshot.docs.map(
+		(doc) =>
+			({
+				id: doc.id,
+				...doc.data()
+			}) as Plan
 	);
 }

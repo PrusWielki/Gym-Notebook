@@ -1,11 +1,15 @@
 <script lang="ts">
-	import { savePlan, getPlans, type Plan } from '$lib/hooks/manage-plans';
+	import { savePlan, getPlans, getPredefinedPlans, type Plan } from '$lib/hooks/manage-plans';
 	import { goto } from '$app/navigation';
 	import { onMount } from 'svelte';
+	import { auth } from '$lib/firebase.client';
 
-	let isNewPlan = $state(true);
-	let existingPlans: (Plan & { id: string })[] = $state([]);
+	type PlanType = 'new' | 'existing' | 'predefined';
+	let planType = $state<PlanType>('new');
+	let existingPlans: Plan[] = $state([]);
+	let predefinedPlans: Plan[] = $state([]);
 	let selectedPlanId = $state('');
+	let currentUserId = $state<string | undefined>(undefined);
 	let planName = $state('');
 	let weeks = $state(1);
 	let daysPerWeek = $state(1);
@@ -77,15 +81,20 @@
 
 	async function loadPlans() {
 		try {
-			existingPlans = await getPlans();
+			[existingPlans, predefinedPlans] = await Promise.all([getPlans(), getPredefinedPlans()]);
 		} catch (error) {
 			console.error('Error loading plans:', error);
 		}
 	}
 
+	function canEditPlan(plan: Plan | null) {
+		if (!plan) return false;
+		return currentUserId && plan.authorId === currentUserId;
+	}
+
 	async function handlePlanSelect() {
 		if (!selectedPlanId) return;
-		const plan = existingPlans.find((p) => p.id === selectedPlanId);
+		const plan = [...existingPlans, ...predefinedPlans].find((p) => p.id === selectedPlanId);
 		if (plan) {
 			planName = plan.name;
 			planStructure = plan.weeks;
@@ -96,8 +105,11 @@
 
 	async function handleSavePlan() {
 		try {
+			if (!currentUserId) throw new Error('Must be logged in to save plan');
+
 			const plan = {
 				name: planName,
+				authorId: currentUserId,
 				weeks: planStructure
 			};
 
@@ -114,6 +126,10 @@
 
 	onMount(() => {
 		loadPlans();
+		const unsubscribe = auth.onAuthStateChanged((user) => {
+			currentUserId = user?.uid;
+		});
+		return unsubscribe;
 	});
 </script>
 
@@ -122,22 +138,28 @@
 		<h1 class="text-2xl font-bold">Training Plan</h1>
 
 		<div class="w-full max-w-xl space-y-4">
-			<div class="flex gap-4">
+			<div class="flex gap-2">
 				<button
-					class="btn flex-1 {isNewPlan ? 'btn-primary' : 'btn-outline'}"
-					onclick={() => (isNewPlan = true)}
+					class="btn flex-1 {planType === 'new' ? 'btn-primary' : 'btn-outline'}"
+					onclick={() => (planType = 'new')}
 				>
-					Create New Plan
+					Create New
 				</button>
 				<button
-					class="btn flex-1 {!isNewPlan ? 'btn-primary' : 'btn-outline'}"
-					onclick={() => (isNewPlan = false)}
+					class="btn flex-1 {planType === 'existing' ? 'btn-primary' : 'btn-outline'}"
+					onclick={() => (planType = 'existing')}
 				>
-					Use Existing Plan
+					My Plans
+				</button>
+				<button
+					class="btn flex-1 {planType === 'predefined' ? 'btn-primary' : 'btn-outline'}"
+					onclick={() => (planType = 'predefined')}
+				>
+					Predefined
 				</button>
 			</div>
 
-			{#if isNewPlan}
+			{#if planType === 'new'}
 				<input
 					type="text"
 					placeholder="Plan Name"
@@ -151,90 +173,111 @@
 					onchange={handlePlanSelect}
 				>
 					<option value="">Select a plan</option>
-					{#each existingPlans as plan}
-						<option value={plan.id}>{plan.name}</option>
-					{/each}
+					{#if planType === 'existing'}
+						{#each existingPlans as plan}
+							<option value={plan.id}>{plan.name}</option>
+						{/each}
+					{:else}
+						{#each predefinedPlans as plan}
+							<option value={plan.id}>{plan.name}</option>
+						{/each}
+					{/if}
 				</select>
 			{/if}
 
-			<div class="flex gap-4">
-				<div class="form-control w-full">
-					<label class="label" for="weeks">Weeks</label>
-					<input
-						id="weeks"
-						type="number"
-						min="1"
-						class="input input-bordered w-full"
-						bind:value={weeks}
-					/>
-				</div>
-				<div class="form-control w-full">
-					<label class="label" for="days">Days per Week</label>
-					<input
-						id="days"
-						type="number"
-						min="1"
-						max="7"
-						class="input input-bordered w-full"
-						bind:value={daysPerWeek}
-					/>
-				</div>
-			</div>
-
-			<div class="flex gap-4">
-				<select class="select select-bordered w-full" bind:value={selectedWeek}>
-					{#each Array(weeks) as _, i}
-						<option value={i}>Week {i + 1}</option>
-					{/each}
-				</select>
-
-				<select class="select select-bordered w-full" bind:value={selectedDay}>
-					{#each Array(daysPerWeek) as _, i}
-						<option value={i}>Day {i + 1}</option>
-					{/each}
-				</select>
-			</div>
-
-			<div class="space-y-4">
-				<div class="flex justify-between">
-					<h2 class="text-xl font-semibold">
-						Exercises for Week {selectedWeek + 1}, Day {selectedDay + 1}
-					</h2>
-					<button class="btn btn-primary btn-sm" onclick={addExercise}>Add Exercise</button>
-				</div>
-
-				{#each planStructure[selectedWeek].days[selectedDay].exercises as exercise, i}
-					<div class="grid grid-cols-6 gap-2">
+			{#if planType === 'new' || (selectedPlanId && canEditPlan(existingPlans.find((p) => p.id === selectedPlanId) || predefinedPlans.find((p) => p.id === selectedPlanId) || null))}
+				<div class="flex gap-4">
+					<div class="form-control w-full">
+						<label class="label" for="weeks">Weeks</label>
 						<input
-							type="text"
-							placeholder="Exercise"
-							class="input input-bordered input-sm col-span-2"
-							bind:value={exercise.exercise_name}
-						/>
-						<input
+							id="weeks"
 							type="number"
-							placeholder="Sets"
-							class="input input-bordered input-sm"
-							bind:value={exercise.sets}
+							min="1"
+							class="input input-bordered w-full"
+							bind:value={weeks}
 						/>
-						<input
-							type="number"
-							placeholder="Reps"
-							class="input input-bordered input-sm"
-							bind:value={exercise.reps}
-						/>
-						<input
-							type="number"
-							placeholder="RPE"
-							class="input input-bordered input-sm"
-							bind:value={exercise.rpe}
-						/>
-						<button class="btn btn-error btn-sm" onclick={() => removeExercise(i)}>Remove</button>
 					</div>
-				{/each}
-			</div>
+					<div class="form-control w-full">
+						<label class="label" for="days">Days per Week</label>
+						<input
+							id="days"
+							type="number"
+							min="1"
+							max="7"
+							class="input input-bordered w-full"
+							bind:value={daysPerWeek}
+						/>
+					</div>
+				</div>
 
-			<button class="btn btn-primary w-full" onclick={handleSavePlan}>Save Plan</button>
+				<div class="flex gap-4">
+					<select class="select select-bordered w-full" bind:value={selectedWeek}>
+						{#each Array(weeks) as _, i}
+							<option value={i}>Week {i + 1}</option>
+						{/each}
+					</select>
+
+					<select class="select select-bordered w-full" bind:value={selectedDay}>
+						{#each Array(daysPerWeek) as _, i}
+							<option value={i}>Day {i + 1}</option>
+						{/each}
+					</select>
+				</div>
+
+				<div class="space-y-4">
+					<div class="flex justify-between">
+						<h2 class="text-xl font-semibold">
+							Exercises for Week {selectedWeek + 1}, Day {selectedDay + 1}
+						</h2>
+						<button class="btn btn-primary btn-sm" onclick={addExercise}>Add Exercise</button>
+					</div>
+
+					{#each planStructure[selectedWeek].days[selectedDay].exercises as exercise, i}
+						<div class="grid grid-cols-6 gap-2">
+							<input
+								type="text"
+								placeholder="Exercise"
+								class="input input-bordered input-sm col-span-2"
+								bind:value={exercise.exercise_name}
+							/>
+							<input
+								type="number"
+								placeholder="Sets"
+								class="input input-bordered input-sm"
+								bind:value={exercise.sets}
+							/>
+							<input
+								type="number"
+								placeholder="Reps"
+								class="input input-bordered input-sm"
+								bind:value={exercise.reps}
+							/>
+							<input
+								type="number"
+								placeholder="RPE"
+								class="input input-bordered input-sm"
+								bind:value={exercise.rpe}
+							/>
+							<button class="btn btn-error btn-sm" onclick={() => removeExercise(i)}>Remove</button>
+						</div>
+					{/each}
+				</div>
+
+				<button class="btn btn-primary w-full" onclick={handleSavePlan}>Save Plan</button>
+			{:else if selectedPlanId}
+				<div class="alert alert-info">
+					<span>This plan can only be viewed. Create a copy to modify it.</span>
+					<button
+						class="btn btn-primary btn-sm"
+						onclick={() => {
+							planType = 'new';
+							planName = `Copy of ${planName}`;
+						}}
+					>
+						Create Copy
+					</button>
+				</div>
+			{/if}
 		</div>
 	</div>
 </section>
