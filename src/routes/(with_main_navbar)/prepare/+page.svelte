@@ -3,6 +3,7 @@
 	import { goto } from '$app/navigation';
 	import { onMount } from 'svelte';
 	import { auth } from '$lib/firebase.client';
+	import { updateUserData } from '$lib/hooks/get-user-data';
 
 	type PlanType = 'new' | 'existing' | 'predefined';
 	let planType = $state<PlanType>('new');
@@ -117,6 +118,22 @@
 			goto('/train');
 		} catch (error) {
 			console.error('Error saving plan:', error);
+		}
+	}
+
+	async function handleSelectPlan() {
+		if (!selectedPlanId) return;
+
+		try {
+			await updateUserData({
+				selectedPlan: {
+					id: selectedPlanId,
+					type: planType === 'existing' ? 'user' : 'predefined'
+				}
+			});
+			goto('/train');
+		} catch (error) {
+			console.error('Error selecting plan:', error);
 		}
 	}
 
@@ -277,6 +294,10 @@
 						Create Copy
 					</button>
 				</div>
+			{/if}
+
+			{#if selectedPlanId && planType !== 'new'}
+				<button class="btn btn-primary w-full" onclick={handleSelectPlan}> Select Plan </button>
 			{/if}
 		</div>
 	</div>

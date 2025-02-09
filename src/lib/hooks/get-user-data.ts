@@ -1,10 +1,16 @@
 import { auth, db } from '$lib/firebase.client';
-import { doc, getDoc } from 'firebase/firestore';
+import { doc, getDoc, updateDoc, setDoc } from 'firebase/firestore';
+import { getFirestore } from 'firebase/firestore';
+import { app } from '$lib/firebase.client';
 
 export type UserData = {
 	currentPlan: string;
 	currentWeek: number;
 	currentDay: number;
+	selectedPlan?: {
+		id: string;
+		type: 'user' | 'predefined';
+	};
 };
 
 /**
@@ -30,3 +36,23 @@ export const getUserData = async (): Promise<UserData | null> => {
 	}
 	return userData;
 };
+
+export async function updateUserData(data: Partial<UserData>) {
+	const currentUserId = auth.currentUser?.uid;
+	if (!currentUserId) return;
+
+	const db = getFirestore(app);
+	const userRef = doc(db, 'UserData', currentUserId);
+
+	try {
+		const docSnap = await getDoc(userRef);
+		if (!docSnap.exists()) {
+			await setDoc(userRef, data);
+		} else {
+			await updateDoc(userRef, data);
+		}
+	} catch (error) {
+		console.error('Error updating user data:', error);
+		throw error;
+	}
+}
