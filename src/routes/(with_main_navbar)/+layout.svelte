@@ -26,14 +26,31 @@
 		<div class="navbar mx-auto min-h-0 max-w-(--breakpoint-xl) px-4">
 			<div class="navbar-start w-fit lg:w-1/2">
 				<!-- svelte-ignore a11y_no_noninteractive_element_interactions -->
-				<button class="btn" popovertarget="popover-1" style="anchor-name:--anchor-1">
-					Button
+				<button
+					class="btn btn-ghost"
+					popovertarget="popover-mobile-menu"
+					style="anchor-name:--anchor-mobile-menu"
+					aria-label="Open mobile menu"
+				>
+					<svg
+						xmlns="http://www.w3.org/2000/svg"
+						class="h-5 w-5"
+						fill="none"
+						viewBox="0 0 24 24"
+						stroke="currentColor"
+						><path
+							stroke-linecap="round"
+							stroke-linejoin="round"
+							stroke-width="2"
+							d="M4 6h16M4 12h8m-8 6h16"
+						/></svg
+					>
 				</button>
 				<ul
 					class="dropdown menu rounded-box bg-base-100 w-52 shadow-sm"
 					popover="auto"
-					id="popover-1"
-					style="position-anchor:--anchor-1"
+					id="popover-mobile-menu"
+					style="position-anchor:--anchor-mobile-menu"
 				>
 					<li>
 						<ThemePickerSelect class="my-2" />
