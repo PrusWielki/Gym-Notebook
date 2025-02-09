@@ -1,6 +1,6 @@
 <script lang="ts">
 	import { browser } from '$app/environment';
-	import { getUserData, type UserData } from '$lib/hooks/get-user-data';
+	import { getUserData, updateUserData, type UserData } from '$lib/hooks/get-user-data';
 	import TrainingDay from '$lib/components/TrainingDay.svelte';
 	import { saveTrainingLog, getPlan, type Plan } from '$lib/hooks/manage-plans';
 
@@ -19,10 +19,10 @@
 		getUserData()
 			.then((data) => {
 				userData = data ?? null;
-				if (userData) {
-					selectedWeek = userData.currentWeek;
-					selectedDay = userData.currentDay;
-					getPlan(userData.currentPlan)
+				if (userData?.selectedPlan?.id) {
+					selectedWeek = userData.currentWeek ?? 0;
+					selectedDay = userData.currentDay ?? 0;
+					getPlan(userData.selectedPlan.id)
 						.then((planData) => {
 							plan = planData ?? null;
 							if (plan) {
@@ -45,23 +45,55 @@
 		if (!plan) return;
 
 		try {
+			// Save the training log
 			await saveTrainingLog(
-				userData?.currentPlan ?? '',
+				userData?.selectedPlan?.id ?? '',
 				selectedWeek,
 				selectedDay,
 				exerciseDataToSave
 			);
-			// Maybe show success message or reset form
+
+			// Calculate next position
+			let nextDay = selectedDay + 1;
+			let nextWeek = selectedWeek;
+
+			// If we've reached the end of the week
+			if (nextDay >= daysCount) {
+				nextDay = 0;
+				nextWeek++;
+				// If we've reached the end of the plan
+				if (nextWeek >= weeksCount) {
+					nextWeek = 0;
+				}
+			}
+
+			// Update user data with new position
+			await updateUserData({
+				currentWeek: nextWeek,
+				currentDay: nextDay
+			});
+
+			// Update local state
+			selectedWeek = nextWeek;
+			selectedDay = nextDay;
+			exerciseDataToSave = {};
+
+			// Show success message
+			alert('Training saved! Moving to next day.');
 		} catch (error) {
 			console.error('Error saving training log:', error);
-			// Show error message
+			alert('Error saving training. Please try again.');
 		}
 	}
 </script>
 
 <section class="h-[100dvh] w-full">
-	<div class="mx-auto flex max-w-(--breakpoint-xl) flex-col items-center gap-2 px-4 py-12 lg:py-20">
-		{#if plan}
+	<div class="mx-auto flex max-w-(--breakpoint-xl) flex-col items-center gap-4 px-4 py-12 lg:py-20">
+		{#if !plan}
+			<div class="alert alert-info">
+				<span>No plan selected. Please select a plan in the Prepare section.</span>
+			</div>
+		{:else}
 			<section class="flex flex-col items-center gap-2 lg:flex-row lg:justify-center">
 				<h1 class="text-base font-semibold lg:text-xl">{userData?.currentPlan}</h1>
 				<div class="flex flex-row gap-2 lg:inline-flex">
