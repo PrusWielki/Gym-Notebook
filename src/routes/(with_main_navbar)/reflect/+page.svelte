@@ -3,6 +3,7 @@
 	import { getFirestore, collection, query, where, getDocs, Timestamp } from 'firebase/firestore';
 	import { app, auth } from '$lib/firebase.client';
 	import { getUserData } from '$lib/hooks/get-user-data';
+	import ExerciseChart from '$lib/components/ExerciseChart.svelte';
 
 	type ExerciseLog = {
 		exercise_name: string;
@@ -162,6 +163,9 @@
 								{/each}
 							</tbody>
 						</table>
+						<div class="mt-8 w-full max-w-xl">
+							<ExerciseChart data={exerciseLogs} />
+						</div>
 					</div>
 				{/if}
 			{:else if selectedExercise}

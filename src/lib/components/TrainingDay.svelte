@@ -1,4 +1,5 @@
 <script lang="ts">
+	import ExerciseChartModal from './ExerciseChartModal.svelte';
 	export let exercises: Array<{
 		exercise_name: string;
 		sets: string | number;
@@ -12,6 +13,19 @@
 		string,
 		Array<{ sets: number; reps: number; rpe: number; weight: number }>
 	> = {};
+
+	let selectedExercise: string | null = null;
+	let showModal = false;
+
+	function handleExerciseClick(exerciseName: string) {
+		selectedExercise = exerciseName;
+		showModal = true;
+	}
+
+	function closeModal() {
+		showModal = false;
+		selectedExercise = null;
+	}
 
 	function updateExerciseData(
 		exerciseName: string,
@@ -54,7 +68,12 @@
 			{#each Array(+exercise.sets) as _, i}
 				<div class="grid w-full grid-cols-[2fr_1fr_1fr_1fr_1fr] gap-1">
 					{#if i === 0}
-						<button class="btn btn-outline btn-sm lg:btn-md">{exerciseName}</button>
+						<button
+							class="btn btn-outline btn-sm lg:btn-md"
+							on:click={() => handleExerciseClick(exerciseName)}
+						>
+							{exerciseName}
+						</button>
 					{:else}
 						<div></div>
 					{/if}
@@ -85,3 +104,7 @@
 		{/if}
 	{/each}
 </section>
+
+{#if selectedExercise}
+	<ExerciseChartModal exerciseName={selectedExercise} isOpen={showModal} onClose={closeModal} />
+{/if}
