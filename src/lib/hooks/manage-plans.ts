@@ -1,4 +1,12 @@
-import { getFirestore, collection, doc, setDoc, updateDoc, getDoc } from 'firebase/firestore';
+import {
+	getFirestore,
+	collection,
+	doc,
+	setDoc,
+	updateDoc,
+	getDoc,
+	getDocs
+} from 'firebase/firestore';
 import { app, auth } from '$lib/firebase.client';
 
 export type Exercise = {
@@ -97,4 +105,21 @@ export async function getPlan(planId: string) {
 	const planDoc = await getDoc(planRef);
 
 	return planDoc.exists() ? (planDoc.data() as Plan) : null;
+}
+
+export async function getPlans() {
+	const currentUserId = auth.currentUser?.uid;
+	if (!currentUserId) return [];
+
+	const db = getFirestore(app);
+	const plansRef = collection(db, 'users', currentUserId, 'plans');
+	const plansSnapshot = await getDocs(plansRef);
+
+	return plansSnapshot.docs.map(
+		(doc) =>
+			({
+				id: doc.id,
+				...doc.data()
+			}) as Plan & { id: string }
+	);
 }
