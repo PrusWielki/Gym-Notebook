@@ -1,6 +1,6 @@
 <script lang="ts">
 	import { onMount } from 'svelte';
-	import { getFirestore, collection, query, where, getDocs } from 'firebase/firestore';
+	import { getFirestore, collection, query, where, getDocs, Timestamp } from 'firebase/firestore';
 	import { app, auth } from '$lib/firebase.client';
 	import { getUserData } from '$lib/hooks/get-user-data';
 
@@ -12,15 +12,12 @@
 		date: Date;
 	};
 
-	let selectedExercise = '';
-	let exercises: string[] = [];
-	let exerciseLogs: ExerciseLog[] = [];
-	let timeRange = '30'; // days
+	let selectedExercise = $state('');
+	let exercises: string[] = $state([]);
+	let exerciseLogs: ExerciseLog[] = $state([]);
+	let timeRange = $state('30'); // days
 
 	async function fetchExercises() {
-		const userData = await getUserData();
-		if (!userData) return;
-
 		const currentUserId = auth.currentUser?.uid;
 		if (!currentUserId) return;
 
@@ -33,6 +30,7 @@
 		querySnapshot.forEach((doc) => {
 			uniqueExercises.add(doc.data().exercise_name);
 		});
+		console.log(uniqueExercises);
 		exercises = Array.from(uniqueExercises).sort();
 	}
 
@@ -55,10 +53,13 @@
 		);
 
 		const querySnapshot = await getDocs(q);
-		exerciseLogs = querySnapshot.docs.map((doc) => ({
-			...doc.data(),
-			date: doc.data().date.toDate()
-		})) as ExerciseLog[];
+		exerciseLogs = querySnapshot.docs.map((doc) => {
+			const data = doc.data();
+			return {
+				...data,
+				date: (data.date as Timestamp).toDate()
+			} as ExerciseLog;
+		});
 	}
 
 	function calculateStats() {
@@ -77,13 +78,17 @@
 		};
 	}
 
-	$: if (selectedExercise || timeRange) {
-		fetchExerciseLogs();
-	}
+	$effect(() => {
+		if (selectedExercise || timeRange) {
+			fetchExerciseLogs();
+		}
+	});
 
 	onMount(() => {
 		fetchExercises();
 	});
+
+	const stats = $derived(calculateStats());
 </script>
 
 <section class="h-[100dvh] w-full">
@@ -99,7 +104,7 @@
 					{/each}
 				</select>
 
-				<select class="select select-bordered w-48" bind:value={timeRange}>
+				<select class="select select-bordered w-full" bind:value={timeRange}>
 					<option value="7">Last 7 days</option>
 					<option value="30">Last 30 days</option>
 					<option value="90">Last 90 days</option>
@@ -107,8 +112,7 @@
 				</select>
 			</div>
 
-			{#if selectedExercise && exerciseLogs.length}
-				{@const stats = calculateStats()}
+			{#if exerciseLogs.length}
 				{#if stats}
 					<div class="grid grid-cols-2 gap-4">
 						<div class="stats shadow">
