@@ -78,25 +78,26 @@ export async function saveTrainingLog(
 
 	const db = getFirestore(app);
 	const logsRef = collection(db, 'users', currentUserId, 'exercise_logs');
-
 	const date = new Date();
 
-	// Create a log entry for each exercise
-	const savePromises = Object.entries(exercises).map(([exerciseName, sets]) => {
-		sets.forEach((set) => {
-			const logRef = doc(logsRef);
-			return setDoc(logRef, {
+	// Create a log entry for each exercise and set
+	const savePromises = Object.entries(exercises).flatMap(([exerciseName, sets]) =>
+		sets.map((set) =>
+			setDoc(doc(logsRef), {
 				exercise_name: exerciseName,
-				...set,
+				reps: set.reps,
+				sets: set.sets,
+				rpe: set.rpe,
+				weight: set.weight,
 				planId,
 				week,
 				day,
 				date
-			});
-		});
-	});
+			})
+		)
+	);
 
-	await Promise.all(savePromises.flat());
+	await Promise.all(savePromises);
 }
 
 export async function getPlan(planId: string) {

@@ -13,37 +13,29 @@
 		Array<{ sets: number; reps: number; rpe: number; weight: number }>
 	> = {};
 
-	type ExerciseData = {
-		sets: number;
-		reps: number;
-		rpe: number;
-		weight: number;
-	};
-
-	let exerciseDataToSave: Record<string, ExerciseData[]> = {};
-
-	const initializeExerciseData = (exerciseName: string, setCount: string | number) => {
-		if (!exerciseDataToSave[exerciseName]) {
-			exerciseDataToSave[exerciseName] = Array(+setCount).fill({
-				sets: 1,
-				reps: 0,
-				rpe: 0,
-				weight: 0
-			});
-		}
-	};
-
-	const updateExerciseData = (
+	function updateExerciseData(
 		exerciseName: string,
 		setIndex: number,
-		field: keyof ExerciseData,
+		field: 'sets' | 'reps' | 'rpe' | 'weight',
 		value: number
-	) => {
-		exerciseDataToSave[exerciseName][setIndex] = {
-			...exerciseDataToSave[exerciseName][setIndex],
-			[field]: value
-		};
-	};
+	) {
+		if (!exerciseData[exerciseName]) {
+			const exercise = exercises.find((e) => e.exercise_name === exerciseName);
+			const numSets = exercise ? +exercise.sets : 0;
+			exerciseData[exerciseName] = Array(numSets)
+				.fill(null)
+				.map(() => ({ sets: 1, reps: 0, rpe: 0, weight: 0 }));
+		}
+
+		const currentSet = exerciseData[exerciseName][setIndex];
+		if (currentSet) {
+			exerciseData[exerciseName][setIndex] = {
+				...currentSet,
+				[field]: value
+			};
+			exerciseData = exerciseData;
+		}
+	}
 </script>
 
 <section
@@ -60,8 +52,6 @@
 		{#if exercise}
 			{@const exerciseName = exercise.exercise_name}
 			{#each Array(+exercise.sets) as _, i}
-				{@const setIndex = i}
-				{initializeExerciseData(exerciseName, exercise.sets)}
 				<div class="grid w-full grid-cols-[2fr_1fr_1fr_1fr_1fr] gap-1">
 					{#if i === 0}
 						<button class="btn btn-outline btn-sm lg:btn-md">{exerciseName}</button>
@@ -74,24 +64,21 @@
 						type="number"
 						placeholder={exercise.reps.toString()}
 						disabled={!isEditable}
-						on:input={(e) =>
-							updateExerciseData(exerciseName, setIndex, 'reps', +e.currentTarget.value)}
+						on:input={(e) => updateExerciseData(exerciseName, i, 'reps', +e.currentTarget.value)}
 					/>
 					<input
 						class="input input-sm input-bordered lg:input-md flex w-full [appearance:textfield] items-center justify-center text-center [&::-webkit-inner-spin-button]:appearance-none [&::-webkit-outer-spin-button]:appearance-none"
 						type="number"
 						placeholder={exercise.rpe.toString()}
 						disabled={!isEditable}
-						on:input={(e) =>
-							updateExerciseData(exerciseName, setIndex, 'rpe', +e.currentTarget.value)}
+						on:input={(e) => updateExerciseData(exerciseName, i, 'rpe', +e.currentTarget.value)}
 					/>
 					<input
 						class="input input-sm input-bordered lg:input-md flex w-full [appearance:textfield] items-center justify-center text-center [&::-webkit-inner-spin-button]:appearance-none [&::-webkit-outer-spin-button]:appearance-none"
 						type="number"
 						placeholder={exercise.weight.toString()}
 						disabled={!isEditable}
-						on:input={(e) =>
-							updateExerciseData(exerciseName, setIndex, 'weight', +e.currentTarget.value)}
+						on:input={(e) => updateExerciseData(exerciseName, i, 'weight', +e.currentTarget.value)}
 					/>
 				</div>
 			{/each}
