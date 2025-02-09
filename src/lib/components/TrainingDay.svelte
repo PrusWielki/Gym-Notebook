@@ -79,21 +79,21 @@
 					{/if}
 					<p class="flex items-center justify-center">{i + 1}</p>
 					<input
-						class="input input-sm input-bordered lg:input-md flex w-full [appearance:textfield] items-center justify-center text-center [&::-webkit-inner-spin-button]:appearance-none [&::-webkit-outer-spin-button]:appearance-none"
+						class="input input-sm input-bordered lg:input-md w-full text-center"
 						type="number"
 						placeholder={exercise.reps.toString()}
 						disabled={!isEditable}
 						on:input={(e) => updateExerciseData(exerciseName, i, 'reps', +e.currentTarget.value)}
 					/>
 					<input
-						class="input input-sm input-bordered lg:input-md flex w-full [appearance:textfield] items-center justify-center text-center [&::-webkit-inner-spin-button]:appearance-none [&::-webkit-outer-spin-button]:appearance-none"
+						class="input input-sm input-bordered lg:input-md w-full text-center"
 						type="number"
 						placeholder={exercise.rpe.toString()}
 						disabled={!isEditable}
 						on:input={(e) => updateExerciseData(exerciseName, i, 'rpe', +e.currentTarget.value)}
 					/>
 					<input
-						class="input input-sm input-bordered lg:input-md flex w-full [appearance:textfield] items-center justify-center text-center [&::-webkit-inner-spin-button]:appearance-none [&::-webkit-outer-spin-button]:appearance-none"
+						class="input input-sm input-bordered lg:input-md w-full text-center"
 						type="number"
 						placeholder={exercise.weight.toString()}
 						disabled={!isEditable}
