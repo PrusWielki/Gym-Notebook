@@ -1,9 +1,12 @@
 <script lang="ts">
-	let planName = '';
-	let weeks = 1;
-	let daysPerWeek = 1;
-	let currentWeek = 0;
-	let currentDay = 0;
+	import { savePlan } from '$lib/hooks/manage-plans';
+	import { goto } from '$app/navigation';
+
+	let planName = $state('');
+	let weeks = $state(1);
+	let daysPerWeek = $state(1);
+	let selectedWeek = $state(0);
+	let selectedDay = $state(0);
 
 	type Exercise = {
 		exercise_name: string;
@@ -14,11 +17,38 @@
 		notes: string;
 	};
 
-	let exercises: Exercise[] = [];
+	type DayExercises = {
+		exercises: Exercise[];
+	};
+
+	type WeekDays = {
+		days: DayExercises[];
+	};
+
+	let planStructure: WeekDays[] = $state([
+		{
+			days: [{ exercises: [] }]
+		}
+	]);
+
+	function updatePlanStructure() {
+		planStructure = Array(weeks)
+			.fill(null)
+			.map((_, weekIndex) => ({
+				days: Array(daysPerWeek)
+					.fill(null)
+					.map((_, dayIndex) => ({
+						exercises:
+							weekIndex === selectedWeek && dayIndex === selectedDay
+								? planStructure[selectedWeek]?.days[selectedDay]?.exercises || []
+								: []
+					}))
+			}));
+	}
 
 	function addExercise() {
-		exercises = [
-			...exercises,
+		planStructure[selectedWeek].days[selectedDay].exercises = [
+			...planStructure[selectedWeek].days[selectedDay].exercises,
 			{
 				exercise_name: '',
 				sets: '1',
@@ -31,38 +61,30 @@
 	}
 
 	function removeExercise(index: number) {
-		exercises = exercises.filter((_, i) => i !== index);
+		planStructure[selectedWeek].days[selectedDay].exercises = planStructure[selectedWeek].days[
+			selectedDay
+		].exercises.filter((_, i) => i !== index);
 	}
 
-	async function savePlan() {
-		const plan = {
-			name: planName,
-			weeks: Array(weeks)
-				.fill(null)
-				.map(() => ({
-					days: Array(daysPerWeek)
-						.fill(null)
-						.map(() => ({
-							exercises
-						}))
-				}))
-		};
-
+	async function handleSavePlan() {
 		try {
-			const response = await fetch('/api/plans', {
-				method: 'POST',
-				headers: { 'Content-Type': 'application/json' },
-				body: JSON.stringify(plan)
-			});
-			if (response.ok) {
-				// Reset form or show success message
-				planName = '';
-				exercises = [];
-			}
+			const plan = {
+				name: planName,
+				weeks: planStructure
+			};
+
+			await savePlan(plan);
+			goto('/train');
 		} catch (error) {
 			console.error('Error saving plan:', error);
 		}
 	}
+
+	$effect(() => {
+		if (weeks !== undefined && daysPerWeek !== undefined) {
+			updatePlanStructure();
+		}
+	});
 </script>
 
 <section class="h-[100dvh] w-full">
@@ -101,13 +123,29 @@
 				</div>
 			</div>
 
+			<div class="flex gap-4">
+				<select class="select select-bordered w-full" bind:value={selectedWeek}>
+					{#each Array(weeks) as _, i}
+						<option value={i}>Week {i + 1}</option>
+					{/each}
+				</select>
+
+				<select class="select select-bordered w-full" bind:value={selectedDay}>
+					{#each Array(daysPerWeek) as _, i}
+						<option value={i}>Day {i + 1}</option>
+					{/each}
+				</select>
+			</div>
+
 			<div class="space-y-4">
 				<div class="flex justify-between">
-					<h2 class="text-xl font-semibold">Exercises</h2>
-					<button class="btn btn-primary btn-sm" on:click={addExercise}>Add Exercise</button>
+					<h2 class="text-xl font-semibold">
+						Exercises for Week {selectedWeek + 1}, Day {selectedDay + 1}
+					</h2>
+					<button class="btn btn-primary btn-sm" onclick={addExercise}>Add Exercise</button>
 				</div>
 
-				{#each exercises as exercise, i}
+				{#each planStructure[selectedWeek].days[selectedDay].exercises as exercise, i}
 					<div class="grid grid-cols-6 gap-2">
 						<input
 							type="text"
@@ -133,12 +171,12 @@
 							class="input input-bordered input-sm"
 							bind:value={exercise.rpe}
 						/>
-						<button class="btn btn-error btn-sm" on:click={() => removeExercise(i)}>Remove</button>
+						<button class="btn btn-error btn-sm" onclick={() => removeExercise(i)}>Remove</button>
 					</div>
 				{/each}
 			</div>
 
-			<button class="btn btn-primary w-full" on:click={savePlan}>Save Plan</button>
+			<button class="btn btn-primary w-full" onclick={handleSavePlan}>Save Plan</button>
 		</div>
 	</div>
 </section>

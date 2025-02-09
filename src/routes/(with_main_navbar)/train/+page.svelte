@@ -1,8 +1,8 @@
 <script lang="ts">
 	import { browser } from '$app/environment';
-	import { getPlan, type Plan } from '$lib/hooks/get-plan';
 	import { getUserData, type UserData } from '$lib/hooks/get-user-data';
 	import TrainingDay from '$lib/components/TrainingDay.svelte';
+	import { saveTrainingLog, getPlan, type Plan } from '$lib/hooks/manage-plans';
 
 	let userData: UserData | null = $state(null);
 	let plan: Plan | null = $state(null);
@@ -10,6 +10,10 @@
 	let selectedDay = $state(0);
 	let weeksCount = $state(0);
 	let daysCount = $state(0);
+	let exerciseDataToSave: Record<
+		string,
+		Array<{ sets: number; reps: number; rpe: number; weight: number }>
+	> = $state({});
 
 	if (browser) {
 		getUserData()
@@ -36,6 +40,23 @@
 		// console.log(userData?.currentWeek);
 		// console.log(plan?.weeks[selectedWeek].days[selectedDay].exercises[0].exercise_name);
 	});
+
+	async function handleSaveTraining() {
+		if (!plan) return;
+
+		try {
+			await saveTrainingLog(
+				userData?.currentPlan ?? '',
+				selectedWeek,
+				selectedDay,
+				exerciseDataToSave
+			);
+			// Maybe show success message or reset form
+		} catch (error) {
+			console.error('Error saving training log:', error);
+			// Show error message
+		}
+	}
 </script>
 
 <section class="h-[100dvh] w-full">
@@ -47,9 +68,7 @@
 					<select
 						class="select select-primary select-sm lg:select-md text-sm lg:text-base"
 						bind:value={selectedWeek}
-						onchange={(e: { currentTarget: { value: string | number } }) => {
-							selectedWeek = +e.currentTarget.value;
-						}}
+						onclick={(e) => (selectedWeek = +e.currentTarget.value)}
 					>
 						{#each Array(weeksCount) as _, i}
 							<option value={i}>Week {i + 1}</option>
@@ -58,9 +77,7 @@
 					<select
 						class="select select-primary select-sm lg:select-md appearance-none text-sm lg:text-base"
 						bind:value={selectedDay}
-						onchange={(e: { currentTarget: { value: string | number } }) => {
-							selectedDay = +e.currentTarget.value;
-						}}
+						onclick={(e) => (selectedDay = +e.currentTarget.value)}
 					>
 						{#each Array(daysCount) as _, i}
 							<option value={i}>Day {i + 1}</option>
@@ -71,8 +88,11 @@
 			<TrainingDay
 				exercises={plan['weeks'][selectedWeek]['days'][selectedDay]['exercises']}
 				isEditable={true}
+				bind:exerciseData={exerciseDataToSave}
 			/>
-			<button class="btn btn-primary mt-4 w-1/2 max-w-md">Save</button>
+			<button class="btn btn-primary mt-4 w-1/2 max-w-md" onclick={handleSaveTraining}>
+				Save
+			</button>
 		{/if}
 	</div>
 </section>

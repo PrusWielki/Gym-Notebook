@@ -8,6 +8,10 @@
 		notes?: string;
 	}>;
 	export let isEditable = false;
+	export let exerciseData: Record<
+		string,
+		Array<{ sets: number; reps: number; rpe: number; weight: number }>
+	> = {};
 
 	type ExerciseData = {
 		sets: number;
