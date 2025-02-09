@@ -36,18 +36,23 @@
 	]);
 
 	function updatePlanStructure() {
-		planStructure = Array(weeks)
-			.fill(null)
-			.map((_, weekIndex) => ({
-				days: Array(daysPerWeek)
-					.fill(null)
-					.map((_, dayIndex) => ({
-						exercises:
-							weekIndex === selectedWeek && dayIndex === selectedDay
-								? planStructure[selectedWeek]?.days[selectedDay]?.exercises || []
-								: []
-					}))
-			}));
+		if (weeks === undefined || daysPerWeek === undefined) return;
+
+		// Only update if dimensions have changed
+		if (planStructure.length !== weeks || planStructure[0].days.length !== daysPerWeek) {
+			planStructure = Array(weeks)
+				.fill(null)
+				.map((_, weekIndex) => ({
+					days: Array(daysPerWeek)
+						.fill(null)
+						.map((_, dayIndex) => ({
+							exercises:
+								weekIndex === selectedWeek && dayIndex === selectedDay
+									? planStructure[selectedWeek]?.days[selectedDay]?.exercises || []
+									: []
+						}))
+				}));
+		}
 	}
 
 	function addExercise() {
@@ -104,9 +109,7 @@
 	}
 
 	$effect(() => {
-		if (weeks !== undefined && daysPerWeek !== undefined) {
-			updatePlanStructure();
-		}
+		updatePlanStructure();
 	});
 
 	onMount(() => {
