@@ -1,5 +1,12 @@
-import { auth, db } from '$lib/firebase.client';
-import { doc, getDoc, updateDoc, setDoc } from 'firebase/firestore';
+import {
+	doc,
+	getDoc,
+	getDocFromCache,
+	getDocFromServer,
+	setDoc,
+	updateDoc
+} from 'firebase/firestore';
+import { db, auth } from '$lib/firebase.client';
 import { getFirestore } from 'firebase/firestore';
 import { app } from '$lib/firebase.client';
 
@@ -20,22 +27,35 @@ export type UserData = {
  * @returns {UserData | null} The user data, or null if the user is not logged in
  * or if the user document does not exist.
  */
-export const getUserData = async (): Promise<UserData | null> => {
-	let userData: UserData | null = null;
+export async function getUserData(): Promise<UserData | null> {
+	const currentUser = auth.currentUser;
+	if (!currentUser) return null;
+
+	const userRef = doc(db, 'users', currentUser.uid);
+
 	try {
-		const currentUserId = auth.currentUser?.uid;
-		if (currentUserId) {
-			const userDocumentRef = doc(db, 'UserData', currentUserId?.toString());
-			const userDocumentSnap = await getDoc(userDocumentRef);
-			if (userDocumentSnap.exists()) {
-				userData = userDocumentSnap.data() as UserData;
+		// Try cache first
+		try {
+			const snapshot = await getDocFromCache(userRef);
+			if (snapshot.exists()) {
+				return snapshot.data() as UserData;
 			}
+		} catch (error) {
+			console.log('No cached user data available');
 		}
+
+		// If cache fails or is empty, get from server
+		const snapshot = await getDocFromServer(userRef);
+		if (snapshot.exists()) {
+			return snapshot.data() as UserData;
+		}
+
+		return null;
 	} catch (error) {
-		console.error(error);
+		console.error('Error fetching user data:', error);
+		throw error;
 	}
-	return userData;
-};
+}
 
 export async function updateUserData(data: Partial<UserData>) {
 	const currentUserId = auth.currentUser?.uid;

@@ -5,7 +5,9 @@ import {
 	setDoc,
 	updateDoc,
 	getDoc,
-	getDocs
+	getDocs,
+	getDocsFromCache,
+	getDocsFromServer
 } from 'firebase/firestore';
 import { app, auth } from '$lib/firebase.client';
 
@@ -111,33 +113,53 @@ export async function getPlan(planId: string) {
 	return planDoc.exists() ? (planDoc.data() as Plan) : null;
 }
 
-export async function getPlans() {
-	const currentUserId = auth.currentUser?.uid;
-	if (!currentUserId) return [];
+export async function getPlans(): Promise<Plan[]> {
+	try {
+		const currentUserId = auth.currentUser?.uid;
+		if (!currentUserId) return [];
 
-	const db = getFirestore(app);
-	const plansRef = collection(db, 'users', currentUserId, 'plans');
-	const plansSnapshot = await getDocs(plansRef);
+		const db = getFirestore(app);
+		const plansRef = collection(db, 'users', currentUserId, 'plans');
 
-	return plansSnapshot.docs.map(
-		(doc) =>
-			({
-				id: doc.id,
-				...doc.data()
-			}) as Plan & { id: string }
-	);
+		// Try cache first
+		try {
+			const snapshot = await getDocsFromCache(plansRef);
+			if (!snapshot.empty) {
+				return snapshot.docs.map((doc) => ({ id: doc.id, ...doc.data() }) as Plan);
+			}
+		} catch (error) {
+			console.log('No cached data available');
+		}
+
+		// If cache fails or is empty, get from server
+		const snapshot = await getDocsFromServer(plansRef);
+		return snapshot.docs.map((doc) => ({ id: doc.id, ...doc.data() }) as Plan);
+	} catch (error) {
+		console.error('Error fetching plans:', error);
+		throw error;
+	}
 }
 
-export async function getPredefinedPlans() {
-	const db = getFirestore(app);
-	const plansRef = collection(db, 'predefined_plans');
-	const plansSnapshot = await getDocs(plansRef);
+export async function getPredefinedPlans(): Promise<Plan[]> {
+	try {
+		const db = getFirestore(app);
+		const plansRef = collection(db, 'predefined_plans');
 
-	return plansSnapshot.docs.map(
-		(doc) =>
-			({
-				id: doc.id,
-				...doc.data()
-			}) as Plan
-	);
+		// Try cache first
+		try {
+			const snapshot = await getDocsFromCache(plansRef);
+			if (!snapshot.empty) {
+				return snapshot.docs.map((doc) => ({ id: doc.id, ...doc.data() }) as Plan);
+			}
+		} catch (error) {
+			console.log('No cached data available');
+		}
+
+		// If cache fails or is empty, get from server
+		const snapshot = await getDocsFromServer(plansRef);
+		return snapshot.docs.map((doc) => ({ id: doc.id, ...doc.data() }) as Plan);
+	} catch (error) {
+		console.error('Error fetching predefined plans:', error);
+		throw error;
+	}
 }
