@@ -22,7 +22,7 @@
 </script>
 
 {#if loggedIn}
-	<div class="fixed top-0 z-10 w-full bg-transparent font-montserrat backdrop-blur-md">
+	<div class="font-montserrat fixed top-0 z-10 w-full bg-transparent backdrop-blur-md">
 		<div class="navbar mx-auto min-h-0 max-w-(--breakpoint-xl) px-4">
 			<div class="navbar-start w-fit lg:w-1/2">
 				<!-- svelte-ignore a11y_no_noninteractive_element_interactions -->
@@ -58,7 +58,7 @@
 					<!-- svelte-ignore a11y_no_noninteractive_tabindex -->
 					<ul
 						tabindex="0"
-						class="menu dropdown-content menu-sm z-1 mt-3 w-52 gap-4 rounded-box bg-base-200 p-2 shadow-sm"
+						class="menu dropdown-content menu-sm rounded-box bg-base-200 z-1 mt-3 w-52 gap-4 p-2 shadow-sm"
 					>
 						<li>
 							<ThemePickerSelect class="" />
@@ -83,9 +83,9 @@
 				<a href="/train" class="btn btn-ghost hidden text-xl font-semibold lg:flex">Gym Notebook</a>
 			</div>
 			<div class="navbar-center mx-auto gap-2 lg:mx-0">
-				<a href="/train" class="btn btn-ghost btn-sm mx-auto lg:btn-md lg:text-lg">Train</a>
-				<a href="/train" class="btn btn-ghost btn-sm mx-auto lg:btn-md lg:text-lg">Prepare</a>
-				<a href="/train" class="btn btn-ghost btn-sm mx-auto lg:btn-md lg:text-lg">Reflect</a>
+				<a href="/train" class="btn btn-ghost btn-sm lg:btn-md mx-auto lg:text-lg">Train</a>
+				<a href="/prepare" class="btn btn-ghost btn-sm lg:btn-md mx-auto lg:text-lg">Prepare</a>
+				<a href="/reflect" class="btn btn-ghost btn-sm lg:btn-md mx-auto lg:text-lg">Reflect</a>
 			</div>
 
 			<div class="navbar-end hidden gap-4 lg:flex">
