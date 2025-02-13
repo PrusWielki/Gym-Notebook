@@ -309,8 +309,6 @@
 						<button class="btn btn-error flex-1" onclick={handleDeletePlan}> Delete Plan </button>
 						<button class="btn btn-primary flex-1" onclick={handleSavePlan}> Save Changes </button>
 					</div>
-				{:else if selectedPlanId && planType !== 'new'}
-					<button class="btn btn-primary w-full" onclick={handleSelectPlan}> Select Plan </button>
 				{:else if planType === 'new'}
 					<button class="btn btn-primary w-full" onclick={handleSavePlan}> Save Plan </button>
 				{/if}
@@ -327,6 +325,8 @@
 						Create Copy
 					</button>
 				</div>
+
+				<button class="btn btn-primary w-full" onclick={handleSelectPlan}> Select Plan </button>
 			{/if}
 		</div>
 	</div>

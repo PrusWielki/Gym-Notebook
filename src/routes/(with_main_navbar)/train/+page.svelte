@@ -2,7 +2,14 @@
 	import { browser } from '$app/environment';
 	import { getUserData, updateUserData, type UserData } from '$lib/hooks/get-user-data';
 	import TrainingDay from '$lib/components/TrainingDay.svelte';
-	import { saveTrainingLog, getPlan, type Plan } from '$lib/hooks/manage-plans';
+	import {
+		saveTrainingLog,
+		getPlan,
+		getPlans,
+		getPredefinedPlans,
+		type Plan
+	} from '$lib/hooks/manage-plans';
+	import { onMount } from 'svelte';
 
 	let userData: UserData | null = $state(null);
 	let plan: Plan | null = $state(null);
@@ -10,31 +17,68 @@
 	let selectedDay = $state(0);
 	let weeksCount = $state(0);
 	let daysCount = $state(0);
+	let allPlans: (Plan & { type: 'user' | 'predefined' })[] = $state([]);
 	let exerciseDataToSave: Record<
 		string,
 		Array<{ sets: number; reps: number; rpe: number; weight: number }>
 	> = $state({});
 
-	if (browser) {
-		getUserData()
-			.then((data) => {
-				userData = data ?? null;
-				if (userData?.selectedPlan?.id) {
-					selectedWeek = userData.currentWeek ?? 0;
-					selectedDay = userData.currentDay ?? 0;
-					getPlan(userData.selectedPlan.id)
-						.then((planData) => {
-							plan = planData ?? null;
-							if (plan) {
-								weeksCount = plan.weeks.length;
-								daysCount = plan.weeks[0].days.length;
-							}
-						})
-						.catch((e) => console.error('Error fetching plan:', e));
-				}
-			})
-			.catch((e) => console.error('Error fetching user data:', e));
+	async function loadAllPlans() {
+		const [userPlans, predefinedPlans] = await Promise.all([getPlans(), getPredefinedPlans()]);
+
+		allPlans = [
+			...userPlans.map((plan) => ({ ...plan, type: 'user' as const })),
+			...predefinedPlans.map((plan) => ({ ...plan, type: 'predefined' as const }))
+		];
 	}
+
+	async function handlePlanSelect(planId: string) {
+		if (!planId) return;
+
+		try {
+			await updateUserData({
+				selectedPlan: {
+					id: planId,
+					type: allPlans.find((p) => p.id === planId)?.type ?? 'user'
+				}
+			});
+
+			const planData = await getPlan(planId);
+			if (planData) {
+				plan = planData;
+				weeksCount = planData.weeks.length;
+				daysCount = planData.weeks[0].days.length;
+				selectedWeek = 0;
+				selectedDay = 0;
+			}
+		} catch (error) {
+			console.error('Error selecting plan:', error);
+		}
+	}
+
+	onMount(() => {
+		loadAllPlans();
+		if (browser) {
+			getUserData()
+				.then((data) => {
+					userData = data ?? null;
+					if (userData?.selectedPlan?.id) {
+						selectedWeek = userData.currentWeek ?? 0;
+						selectedDay = userData.currentDay ?? 0;
+						getPlan(userData.selectedPlan.id)
+							.then((planData) => {
+								plan = planData ?? null;
+								if (plan) {
+									weeksCount = plan.weeks.length;
+									daysCount = plan.weeks[0].days.length;
+								}
+							})
+							.catch((e) => console.error('Error fetching plan:', e));
+					}
+				})
+				.catch((e) => console.error('Error fetching user data:', e));
+		}
+	});
 
 	async function handleSaveTraining() {
 		if (!plan) return;
@@ -84,9 +128,29 @@
 
 <section class="h-[100dvh] w-full py-4">
 	<div class="mx-auto flex max-w-(--breakpoint-xl) flex-col items-center gap-4 px-4 py-12 lg:py-20">
+		<div class="form-control w-full max-w-md">
+			<label class="label" for="plan-select">
+				<span class="label-text">Select a Training Plan</span>
+			</label>
+			<select
+				id="plan-select"
+				class="select select-bordered w-full"
+				value={userData?.selectedPlan?.id ?? ''}
+				onchange={(e) => handlePlanSelect(e.currentTarget.value)}
+			>
+				<option value="">Choose a plan</option>
+				{#each allPlans as plan}
+					<option value={plan.id}>
+						{plan.name}
+						{plan.type === 'predefined' ? '(Predefined)' : '(My Plan)'}
+					</option>
+				{/each}
+			</select>
+		</div>
+
 		{#if !plan}
 			<div class="alert alert-info">
-				<span>No plan selected. Please select a plan in the Prepare section.</span>
+				<span>Select a plan to start training</span>
 			</div>
 		{:else}
 			<section class="flex flex-col items-center gap-2 lg:flex-row lg:justify-center">
