@@ -56,27 +56,25 @@
 		}
 	}
 
-	onMount(() => {
-		loadAllPlans();
+	onMount(async () => {
+		await loadAllPlans();
 		if (browser) {
-			getUserData()
-				.then((data) => {
-					userData = data ?? null;
-					if (userData?.selectedPlan?.id) {
-						selectedWeek = userData.currentWeek ?? 0;
-						selectedDay = userData.currentDay ?? 0;
-						getPlan(userData.selectedPlan.id)
-							.then((planData) => {
-								plan = planData ?? null;
-								if (plan) {
-									weeksCount = plan.weeks.length;
-									daysCount = plan.weeks[0].days.length;
-								}
-							})
-							.catch((e) => console.error('Error fetching plan:', e));
+			try {
+				const data = await getUserData();
+				userData = data ?? null;
+				if (userData?.selectedPlan?.id) {
+					selectedWeek = userData.currentWeek ?? 0;
+					selectedDay = userData.currentDay ?? 0;
+					const planData = await getPlan(userData.selectedPlan.id);
+					plan = planData ?? null;
+					if (plan) {
+						weeksCount = plan.weeks.length;
+						daysCount = plan.weeks[0].days.length;
 					}
-				})
-				.catch((e) => console.error('Error fetching user data:', e));
+				}
+			} catch (e) {
+				console.error('Error fetching user data:', e);
+			}
 		}
 	});
 
@@ -140,7 +138,7 @@
 			>
 				<option value="">Choose a plan</option>
 				{#each allPlans as plan}
-					<option value={plan.id}>
+					<option value={plan.id} selected={plan.id === userData?.selectedPlan?.id}>
 						{plan.name}
 						{plan.type === 'predefined' ? '(Predefined)' : '(My Plan)'}
 					</option>
