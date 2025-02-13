@@ -13,6 +13,13 @@
 	let containerRef: HTMLDivElement;
 	let selecting = false;
 
+	// Sync searchTerm with value prop
+	$: {
+		if (value && value !== searchTerm) {
+			searchTerm = value;
+		}
+	}
+
 	onMount(() => {
 		const handleClickOutside = (event: MouseEvent) => {
 			if (containerRef && !containerRef.contains(event.target as Node) && !selecting) {
