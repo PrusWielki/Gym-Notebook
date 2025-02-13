@@ -10,7 +10,9 @@ export async function getExercises(): Promise<ExerciseDefinition[]> {
 	const db = getFirestore(app);
 	const exercisesRef = collection(db, 'exercises');
 	const snapshot = await getDocs(exercisesRef);
-	return snapshot.docs.map((doc) => ({ id: doc.id, ...doc.data() }) as ExerciseDefinition);
+	return snapshot.docs.map(
+		(doc) => ({ id: doc.id, ...doc.data() }) as unknown as ExerciseDefinition
+	);
 }
 
 export async function addExercise(exercise: ExerciseDefinition) {
