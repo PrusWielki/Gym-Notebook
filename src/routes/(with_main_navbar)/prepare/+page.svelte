@@ -1,5 +1,11 @@
 <script lang="ts">
-	import { savePlan, getPlans, getPredefinedPlans, type Plan } from '$lib/hooks/manage-plans';
+	import {
+		savePlan,
+		getPlans,
+		getPredefinedPlans,
+		deletePlan,
+		type Plan
+	} from '$lib/hooks/manage-plans';
 	import { goto } from '$app/navigation';
 	import { onMount } from 'svelte';
 	import { auth } from '$lib/firebase.client';
@@ -115,7 +121,13 @@
 				weeks: planStructure
 			};
 
-			await savePlan(plan);
+			// If we're editing an existing plan, include its ID
+			if (planType === 'existing' && selectedPlanId) {
+				await savePlan({ ...plan, id: selectedPlanId });
+			} else {
+				await savePlan(plan);
+			}
+
 			goto('/train');
 		} catch (error) {
 			console.error('Error saving plan:', error);
@@ -135,6 +147,22 @@
 			goto('/train');
 		} catch (error) {
 			console.error('Error selecting plan:', error);
+		}
+	}
+
+	async function handleDeletePlan() {
+		if (!selectedPlanId) return;
+
+		try {
+			await deletePlan(selectedPlanId);
+			// Refresh plans list
+			await loadPlans();
+			// Reset selection
+			selectedPlanId = '';
+			planName = '';
+			planStructure = [{ days: [{ exercises: [] }] }];
+		} catch (error) {
+			console.error('Error deleting plan:', error);
 		}
 	}
 
@@ -276,7 +304,16 @@
 					{/each}
 				</div>
 
-				<button class="btn btn-primary w-full" onclick={handleSavePlan}>Save Plan</button>
+				{#if planType === 'existing' && selectedPlanId}
+					<div class="flex gap-2">
+						<button class="btn btn-error flex-1" onclick={handleDeletePlan}> Delete Plan </button>
+						<button class="btn btn-primary flex-1" onclick={handleSavePlan}> Save Changes </button>
+					</div>
+				{:else if selectedPlanId && planType !== 'new'}
+					<button class="btn btn-primary w-full" onclick={handleSelectPlan}> Select Plan </button>
+				{:else if planType === 'new'}
+					<button class="btn btn-primary w-full" onclick={handleSavePlan}> Save Plan </button>
+				{/if}
 			{:else if selectedPlanId}
 				<div class="alert alert-info">
 					<span>This plan can only be viewed. Create a copy to modify it.</span>
@@ -290,10 +327,6 @@
 						Create Copy
 					</button>
 				</div>
-			{/if}
-
-			{#if selectedPlanId && planType !== 'new'}
-				<button class="btn btn-primary w-full" onclick={handleSelectPlan}> Select Plan </button>
 			{/if}
 		</div>
 	</div>

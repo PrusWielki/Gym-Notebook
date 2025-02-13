@@ -7,7 +7,8 @@ import {
 	getDoc,
 	getDocs,
 	getDocsFromCache,
-	getDocsFromServer
+	getDocsFromServer,
+	deleteDoc
 } from 'firebase/firestore';
 import { app, auth } from '$lib/firebase.client';
 
@@ -37,8 +38,19 @@ export async function savePlan(plan: Plan) {
 	if (!currentUserId) throw new Error('No user logged in');
 
 	const db = getFirestore(app);
-	const planRef = doc(collection(db, 'users', currentUserId, 'plans'));
 
+	// If plan has an ID, update existing plan
+	if (plan.id) {
+		const planRef = doc(db, 'users', currentUserId, 'plans', plan.id);
+		await updateDoc(planRef, {
+			...plan,
+			updatedAt: new Date()
+		});
+		return plan.id;
+	}
+
+	// Otherwise create new plan
+	const planRef = doc(collection(db, 'users', currentUserId, 'plans'));
 	await setDoc(planRef, {
 		...plan,
 		createdAt: new Date(),
@@ -162,4 +174,13 @@ export async function getPredefinedPlans(): Promise<Plan[]> {
 		console.error('Error fetching predefined plans:', error);
 		throw error;
 	}
+}
+
+export async function deletePlan(planId: string) {
+	const currentUserId = auth.currentUser?.uid;
+	if (!currentUserId) throw new Error('No user logged in');
+
+	const db = getFirestore(app);
+	const planRef = doc(db, 'users', currentUserId, 'plans', planId);
+	await deleteDoc(planRef);
 }
