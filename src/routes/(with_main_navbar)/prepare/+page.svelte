@@ -4,6 +4,7 @@
 	import { onMount } from 'svelte';
 	import { auth } from '$lib/firebase.client';
 	import { updateUserData } from '$lib/hooks/get-user-data';
+	import ExerciseSelect from '$lib/components/ExerciseSelect.svelte';
 
 	type PlanType = 'new' | 'existing' | 'predefined';
 	let planType = $state<PlanType>('new');
@@ -251,12 +252,7 @@
 
 					{#each planStructure[selectedWeek].days[selectedDay].exercises as exercise, i}
 						<div class="grid grid-cols-6 gap-2">
-							<input
-								type="text"
-								placeholder="Exercise"
-								class="input input-bordered input-sm col-span-2"
-								bind:value={exercise.exercise_name}
-							/>
+							<ExerciseSelect bind:value={exercise.exercise_name} placeholder="Exercise name" />
 							<input
 								type="number"
 								placeholder="Sets"
