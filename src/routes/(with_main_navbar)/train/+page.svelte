@@ -10,6 +10,7 @@
 		type Plan
 	} from '$lib/hooks/manage-plans';
 	import { onMount } from 'svelte';
+	import { finishedExercises } from '$lib/store/finished-exercises';
 
 	let userData: UserData | null = $state(null);
 	let plan: Plan | null = $state(null);
@@ -34,6 +35,7 @@
 
 	async function handlePlanSelect(planId: string) {
 		if (!planId) return;
+		finishedExercises.reset();
 
 		try {
 			const selectedPlanType = allPlans.find((p) => p.id === planId)?.type ?? 'user';
@@ -220,6 +222,9 @@
 				exercises={plan['weeks'][selectedWeek]['days'][selectedDay]['exercises']}
 				isEditable={true}
 				bind:exerciseData={exerciseDataToSave}
+				planId={userData?.selectedPlan?.id ?? ''}
+				currentWeek={selectedWeek}
+				currentDay={selectedDay}
 			/>
 			<button class="btn btn-primary mt-4 w-1/2 max-w-md" onclick={handleSaveTraining}>
 				Save
