@@ -36,11 +36,18 @@
 		if (!planId) return;
 
 		try {
+			const selectedPlanType = allPlans.find((p) => p.id === planId)?.type ?? 'user';
+			const selectedPlan = allPlans.find((p) => p.id === planId);
+
+			// Update user data with selected plan info
 			await updateUserData({
 				selectedPlan: {
 					id: planId,
-					type: allPlans.find((p) => p.id === planId)?.type ?? 'user'
-				}
+					type: selectedPlanType
+				},
+				currentPlan: selectedPlan?.name || '', // Save plan name
+				currentWeek: 0, // Reset week and day when selecting new plan
+				currentDay: 0
 			});
 
 			const planData = await getPlan(planId);
@@ -50,31 +57,66 @@
 				daysCount = planData.weeks[0].days.length;
 				selectedWeek = 0;
 				selectedDay = 0;
+
+				// Update local userData state
+				userData = {
+					...userData,
+					selectedPlan: {
+						id: planId,
+						type: selectedPlanType
+					},
+					currentPlan: selectedPlan?.name || '',
+					currentWeek: 0,
+					currentDay: 0
+				} as UserData;
 			}
 		} catch (error) {
 			console.error('Error selecting plan:', error);
 		}
 	}
 
+	async function initializePlanFromId(planId: string) {
+		const planData = await getPlan(planId);
+		if (planData) {
+			plan = planData;
+			weeksCount = planData.weeks.length;
+			daysCount = planData.weeks[0].days.length;
+		}
+		return planData;
+	}
+
 	onMount(async () => {
-		await loadAllPlans();
-		if (browser) {
-			try {
+		try {
+			// Load all plans first
+			await loadAllPlans();
+
+			if (browser) {
 				const data = await getUserData();
 				userData = data ?? null;
+
 				if (userData?.selectedPlan?.id) {
 					selectedWeek = userData.currentWeek ?? 0;
 					selectedDay = userData.currentDay ?? 0;
-					const planData = await getPlan(userData.selectedPlan.id);
-					plan = planData ?? null;
-					if (plan) {
-						weeksCount = plan.weeks.length;
-						daysCount = plan.weeks[0].days.length;
+
+					// Initialize plan data
+					const planData = await initializePlanFromId(userData.selectedPlan.id);
+
+					if (planData) {
+						// Set plan and dimensions
+						plan = planData;
+						weeksCount = planData.weeks.length;
+						daysCount = planData.weeks[0].days.length;
+
+						// Ensure the select element reflects the current plan
+						const select = document.getElementById('plan-select') as HTMLSelectElement;
+						if (select) {
+							select.value = userData.selectedPlan.id;
+						}
 					}
 				}
-			} catch (e) {
-				console.error('Error fetching user data:', e);
 			}
+		} catch (e) {
+			console.error('Error initializing training page:', e);
 		}
 	});
 
