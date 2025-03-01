@@ -27,7 +27,7 @@
 			<div class="navbar-start w-fit lg:w-1/2">
 				<!-- svelte-ignore a11y_no_noninteractive_element_interactions -->
 				<button
-					class="btn btn-ghost"
+					class="btn btn-ghost lg:hidden"
 					popovertarget="popover-mobile-menu"
 					style="anchor-name:--anchor-mobile-menu"
 					aria-label="Open mobile menu"
