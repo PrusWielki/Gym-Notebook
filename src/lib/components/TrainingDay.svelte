@@ -1,27 +1,37 @@
 <script lang="ts">
 	import ExerciseChartModal from './ExerciseChartModal.svelte';
 	import { finishedExercises } from '$lib/store/finished-exercises';
+	import { trainingData } from '$lib/store/training-data';
 
-	export let exercises: Array<{
-		exercise_name: string;
-		sets: string | number;
-		reps: string | number;
-		rpe: string | number;
-		weight: string | number;
-		notes?: string;
-	}>;
-	export let isEditable = false;
-	export let exerciseData: Record<
-		string,
-		Array<{ sets: number; reps: number; rpe: number; weight: number }>
-	> = {};
+	interface Props {
+		exercises: Array<{
+			exercise_name: string;
+			sets: string | number;
+			reps: string | number;
+			rpe: string | number;
+			weight: string | number;
+		}>;
+		isEditable: boolean;
+		exerciseData: Record<
+			string,
+			Array<{ sets: number; reps: number; rpe: number; weight: number }>
+		>;
+		planId: string;
+		currentWeek: number;
+		currentDay: number;
+	}
 
-	export let planId: string = '';
-	export let currentWeek: number = 0;
-	export let currentDay: number = 0;
+	let {
+		exercises = [],
+		isEditable = false,
+		exerciseData = $bindable({}),
+		planId = '',
+		currentWeek = 0,
+		currentDay = 0
+	}: Props = $props();
 
-	let selectedExercise: string | null = null;
-	let showModal = false;
+	let selectedExercise: string | null = $state(null);
+	let showModal = $state(false);
 
 	function handleExerciseClick(exerciseName: string) {
 		selectedExercise = exerciseName;
@@ -39,6 +49,7 @@
 		field: 'sets' | 'reps' | 'rpe' | 'weight',
 		value: number
 	) {
+		// Update local exercise data for parent component
 		if (!exerciseData[exerciseName]) {
 			const exercise = exercises.find((e) => e.exercise_name === exerciseName);
 			const numSets = exercise ? +exercise.sets : 0;
@@ -47,14 +58,22 @@
 				.map(() => ({ sets: 1, reps: 0, rpe: 0, weight: 0 }));
 		}
 
-		const currentSet = exerciseData[exerciseName][setIndex];
-		if (currentSet) {
-			exerciseData[exerciseName][setIndex] = {
-				...currentSet,
-				[field]: value
-			};
-			exerciseData = exerciseData;
-		}
+		exerciseData[exerciseName][setIndex] = {
+			...exerciseData[exerciseName][setIndex],
+			[field]: value
+		};
+		exerciseData = exerciseData;
+
+		// Update persistent storage
+		trainingData.updateExerciseData(
+			planId,
+			currentWeek,
+			currentDay,
+			exerciseName,
+			setIndex,
+			field,
+			value
+		);
 	}
 
 	function isExerciseFinished(exerciseName: string): boolean {
@@ -75,6 +94,18 @@
 			exerciseName
 		});
 	}
+
+	// Initialize input values from stored data
+	$effect(() => {
+		if (
+			$trainingData &&
+			$trainingData.planId === planId &&
+			$trainingData.week === currentWeek &&
+			$trainingData.day === currentDay
+		) {
+			exerciseData = $trainingData.exerciseData;
+		}
+	});
 </script>
 
 <section
@@ -98,7 +129,7 @@
 							class="btn btn-outline btn-sm lg:btn-md {isExerciseFinished(exerciseName)
 								? 'btn-success'
 								: ''}"
-							on:click={() => handleExerciseClick(exerciseName)}
+							onclick={() => handleExerciseClick(exerciseName)}
 						>
 							{exerciseName}
 						</button>
@@ -111,21 +142,21 @@
 						type="number"
 						placeholder={exercise.reps.toString()}
 						disabled={!isEditable}
-						on:input={(e) => updateExerciseData(exerciseName, i, 'reps', +e.currentTarget.value)}
+						oninput={(e) => updateExerciseData(exerciseName, i, 'reps', +e.currentTarget.value)}
 					/>
 					<input
 						class="input input-sm input-bordered lg:input-md w-full text-center"
 						type="number"
 						placeholder={exercise.rpe.toString()}
 						disabled={!isEditable}
-						on:input={(e) => updateExerciseData(exerciseName, i, 'rpe', +e.currentTarget.value)}
+						oninput={(e) => updateExerciseData(exerciseName, i, 'rpe', +e.currentTarget.value)}
 					/>
 					<input
 						class="input input-sm input-bordered lg:input-md w-full text-center"
 						type="number"
 						placeholder={exercise.weight.toString()}
 						disabled={!isEditable}
-						on:input={(e) => updateExerciseData(exerciseName, i, 'weight', +e.currentTarget.value)}
+						oninput={(e) => updateExerciseData(exerciseName, i, 'weight', +e.currentTarget.value)}
 					/>
 					{#if i === 0}
 						<label class="flex items-center justify-center">
@@ -133,7 +164,7 @@
 								type="checkbox"
 								class="checkbox checkbox-primary"
 								checked={isExerciseFinished(exercise.exercise_name)}
-								on:change={() => toggleExerciseFinished(exercise.exercise_name)}
+								onchange={() => toggleExerciseFinished(exercise.exercise_name)}
 							/>
 						</label>
 					{:else}

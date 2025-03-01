@@ -11,6 +11,7 @@
 	} from '$lib/hooks/manage-plans';
 	import { onMount } from 'svelte';
 	import { finishedExercises } from '$lib/store/finished-exercises';
+	import { trainingData } from '$lib/store/training-data';
 
 	let userData: UserData | null = $state(null);
 	let plan: Plan | null = $state(null);
@@ -36,6 +37,7 @@
 	async function handlePlanSelect(planId: string) {
 		if (!planId) return;
 		finishedExercises.reset();
+		trainingData.reset();
 
 		try {
 			const selectedPlanType = allPlans.find((p) => p.id === planId)?.type ?? 'user';
@@ -133,6 +135,10 @@
 				selectedDay,
 				exerciseDataToSave
 			);
+
+			// Reset stored data
+			trainingData.reset();
+			finishedExercises.reset();
 
 			// Calculate next position
 			let nextDay = selectedDay + 1;
