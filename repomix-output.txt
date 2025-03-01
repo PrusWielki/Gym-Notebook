@@ -1,0 +1,3339 @@
+This file is a merged representation of the entire codebase, combined into a single document by Repomix.
+
+================================================================
+File Summary
+================================================================
+
+Purpose:
+--------
+This file contains a packed representation of the entire repository's contents.
+It is designed to be easily consumable by AI systems for analysis, code review,
+or other automated processes.
+
+File Format:
+------------
+The content is organized as follows:
+1. This summary section
+2. Repository information
+3. Directory structure
+4. Multiple file entries, each consisting of:
+  a. A separator line (================)
+  b. The file path (File: path/to/file)
+  c. Another separator line
+  d. The full contents of the file
+  e. A blank line
+
+Usage Guidelines:
+-----------------
+- This file should be treated as read-only. Any changes should be made to the
+  original repository files, not this packed version.
+- When processing this file, use the file path to distinguish
+  between different files in the repository.
+- Be aware that this file may contain sensitive information. Handle it with
+  the same level of security as you would the original repository.
+
+Notes:
+------
+- Some files may have been excluded based on .gitignore rules and Repomix's configuration
+- Binary files are not included in this packed representation. Please refer to the Repository Structure section for a complete list of file paths, including binary files
+- Files matching patterns in .gitignore are excluded
+- Files matching default ignore patterns are excluded
+
+Additional Info:
+----------------
+
+================================================================
+Directory Structure
+================================================================
+.firebaserc
+.gitignore
+.npmrc
+.prettierignore
+.prettierrc
+eslint.config.js
+firebase.json
+firestore.indexes.json
+firestore.rules
+package.json
+postcss.config.js
+README.md
+src/app.css
+src/app.d.ts
+src/app.html
+src/lib/components/buttons/plus_button.svelte
+src/lib/components/card_modal/card_modal.svelte
+src/lib/components/card/card.svelte
+src/lib/components/ExerciseChart.svelte
+src/lib/components/ExerciseChartModal.svelte
+src/lib/components/ExerciseSelect.svelte
+src/lib/components/theme_picker_select/theme_picker_select.svelte
+src/lib/components/theme_picker/theme_picker.svelte
+src/lib/components/toast/toast.svelte
+src/lib/components/TrainingDay.svelte
+src/lib/consts/consts.ts
+src/lib/firebase.client.ts
+src/lib/hooks/get-exercises.ts
+src/lib/hooks/get-user-data.ts
+src/lib/hooks/manage-exercises.ts
+src/lib/hooks/manage-plans.ts
+src/lib/hooks/show-notification.ts
+src/lib/index.ts
+src/lib/session.ts
+src/lib/store/notification.ts
+src/routes/(with_homepage_navbar)/+layout.svelte
+src/routes/(with_homepage_navbar)/+page.svelte
+src/routes/(with_homepage_navbar)/+page.ts
+src/routes/(with_homepage_navbar)/login/+page.svelte
+src/routes/(with_homepage_navbar)/signup/+page.svelte
+src/routes/(with_main_navbar)/+layout.svelte
+src/routes/(with_main_navbar)/prepare/+page.svelte
+src/routes/(with_main_navbar)/reflect/+page.svelte
+src/routes/(with_main_navbar)/train/+page.svelte
+src/routes/+layout.svelte
+src/routes/+layout.ts
+src/service-worker.js
+static/index.html
+static/site.webmanifest
+svelte.config.js
+TODO.md
+tsconfig.json
+vite.config.ts
+
+================================================================
+Files
+================================================================
+
+================
+File: .firebaserc
+================
+{
+  "projects": {
+    "default": "gym-notebook-98e1e"
+  }
+}
+
+================
+File: .gitignore
+================
+node_modules
+
+# Output
+.output
+.vercel
+/.svelte-kit
+/build
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Env
+.env
+.env.*
+!.env.example
+!.env.test
+
+# Vite
+vite.config.js.timestamp-*
+vite.config.ts.timestamp-*
+
+*.log
+
+.firebase
+
+================
+File: .npmrc
+================
+engine-strict=true
+
+================
+File: .prettierignore
+================
+# Package Managers
+package-lock.json
+pnpm-lock.yaml
+yarn.lock
+
+================
+File: .prettierrc
+================
+{
+	"useTabs": true,
+	"singleQuote": true,
+	"trailingComma": "none",
+	"printWidth": 100,
+	"plugins": ["prettier-plugin-svelte","prettier-plugin-tailwindcss"],
+	"overrides": [{ "files": "*.svelte", "options": { "parser": "svelte" } }]
+}
+
+================
+File: eslint.config.js
+================
+import js from '@eslint/js';
+import ts from 'typescript-eslint';
+import svelte from 'eslint-plugin-svelte';
+import prettier from 'eslint-config-prettier';
+import globals from 'globals';
+
+/** @type {import('eslint').Linter.Config[]} */
+export default [
+	js.configs.recommended,
+	...ts.configs.recommended,
+	...svelte.configs['flat/recommended'],
+	prettier,
+	...svelte.configs['flat/prettier'],
+	{
+		languageOptions: {
+			globals: {
+				...globals.browser,
+				...globals.node
+			}
+		}
+	},
+	{
+		files: ['**/*.svelte'],
+		languageOptions: {
+			parserOptions: {
+				parser: ts.parser
+			}
+		}
+	},
+	{
+		ignores: ['build/', '.svelte-kit/', 'dist/']
+	}
+];
+
+================
+File: firebase.json
+================
+{
+	"firestore": {
+		"rules": "firestore.rules",
+		"indexes": "firestore.indexes.json"
+	},
+	"hosting": {
+		"source": ".",
+		"ignore": ["firebase.json", "**/.*", "**/node_modules/**"],
+		"frameworksBackend": {
+			"region": "europe-west1",
+			"invoker": "public"
+		},
+		"rewrites": [
+			{
+				"source": "**",
+				"destination": "/index.html"
+			}
+		]
+	},
+	"emulators": {
+		"auth": {
+			"port": 9099
+		},
+		"firestore": {
+			"port": 8080
+		},
+		"hosting": {
+			"port": 5000
+		},
+		"ui": {
+			"enabled": true
+		},
+		"singleProjectMode": true
+	}
+}
+
+================
+File: firestore.indexes.json
+================
+{
+	"indexes": [],
+	"fieldOverrides": []
+}
+
+================
+File: firestore.rules
+================
+rules_version = '2';
+
+service cloud.firestore {
+  match /databases/{database}/documents {
+    match /{document=**} {
+      allow read, write: if true;
+    }
+  }
+}
+
+================
+File: package.json
+================
+{
+	"name": "gym-notebook",
+	"version": "0.0.1",
+	"private": true,
+	"scripts": {
+		"dev": "vite dev",
+		"build": "vite build",
+		"preview": "vite preview",
+		"check": "svelte-kit sync && svelte-check --tsconfig ./tsconfig.json",
+		"check:watch": "svelte-kit sync && svelte-check --tsconfig ./tsconfig.json --watch",
+		"lint": "prettier --check . && eslint .",
+		"format": "prettier --write ."
+	},
+	"devDependencies": {
+		"@sveltejs/adapter-auto": "^4.0.0",
+		"@sveltejs/kit": "^2.17.3",
+		"@sveltejs/vite-plugin-svelte": "5.0.3",
+		"@tailwindcss/postcss": "^4.0.9",
+		"@types/eslint": "^9.6.1",
+		"daisyui": "5.0.0",
+		"eslint": "^9.21.0",
+		"eslint-config-prettier": "^10.0.2",
+		"eslint-plugin-svelte": "^3.0.2",
+		"globals": "^16.0.0",
+		"postcss": "^8.5.3",
+		"prettier": "^3.5.2",
+		"prettier-plugin-svelte": "^3.3.3",
+		"prettier-plugin-tailwindcss": "^0.6.11",
+		"svelte": "^5.20.5",
+		"svelte-check": "^4.1.4",
+		"tailwindcss": "^4.0.9",
+		"typescript": "^5.8.2",
+		"typescript-eslint": "^8.25.0",
+		"vite": "^6.2.0"
+	},
+	"type": "module",
+	"dependencies": {
+		"@tailwindcss/typography": "^0.5.16",
+		"chart.js": "^4.4.8",
+		"firebase": "^11.4.0"
+	}
+}
+
+================
+File: postcss.config.js
+================
+export default {
+	plugins: {
+		'@tailwindcss/postcss': {},
+	}
+};
+
+================
+File: README.md
+================
+# Gym Notebook
+
+Set up and track your workout plans.
+
+# Features
+
+- Create and edit workout plans.
+- Choose from a variety of exercises and premade plans.
+- Analyze your workouts by viewing statistical data.
+- Save and track your progress.
+- Use in a browser or install on your phone or PC.
+
+![:)](https://github.com/PrusWielki/Gym-Notebook/blob/main/Gym-Notebook.gif)
+
+================
+File: src/app.css
+================
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap')
+layer(base);
+@import 'tailwindcss';
+@plugin "@tailwindcss/typography";
+@plugin 'daisyui';
+
+
+
+@utility leanscroll {
+  &::-webkit-scrollbar {
+    width: 8px;
+    margin-left: 10px;
+  }
+
+  &::-webkit-scrollbar-thumb {
+    background: #d4d4d8;
+    border-radius: 2px;
+  }
+}
+
+================
+File: src/app.d.ts
+================
+// See https://kit.svelte.dev/docs/types#app
+// for information about these interfaces
+declare global {
+	namespace App {
+		// interface Error {}
+		interface Locals {
+			getAuthUser: () => Promise;
+		}
+		// interface PageData {}
+		// interface PageState {}
+		// interface Platform {}
+	}
+}
+
+export {};
+
+================
+File: src/app.html
+================
+<!doctype html>
+<html lang="en">
+	<head>
+		<meta charset="utf-8" />
+		<link rel="icon" href="%sveltekit.assets%/favicon.ico" />
+		<meta name="viewport" content="width=device-width, initial-scale=1" />
+		%sveltekit.head%
+		<link rel="manifest" href="%sveltekit.assets%/site.webmanifest" />
+	</head>
+	<body data-sveltekit-preload-data="hover">
+		<div style="display: contents">%sveltekit.body%</div>
+	</body>
+</html>
+
+================
+File: src/lib/components/buttons/plus_button.svelte
+================
+<script lang="ts">
+</script>
+
+<input
+	class="hidden"
+	id="fileInput"
+	type="file"
+	name="filename"
+	on:click={(e) => {
+		e.currentTarget.value = '';
+	}}
+/>
+<button
+	aria-label="add a note"
+	on:click={() => {
+		const element = document.getElementById('fileInput');
+		if (element) element.click();
+	}}
+	class="fill-primary-content p-2 btn-primary rounded-box btn btn-square flex items-center justify-center"
+>
+	<div class="h-6 w-6">
+		<svg
+			version="1.1"
+			id="Capa_1"
+			xmlns="http://www.w3.org/2000/svg"
+			xmlns:xlink="http://www.w3.org/1999/xlink"
+			viewBox="0 0 45.402 45.402"
+			xml:space="preserve"
+			><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g
+				id="SVGRepo_tracerCarrier"
+				stroke-linecap="round"
+				stroke-linejoin="round"
+			></g><g id="SVGRepo_iconCarrier">
+				<g>
+					<path
+						d="M41.267,18.557H26.832V4.134C26.832,1.851,24.99,0,22.707,0c-2.283,0-4.124,1.851-4.124,4.135v14.432H4.141 c-2.283,0-4.139,1.851-4.138,4.135c-0.001,1.141,0.46,2.187,1.207,2.934c0.748,0.749,1.78,1.222,2.92,1.222h14.453V41.27 c0,1.142,0.453,2.176,1.201,2.922c0.748,0.748,1.777,1.211,2.919,1.211c2.282,0,4.129-1.851,4.129-4.133V26.857h14.435 c2.283,0,4.134-1.867,4.133-4.15C45.399,20.425,43.548,18.557,41.267,18.557z"
+					></path>
+				</g>
+			</g></svg
+		>
+	</div></button
+>
+
+================
+File: src/lib/components/card_modal/card_modal.svelte
+================
+<script lang="ts">
+	import { getStorage, ref, getBytes, deleteObject } from 'firebase/storage';
+	import { app } from '$lib/firebase.client';
+	import { browser } from '$app/environment';
+	import { doc, deleteDoc, getFirestore } from 'firebase/firestore';
+	import { showNotification } from '$lib/hooks/show-notification';
+
+	let { text = '', open = $bindable(), summary = '', image = '', docId = null } = $props();
+
+	let dialogRef: HTMLDivElement;
+	let backdropRef: HTMLDivElement;
+	let imageSource: string | null = $state(null);
+	let loading: boolean = $state(true);
+	let failed: boolean = $state(false);
+	let resultsMenu: HTMLDetailsElement;
+
+	function _arrayBufferToBase64(buffer: ArrayBuffer) {
+		var binary = '';
+		var bytes = new Uint8Array(buffer);
+		var len = bytes.byteLength;
+		for (var i = 0; i < len; i++) {
+			binary += String.fromCharCode(bytes[i]);
+		}
+		return window.btoa(binary);
+	}
+	let storage = null;
+	if (app) storage = getStorage();
+
+	const getImage = (image: string) => {
+		if (image && storage) {
+			const pathReference = ref(storage, image);
+			getBytes(pathReference)
+				.then((res) => {
+					imageSource = 'data:image/jpg;base64, ' + _arrayBufferToBase64(res);
+					failed = false;
+					loading = false;
+				})
+				.catch(() => {
+					failed = true;
+					loading = false;
+				});
+		}
+	};
+
+	const handleOpenDialog = () => {
+		document.getElementsByTagName('body')[0].style.overflow = 'hidden';
+	};
+	const handleCloseDialog = () => {
+		document.getElementsByTagName('body')[0].style.overflow = 'auto';
+	};
+	$effect(() => {
+		imageSource = null;
+		loading = true;
+
+		if (image) getImage(image);
+	});
+
+	$effect(() => {
+		if (open && dialogRef) {
+			handleOpenDialog();
+		} else if (!open && dialogRef) {
+			loading = true;
+			handleCloseDialog();
+		}
+	});
+
+	$effect(() => {
+		if (dialogRef && backdropRef) {
+			backdropRef.addEventListener('click', function (event) {
+				var rect = dialogRef.getBoundingClientRect();
+				var isInDialog =
+					rect.top <= event.clientY &&
+					event.clientY <= rect.top + rect.height &&
+					rect.left <= event.clientX &&
+					event.clientX <= rect.left + rect.width;
+				if (!isInDialog) {
+					open = false;
+					handleCloseDialog();
+				}
+			});
+		}
+	});
+	$effect(() => {
+		if (browser)
+			document.addEventListener('click', function () {
+				if (resultsMenu && resultsMenu.removeAttribute) resultsMenu.removeAttribute('open');
+			});
+	});
+</script>
+
+<div
+	bind:this={backdropRef}
+	class={`fixed w-[100vw] h-[100vh]  bg-black-200 z-20 left-0 top-0 opacity-60 backdrop-blur-lg ${open ? 'block' : 'hidden'}`}
+></div>
+<div
+	bind:this={dialogRef}
+	class={`bg-base-300 sm:h-3/4 h-full sm:max-w-2xl rounded-box w-full sm:w-3/4 h-full sm:h-10/12 fixed left-1/2 top-1/2 -translate-x-1/2 z-30 -translate-y-1/2 ${open ? 'block' : 'hidden'}`}
+>
+	<div class="relative w-full h-full py-10">
+		<button
+			aria-label="Close Modal"
+			onclick={() => {
+				open = false;
+				handleCloseDialog();
+			}}
+			class="absolute cursor-pointer fill-primary w-8 h-8 right-3 top-2 btn btn-ghost p-0"
+		>
+			<svg role="button" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"
+				><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g
+					id="SVGRepo_tracerCarrier"
+					stroke-linecap="round"
+					stroke-linejoin="round"
+				></g><g id="SVGRepo_iconCarrier">
+					<path
+						fill-rule="evenodd"
+						clip-rule="evenodd"
+						d="M5.29289 5.29289C5.68342 4.90237 6.31658 4.90237 6.70711 5.29289L12 10.5858L17.2929 5.29289C17.6834 4.90237 18.3166 4.90237 18.7071 5.29289C19.0976 5.68342 19.0976 6.31658 18.7071 6.70711L13.4142 12L18.7071 17.2929C19.0976 17.6834 19.0976 18.3166 18.7071 18.7071C18.3166 19.0976 17.6834 19.0976 17.2929 18.7071L12 13.4142L6.70711 18.7071C6.31658 19.0976 5.68342 19.0976 5.29289 18.7071C4.90237 18.3166 4.90237 17.6834 5.29289 17.2929L10.5858 12L5.29289 6.70711C4.90237 6.31658 4.90237 5.68342 5.29289 5.29289Z"
+					></path>
+				</g></svg
+			>
+		</button>
+
+		<div class="absolute cursor-pointer w-6 h-6 right-4 top-14">
+			<!-- svelte-ignore a11y_no_noninteractive_element_interactions -->
+			<details
+				class="dropdown dropdown-end w-full h-full"
+				onclick={(e) => {
+					if (resultsMenu.open) {
+						e.stopPropagation();
+					}
+				}}
+				onkeydown={(e) => {
+					if (resultsMenu.open) {
+						e.stopPropagation();
+					}
+				}}
+				bind:this={resultsMenu}
+			>
+				<summary tabindex="0" class="w-full fill-primary h-full btn btn-ghost p-0">
+					<svg viewBox="0 0 16 16" class="h-5 w-5" xmlns="http://www.w3.org/2000/svg"
+						><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g
+							id="SVGRepo_tracerCarrier"
+							stroke-linecap="round"
+							stroke-linejoin="round"
+						></g><g id="SVGRepo_iconCarrier">
+							<path
+								d="M9.5 13a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0zm0-5a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0zm0-5a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0z"
+							></path>
+						</g></svg
+					>
+				</summary>
+				<ul class="dropdown-content menu">
+					<li>
+						<button
+							onclick={async () => {
+								if (docId) {
+									open = false;
+									handleCloseDialog();
+									let db = getFirestore();
+									await deleteDoc(doc(db, 'userData', docId as string))
+										.then(() => {
+											let pathReference = null;
+											if (storage) {
+												pathReference = ref(storage, image);
+												if (pathReference) {
+													deleteObject(pathReference)
+														.then(() => {
+															showNotification('Note deleted succesfully!', 2000, 'Success');
+														})
+														.catch(() => {
+															showNotification("Couldn't delete note!", 2000, 'Failure');
+														});
+												}
+											}
+										})
+										.catch(() => {
+											showNotification("Couldn't delete note!", 2000, 'Failure');
+										});
+								}
+							}}
+							class="btn btn-base-100 dropdown-content menu btn-small">Delete</button
+						>
+					</li>
+				</ul>
+			</details>
+		</div>
+
+		<div
+			class="h-full overflow-auto leanscroll px-8 sm:px-12 prose first-of-type:prose-h2:mt-0 max-w-[100%]"
+		>
+			<h2>Summary</h2>
+			<p>{summary}</p>
+			<h2>Content</h2>
+			<p>
+				{text}
+			</p>
+			<h2>Source Image</h2>
+			{#if loading === true}
+				<p>loading...</p>
+			{:else if failed === true}
+				<p>failed to load the image</p>
+			{:else}
+				<img src={imageSource} alt="Notes" />
+			{/if}
+		</div>
+	</div>
+</div>
+
+================
+File: src/lib/components/card/card.svelte
+================
+<script lang="ts">
+	export let text: string = '';
+</script>
+
+<div class="h-full max-h-28 border-solid border-2 border-neutral rounded-box p-4 cursor-pointer">
+	<p class="w-full overflow-hidden h-full px-2 pb-2">
+		{text}
+	</p>
+</div>
+
+================
+File: src/lib/components/ExerciseChart.svelte
+================
+<script lang="ts">
+	import { onMount } from 'svelte';
+	import { Chart } from 'chart.js/auto';
+
+	type ExerciseLog = {
+		exercise_name: string;
+		reps: number;
+		weight: number;
+		rpe: number;
+		date: Date;
+	};
+
+	export let data: ExerciseLog[] = [];
+
+	let canvas: HTMLCanvasElement;
+	let chart: Chart;
+	const isMobile = false;
+
+	onMount(() => {
+		const ctx = canvas.getContext('2d');
+		if (ctx) {
+			chart = new Chart(ctx, {
+				type: 'line',
+				data: {
+					labels: data.map((d) => new Date(d.date).toLocaleDateString()),
+					datasets: [
+						{
+							label: 'Weight (kg)',
+							data: data.map((d) => d.weight),
+							borderColor: 'rgb(75, 192, 192)',
+							tension: 0.1,
+							yAxisID: 'y'
+						},
+						{
+							label: 'RPE',
+							data: data.map((d) => d.rpe),
+							borderColor: 'rgb(255, 99, 132)',
+							tension: 0.1,
+							yAxisID: 'y1'
+						}
+					]
+				},
+				options: {
+					responsive: true,
+					interaction: {
+						mode: 'index',
+						intersect: false
+					},
+					scales: {
+						y: {
+							type: 'linear',
+							display: true,
+							position: 'left',
+							title: {
+								display: true,
+								text: 'Weight (kg)'
+							}
+						},
+						y1: {
+							type: 'linear',
+							display: true,
+							position: 'right',
+							title: {
+								display: true,
+								text: 'RPE'
+							},
+							grid: {
+								drawOnChartArea: false
+							},
+							min: 0,
+							max: 10
+						}
+					}
+				}
+			});
+		}
+	});
+</script>
+
+<div class="w-full {isMobile ? 'h-[300px]' : 'h-[400px]'}">
+	<canvas bind:this={canvas}></canvas>
+</div>
+
+================
+File: src/lib/components/ExerciseChartModal.svelte
+================
+<script lang="ts">
+	import { onMount } from 'svelte';
+	import { app, auth, db } from '$lib/firebase.client';
+	import {
+		collection,
+		query,
+		where,
+		getDocs,
+		orderBy,
+		Timestamp,
+		getFirestore
+	} from 'firebase/firestore';
+	import ExerciseChart from './ExerciseChart.svelte';
+
+	const { exerciseName, isOpen, onClose } = $props<{
+		exerciseName: string;
+		isOpen: boolean;
+		onClose: () => void;
+	}>();
+
+	type ExerciseLog = {
+		date: Date;
+		weight: number;
+		rpe: number;
+		exercise_name: string;
+		reps: number;
+	};
+
+	let exerciseData = $state([]) as ExerciseLog[];
+	let loading = $state(true);
+
+	async function fetchExerciseLogs() {
+		const currentUserId = auth.currentUser?.uid;
+		if (!currentUserId) return;
+
+		const db = getFirestore(app);
+		const logsRef = collection(db, 'users', currentUserId, 'exercise_logs');
+
+		// const startDate = new Date();
+		// startDate.setDate(startDate.getDate() - parseInt(timeRange));
+
+		const q = query(
+			logsRef,
+			where('exercise_name', '==', exerciseName)
+			// where('date', '>=', startDate)
+		);
+
+		const querySnapshot = await getDocs(q);
+		exerciseData = querySnapshot.docs.map((doc) => {
+			const data = doc.data();
+			return {
+				...data,
+				date: (data.date as Timestamp).toDate()
+			} as ExerciseLog;
+		});
+	}
+
+	onMount(async () => {
+		loading = true;
+		await fetchExerciseLogs();
+		loading = false;
+	});
+</script>
+
+{#if isOpen}
+	<div class="modal modal-open">
+		<div class="modal-box max-w-3xl">
+			<button class="btn btn-sm btn-circle btn-ghost absolute top-2 right-2" onclick={onClose}
+				>✕</button
+			>
+			<h3 class="mb-4 text-lg font-bold">{exerciseName}</h3>
+			{#if loading}
+				<div class="flex h-[300px] items-center justify-center">
+					<span class="loading loading-spinner loading-lg"></span>
+				</div>
+			{:else}
+				<ExerciseChart data={exerciseData} />
+			{/if}
+		</div>
+		<button
+			type="button"
+			class="modal-backdrop"
+			onclick={onClose}
+			onkeydown={(e) => e.key === 'Escape' && onClose()}
+			aria-label="Close modal"
+		></button>
+	</div>
+{/if}
+
+================
+File: src/lib/components/ExerciseSelect.svelte
+================
+<script lang="ts">
+	import { onMount } from 'svelte';
+	import { getExercises, addExercise, type ExerciseDefinition } from '$lib/hooks/manage-exercises';
+
+	export let value = '';
+	export let placeholder = 'Select Exercise';
+
+	let exercises: ExerciseDefinition[] = [];
+	let searchTerm = '';
+	let showDropdown = false;
+	let loading = false;
+	let addingNew = false;
+	let containerRef: HTMLDivElement;
+	let selecting = false;
+
+	// Sync searchTerm with value prop
+	$: {
+		if (value && value !== searchTerm) {
+			searchTerm = value;
+		}
+	}
+
+	onMount(() => {
+		const handleClickOutside = (event: MouseEvent) => {
+			if (containerRef && !containerRef.contains(event.target as Node) && !selecting) {
+				showDropdown = false;
+			}
+			selecting = false;
+		};
+
+		document.addEventListener('click', handleClickOutside);
+		loadExercises();
+
+		return () => {
+			document.removeEventListener('click', handleClickOutside);
+		};
+	});
+
+	async function loadExercises() {
+		loading = true;
+		try {
+			exercises = await getExercises();
+		} catch (error) {
+			console.error('Error loading exercises:', error);
+		} finally {
+			loading = false;
+		}
+	}
+
+	$: filteredExercises = exercises.filter((exercise) =>
+		exercise.name.toLowerCase().includes(searchTerm.toLowerCase())
+	);
+
+	async function handleAddExercise() {
+		if (!searchTerm.trim()) return;
+
+		try {
+			await addExercise({ name: searchTerm.trim() });
+			exercises = await getExercises();
+			value = searchTerm.trim();
+			showDropdown = false;
+			addingNew = false;
+		} catch (error) {
+			console.error('Error adding exercise:', error);
+			alert(error instanceof Error ? error.message : 'Error adding exercise');
+		}
+	}
+
+	function handleSelect(exerciseName: string) {
+		selecting = true;
+		value = exerciseName;
+		searchTerm = exerciseName;
+		showDropdown = false;
+	}
+</script>
+
+<div class="relative" bind:this={containerRef}>
+	<input
+		type="text"
+		class="input input-bordered input-sm col-span-2 w-full"
+		{placeholder}
+		bind:value={searchTerm}
+		onfocus={() => (showDropdown = true)}
+	/>
+
+	{#if showDropdown}
+		<div
+			class="bg-base-100 absolute z-50 mt-1 max-h-60 w-full overflow-auto rounded-md shadow-lg"
+			role="listbox"
+		>
+			{#if loading}
+				<div class="p-2 text-center">Loading exercises...</div>
+			{:else if filteredExercises.length === 0}
+				<div class="p-2 text-center">
+					No matches found
+					<button class="btn btn-primary btn-sm ml-2" onclick={() => (addingNew = true)}>
+						Add New
+					</button>
+				</div>
+			{:else}
+				{#each filteredExercises as exercise}
+					<button
+						class="hover:bg-base-200 w-full px-4 py-2 text-left"
+						onclick={() => handleSelect(exercise.name)}
+					>
+						{exercise.name}
+					</button>
+				{/each}
+			{/if}
+		</div>
+	{/if}
+
+	{#if addingNew}
+		<div class="modal modal-open">
+			<div class="modal-box">
+				<h3 class="text-lg font-bold">Add New Exercise</h3>
+				<p class="py-4">
+					Add "{searchTerm}" to the exercise database?
+				</p>
+				<div class="modal-action">
+					<button class="btn btn-ghost" onclick={() => (addingNew = false)}> Cancel </button>
+					<button class="btn btn-primary" onclick={handleAddExercise}> Add Exercise </button>
+				</div>
+			</div>
+		</div>
+	{/if}
+</div>
+
+================
+File: src/lib/components/theme_picker_select/theme_picker_select.svelte
+================
+<script lang="ts">
+	import { browser } from '$app/environment';
+	import { themes } from '$lib/consts/consts';
+	let className: string;
+
+	export { className as class };
+	let theme: string | null = 'theme';
+	if (browser) {
+		const tempTheme = localStorage.getItem('theme');
+		if (tempTheme) theme = tempTheme;
+	}
+	const onThemeSelect = (selected: string) => {
+		theme = selected;
+		localStorage.setItem('theme', theme);
+	};
+	$: if (browser && theme) {
+		let documentHtml = document.querySelector('html');
+		if (documentHtml) documentHtml.setAttribute('data-theme', theme);
+	}
+	let selectedTheme = theme;
+</script>
+
+<select
+	class={`select select-neutral select-ghost select-sm  h-full w-full text-center ${className}`}
+	bind:value={selectedTheme}
+	on:change={() => {
+		if (selectedTheme) onThemeSelect(selectedTheme);
+	}}
+>
+	<option class="bg-base-100" disabled value="theme">Theme</option>
+
+	{#each themes as themeName}
+		<option class="bg-base-100" value={themeName}>{themeName}</option>
+	{/each}
+</select>
+
+================
+File: src/lib/components/theme_picker/theme_picker.svelte
+================
+<script lang="ts">
+	import { browser } from '$app/environment';
+	import { themes } from '$lib/consts/consts';
+	let className: string;
+
+	export { className as class };
+	let theme: string | null;
+	if (browser) {
+		theme = localStorage.getItem('theme');
+	}
+	const onThemeSelect = (selected: string) => {
+		theme = selected;
+		localStorage.setItem('theme', theme);
+	};
+	$: if (browser && theme) {
+		let documentHtml = document.querySelector('html');
+		if (documentHtml) documentHtml.setAttribute('data-theme', theme);
+	}
+</script>
+
+<div class={`dropdown dropdown-hover ${className}`}>
+	<button
+		class="btn btn-neutral fill-base-content btn-sm btn-ghost font-semibold flex flex-nowrap items-center justify-center"
+		>Theme <svg
+			height="8px"
+			width="8px"
+			version="1.1"
+			id="Layer_1"
+			xmlns="http://www.w3.org/2000/svg"
+			xmlns:xlink="http://www.w3.org/1999/xlink"
+			viewBox="0 0 407.437 407.437"
+			xml:space="preserve"
+			><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g
+				id="SVGRepo_tracerCarrier"
+				stroke-linecap="round"
+				stroke-linejoin="round"
+			></g><g id="SVGRepo_iconCarrier">
+				<polygon
+					points="386.258,91.567 203.718,273.512 21.179,91.567 0,112.815 203.718,315.87 407.437,112.815 "
+				></polygon>
+			</g></svg
+		></button
+	>
+	<ul
+		class="dropdown-content z-30 menu p-2 shadow-sm bg-base-200 rounded-box w-fit overflow-x-hidden overflow-y-auto leanscroll flex-nowrap max-h-[50vh]"
+	>
+		{#each themes as themeName}
+			<li>
+				<button
+					class={`${theme === themeName ? 'btn-active' : ''}`}
+					on:click={() => onThemeSelect(themeName)}>{themeName}</button
+				>
+			</li>
+		{/each}
+	</ul>
+</div>
+
+================
+File: src/lib/components/toast/toast.svelte
+================
+<script>
+	import { fade } from 'svelte/transition';
+	import notificationMessage from '$lib/store/notification';
+	import { notificationType } from '$lib/store/notification';
+	let message = '';
+	let messageType = 'Success';
+	notificationType.subscribe((value) => {
+		messageType = value;
+	});
+	notificationMessage.subscribe((value) => {
+		message = value;
+	});
+</script>
+
+{#if message}
+	<div transition:fade class="toast toast-top toast-center top-12 z-50">
+		{#if messageType === 'Success'}
+			<div class="alert alert-success px-10">
+				<p>{message}</p>
+			</div>
+		{:else if messageType == 'Failure'}
+			<div class="alert alert-error px-10">
+				<p>{message}</p>
+			</div>
+		{:else}
+			<div class="alert alert-info px-10">
+				<p>{message}</p>
+			</div>
+		{/if}
+	</div>
+{/if}
+
+================
+File: src/lib/components/TrainingDay.svelte
+================
+<script lang="ts">
+	import ExerciseChartModal from './ExerciseChartModal.svelte';
+	export let exercises: Array<{
+		exercise_name: string;
+		sets: string | number;
+		reps: string | number;
+		rpe: string | number;
+		weight: string | number;
+		notes?: string;
+	}>;
+	export let isEditable = false;
+	export let exerciseData: Record<
+		string,
+		Array<{ sets: number; reps: number; rpe: number; weight: number }>
+	> = {};
+
+	let selectedExercise: string | null = null;
+	let showModal = false;
+
+	function handleExerciseClick(exerciseName: string) {
+		selectedExercise = exerciseName;
+		showModal = true;
+	}
+
+	function closeModal() {
+		showModal = false;
+		selectedExercise = null;
+	}
+
+	function updateExerciseData(
+		exerciseName: string,
+		setIndex: number,
+		field: 'sets' | 'reps' | 'rpe' | 'weight',
+		value: number
+	) {
+		if (!exerciseData[exerciseName]) {
+			const exercise = exercises.find((e) => e.exercise_name === exerciseName);
+			const numSets = exercise ? +exercise.sets : 0;
+			exerciseData[exerciseName] = Array(numSets)
+				.fill(null)
+				.map(() => ({ sets: 1, reps: 0, rpe: 0, weight: 0 }));
+		}
+
+		const currentSet = exerciseData[exerciseName][setIndex];
+		if (currentSet) {
+			exerciseData[exerciseName][setIndex] = {
+				...currentSet,
+				[field]: value
+			};
+			exerciseData = exerciseData;
+		}
+	}
+</script>
+
+<section
+	class="flex w-full max-w-(--breakpoint-xl) flex-col items-center gap-1 text-center text-sm lg:text-base"
+>
+	<div class="grid w-full grid-cols-[2fr_1fr_1fr_1fr_1fr] gap-1">
+		<h2>Exercise</h2>
+		<h2>Set</h2>
+		<h2>Reps</h2>
+		<h2>RPE</h2>
+		<h2>Weight</h2>
+	</div>
+	{#each exercises as exercise}
+		{#if exercise}
+			{@const exerciseName = exercise.exercise_name}
+			{#each Array(+exercise.sets) as _, i}
+				<div class="grid w-full grid-cols-[2fr_1fr_1fr_1fr_1fr] gap-1">
+					{#if i === 0}
+						<button
+							class="btn btn-outline btn-sm lg:btn-md"
+							on:click={() => handleExerciseClick(exerciseName)}
+						>
+							{exerciseName}
+						</button>
+					{:else}
+						<div></div>
+					{/if}
+					<p class="flex items-center justify-center">{i + 1}</p>
+					<input
+						class="input input-sm input-bordered lg:input-md w-full text-center"
+						type="number"
+						placeholder={exercise.reps.toString()}
+						disabled={!isEditable}
+						on:input={(e) => updateExerciseData(exerciseName, i, 'reps', +e.currentTarget.value)}
+					/>
+					<input
+						class="input input-sm input-bordered lg:input-md w-full text-center"
+						type="number"
+						placeholder={exercise.rpe.toString()}
+						disabled={!isEditable}
+						on:input={(e) => updateExerciseData(exerciseName, i, 'rpe', +e.currentTarget.value)}
+					/>
+					<input
+						class="input input-sm input-bordered lg:input-md w-full text-center"
+						type="number"
+						placeholder={exercise.weight.toString()}
+						disabled={!isEditable}
+						on:input={(e) => updateExerciseData(exerciseName, i, 'weight', +e.currentTarget.value)}
+					/>
+				</div>
+			{/each}
+		{/if}
+	{/each}
+</section>
+
+{#if selectedExercise}
+	<ExerciseChartModal exerciseName={selectedExercise} isOpen={showModal} onClose={closeModal} />
+{/if}
+
+================
+File: src/lib/consts/consts.ts
+================
+export const themes = [
+	'light',
+	'dark',
+	'cupcake',
+	'bumblebee',
+	'emerald',
+	'corporate',
+	'synthwave',
+	'retro',
+	'cyberpunk',
+	'valentine',
+	'halloween',
+	'garden',
+	'forest',
+	'aqua',
+	'lofi',
+	'pastel',
+	'fantasy',
+	'wireframe',
+	'black',
+	'luxury',
+	'dracula',
+	'cmyk',
+	'autumn',
+	'business',
+	'acid',
+	'lemonade',
+	'night',
+	'coffee',
+	'winter',
+	'dim',
+	'nord',
+	'sunset'
+];
+
+================
+File: src/lib/firebase.client.ts
+================
+// Import the functions you need from the SDKs you need
+import { initializeApp } from 'firebase/app';
+import { connectAuthEmulator, getAuth } from 'firebase/auth';
+import type { FirebaseApp } from 'firebase/app';
+import {
+	CACHE_SIZE_UNLIMITED,
+	connectFirestoreEmulator,
+	getFirestore,
+	initializeFirestore,
+	persistentLocalCache,
+	type Firestore
+} from 'firebase/firestore';
+import type { Auth } from 'firebase/auth';
+import { browser } from '$app/environment';
+// TODO: Add SDKs for Firebase products that you want to use
+// https://firebase.google.com/docs/web/setup#available-libraries
+
+export let db: Firestore;
+export let app: FirebaseApp;
+export let auth: Auth;
+
+// Your web app's Firebase configuration
+// For Firebase JS SDK v7.20.0 and later, measurementId is optional
+const firebaseConfig = {
+	apiKey: import.meta.env.VITE_APIKEY,
+	authDomain: import.meta.env.VITE_AUTHDOMAIN,
+	projectId: import.meta.env.VITE_PROJECTID,
+	storageBucket: import.meta.env.VITE_STORAGEBUCKET,
+	messagingSenderId: import.meta.env.VITE_MESSAGINGSENDERID,
+	appId: import.meta.env.VITE_APPID,
+	measurementId: import.meta.env.VITE_MEASURMENTID
+};
+
+// Initialize Firebase
+export const initializeFirebase = () => {
+	if (!browser) {
+		throw new Error("Can't use the Firebase client on the server.");
+	}
+	if (!app) {
+		app = initializeApp(firebaseConfig);
+		auth = getAuth(app);
+		db = initializeFirestore(app, {
+			localCache: persistentLocalCache({ cacheSizeBytes: CACHE_SIZE_UNLIMITED })
+		});
+
+		if (location.hostname === 'localhost' || location.hostname === '127.0.0.1') {
+			connectAuthEmulator(auth, 'http://127.0.0.1:9099');
+			connectFirestoreEmulator(db, '127.0.0.1', 8080);
+		}
+	}
+};
+
+================
+File: src/lib/hooks/get-exercises.ts
+================
+import { db } from '$lib/firebase.client';
+import { collection, getDocs } from 'firebase/firestore';
+
+export interface Exercise {
+	id: string;
+	exercise_name: string;
+	note: string;
+}
+
+/**
+ * Get all exercises from Firestore.
+ * @returns {Exercise[]} An array of Exercise objects, one for each exercise in Firestore.
+ */
+export const getExercises = async (): Promise<Exercise[] | null> => {
+	try {
+		const exercisesCollection = collection(db, 'Exercises');
+		const exercisesSnapshot = await getDocs(exercisesCollection);
+		const exercises = exercisesSnapshot.docs.map((exercise) => ({
+			id: exercise.id,
+			exercise_name: exercise.data().exercise_name,
+			note: exercise.data().note
+		}));
+		return exercises;
+	} catch (error) {
+		console.error(error);
+		return null;
+	}
+};
+
+================
+File: src/lib/hooks/get-user-data.ts
+================
+import {
+	doc,
+	getDoc,
+	getDocFromCache,
+	getDocFromServer,
+	setDoc,
+	updateDoc
+} from 'firebase/firestore';
+import { db, auth } from '$lib/firebase.client';
+import { getFirestore } from 'firebase/firestore';
+import { app } from '$lib/firebase.client';
+
+export type UserData = {
+	currentPlan: string;
+	currentWeek: number;
+	currentDay: number;
+	selectedPlan?: {
+		id: string;
+		type: 'user' | 'predefined';
+	};
+};
+
+/**
+ * Get the user data from Firestore, or null if the user is not logged in
+ * or if the user document does not exist.
+ *
+ * @returns {UserData | null} The user data, or null if the user is not logged in
+ * or if the user document does not exist.
+ */
+export async function getUserData(): Promise<UserData | null> {
+	const currentUser = auth.currentUser;
+	if (!currentUser) return null;
+
+	const userRef = doc(db, 'users', currentUser.uid);
+
+	try {
+		// Try cache first
+		try {
+			const snapshot = await getDocFromCache(userRef);
+			if (snapshot.exists()) {
+				return snapshot.data() as UserData;
+			}
+		} catch (error) {
+			console.log('No cached user data available');
+		}
+
+		// If cache fails or is empty, get from server
+		const snapshot = await getDocFromServer(userRef);
+		if (snapshot.exists()) {
+			return snapshot.data() as UserData;
+		}
+
+		return null;
+	} catch (error) {
+		console.error('Error fetching user data:', error);
+		throw error;
+	}
+}
+
+export async function updateUserData(data: Partial<UserData>) {
+	const currentUserId = auth.currentUser?.uid;
+	if (!currentUserId) return;
+
+	const db = getFirestore(app);
+	const userRef = doc(db, 'UserData', currentUserId);
+
+	try {
+		const docSnap = await getDoc(userRef);
+		if (!docSnap.exists()) {
+			await setDoc(userRef, data);
+		} else {
+			await updateDoc(userRef, data);
+		}
+	} catch (error) {
+		console.error('Error updating user data:', error);
+		throw error;
+	}
+}
+
+================
+File: src/lib/hooks/manage-exercises.ts
+================
+import { getFirestore, collection, getDocs, addDoc, query, where } from 'firebase/firestore';
+import { app } from '$lib/firebase.client';
+
+export type ExerciseDefinition = {
+	name: string;
+	category?: string;
+};
+
+export async function getExercises(): Promise<ExerciseDefinition[]> {
+	const db = getFirestore(app);
+	const exercisesRef = collection(db, 'exercises');
+	const snapshot = await getDocs(exercisesRef);
+	return snapshot.docs.map(
+		(doc) => ({ id: doc.id, ...doc.data() }) as unknown as ExerciseDefinition
+	);
+}
+
+export async function addExercise(exercise: ExerciseDefinition) {
+	const db = getFirestore(app);
+	const exercisesRef = collection(db, 'exercises');
+
+	// Check if exercise already exists
+	const q = query(exercisesRef, where('name', '==', exercise.name));
+	const snapshot = await getDocs(q);
+
+	if (!snapshot.empty) {
+		throw new Error('Exercise already exists');
+	}
+
+	await addDoc(exercisesRef, exercise);
+}
+
+================
+File: src/lib/hooks/manage-plans.ts
+================
+import {
+	getFirestore,
+	collection,
+	doc,
+	setDoc,
+	updateDoc,
+	getDoc,
+	getDocs,
+	getDocsFromCache,
+	getDocsFromServer,
+	deleteDoc
+} from 'firebase/firestore';
+import { app, auth } from '$lib/firebase.client';
+
+export type Exercise = {
+	exercise_name: string;
+	sets: string;
+	reps: string;
+	rpe: string;
+	weight: string;
+	notes: string;
+};
+
+export type Plan = {
+	id?: string;
+	name: string;
+	authorId: string;
+	isPredefined?: boolean;
+	weeks: {
+		days: {
+			exercises: Exercise[];
+		}[];
+	}[];
+};
+
+export async function savePlan(plan: Plan) {
+	const currentUserId = auth.currentUser?.uid;
+	if (!currentUserId) throw new Error('No user logged in');
+
+	const db = getFirestore(app);
+
+	// If plan has an ID, update existing plan
+	if (plan.id) {
+		const planRef = doc(db, 'users', currentUserId, 'plans', plan.id);
+		await updateDoc(planRef, {
+			...plan,
+			updatedAt: new Date()
+		});
+		return plan.id;
+	}
+
+	// Otherwise create new plan
+	const planRef = doc(collection(db, 'users', currentUserId, 'plans'));
+	await setDoc(planRef, {
+		...plan,
+		createdAt: new Date(),
+		updatedAt: new Date()
+	});
+
+	return planRef.id;
+}
+
+export async function updatePlan(planId: string, plan: Partial<Plan>) {
+	const currentUserId = auth.currentUser?.uid;
+	if (!currentUserId) throw new Error('No user logged in');
+
+	const db = getFirestore(app);
+	const planRef = doc(db, 'users', currentUserId, 'plans', planId);
+
+	await updateDoc(planRef, {
+		...plan,
+		updatedAt: new Date()
+	});
+}
+
+export async function saveTrainingLog(
+	planId: string,
+	week: number,
+	day: number,
+	exercises: Record<
+		string,
+		Array<{
+			sets: number;
+			reps: number;
+			rpe: number;
+			weight: number;
+		}>
+	>
+) {
+	const currentUserId = auth.currentUser?.uid;
+	if (!currentUserId) throw new Error('No user logged in');
+
+	const db = getFirestore(app);
+	const logsRef = collection(db, 'users', currentUserId, 'exercise_logs');
+	const date = new Date();
+
+	// Create a log entry for each exercise and set
+	const savePromises = Object.entries(exercises).flatMap(([exerciseName, sets]) =>
+		sets.map((set) =>
+			setDoc(doc(logsRef), {
+				exercise_name: exerciseName,
+				reps: set.reps,
+				sets: set.sets,
+				rpe: set.rpe,
+				weight: set.weight,
+				planId,
+				week,
+				day,
+				date
+			})
+		)
+	);
+
+	await Promise.all(savePromises);
+}
+
+export async function getPlan(planId: string) {
+	const currentUserId = auth.currentUser?.uid;
+	if (!currentUserId) return null;
+
+	const db = getFirestore(app);
+	const planRef = doc(db, 'users', currentUserId, 'plans', planId);
+	const planDoc = await getDoc(planRef);
+
+	return planDoc.exists() ? (planDoc.data() as Plan) : null;
+}
+
+export async function getPlans(): Promise<Plan[]> {
+	try {
+		const currentUserId = auth.currentUser?.uid;
+		if (!currentUserId) return [];
+
+		const db = getFirestore(app);
+		const plansRef = collection(db, 'users', currentUserId, 'plans');
+
+		// Try cache first
+		try {
+			const snapshot = await getDocsFromCache(plansRef);
+			if (!snapshot.empty) {
+				return snapshot.docs.map((doc) => ({ id: doc.id, ...doc.data() }) as Plan);
+			}
+		} catch (error) {
+			console.log('No cached data available');
+		}
+
+		// If cache fails or is empty, get from server
+		const snapshot = await getDocsFromServer(plansRef);
+		return snapshot.docs.map((doc) => ({ id: doc.id, ...doc.data() }) as Plan);
+	} catch (error) {
+		console.error('Error fetching plans:', error);
+		throw error;
+	}
+}
+
+export async function getPredefinedPlans(): Promise<Plan[]> {
+	try {
+		const db = getFirestore(app);
+		const plansRef = collection(db, 'predefined_plans');
+
+		// Try cache first
+		try {
+			const snapshot = await getDocsFromCache(plansRef);
+			if (!snapshot.empty) {
+				return snapshot.docs.map((doc) => ({ id: doc.id, ...doc.data() }) as Plan);
+			}
+		} catch (error) {
+			console.log('No cached data available');
+		}
+
+		// If cache fails or is empty, get from server
+		const snapshot = await getDocsFromServer(plansRef);
+		return snapshot.docs.map((doc) => ({ id: doc.id, ...doc.data() }) as Plan);
+	} catch (error) {
+		console.error('Error fetching predefined plans:', error);
+		throw error;
+	}
+}
+
+export async function deletePlan(planId: string) {
+	const currentUserId = auth.currentUser?.uid;
+	if (!currentUserId) throw new Error('No user logged in');
+
+	const db = getFirestore(app);
+	const planRef = doc(db, 'users', currentUserId, 'plans', planId);
+	await deleteDoc(planRef);
+}
+
+================
+File: src/lib/hooks/show-notification.ts
+================
+import notificationMessage from '$lib/store/notification';
+import { notificationType } from '$lib/store/notification';
+export const showNotification = (
+	message: string,
+	time: number,
+	type: 'Success' | 'Failure' | 'Info'
+) => {
+	notificationType.set(type);
+	notificationMessage.set(message);
+
+	setTimeout(() => {
+		notificationMessage.set('');
+	}, time);
+};
+
+================
+File: src/lib/index.ts
+================
+// place files you want to import through the `$lib` alias in this folder.
+
+================
+File: src/lib/session.ts
+================
+import { writable, type Writable } from 'svelte/store';
+
+export type User = {
+	email?: string | null;
+	displayName?: string | null;
+	photoURL?: string | null;
+	uid?: string | null;
+};
+
+export type SessionState = {
+	user: User | null;
+	loading?: boolean;
+	loggedIn?: boolean;
+};
+
+export const session = <Writable<SessionState>>writable();
+
+================
+File: src/lib/store/notification.ts
+================
+import { writable } from 'svelte/store';
+
+const notificationMessage = writable('');
+
+export const notificationType = writable('');
+
+export default notificationMessage;
+
+================
+File: src/routes/(with_homepage_navbar)/+layout.svelte
+================
+<script lang="ts">
+	import ThemePicker from '$lib/components/theme_picker/theme_picker.svelte';
+</script>
+
+<nav class="w-full fixed top-0 font-montserrat z-10 backdrop-blur-md bg-transparent">
+	<div class="navbar max-w-(--breakpoint-xl) mx-auto px-4">
+		<div class="navbar-start">
+			<a href="/" class="btn btn-ghost text-xl font-semibold">Gym Notebook</a>
+		</div>
+
+		<div class="navbar-end gap-2">
+			<ThemePicker class="" />
+			<a href="/login" class="btn btn-outline btn-secondary btn-sm text-primary-content">Login</a>
+		</div>
+	</div>
+</nav>
+<slot />
+
+================
+File: src/routes/(with_homepage_navbar)/+page.svelte
+================
+<section class="flex justify-center w-full h-[100lvh] pb-6 pt-20 px-4 font-montserrat">
+	<div class="flex flex-col items-center w-full my-auto max-w-(--breakpoint-xl) mx-auto">
+		<div class="hero">
+			<div class="hero-content text-center">
+				<div class="max-w-xl">
+					<h1 class="text-4xl sm:text-5xl font-bold">Workouts Transformed</h1>
+					<p class="py-6 sm:text-lg">
+						Effortlessly track your workouts, choose from a variety of plans and create your own
+						routines to achieve your fitness goals with the Gym Notebook.
+					</p>
+					<a href="/signup" class="btn btn-lg btn-primary">Get Started</a>
+				</div>
+			</div>
+		</div>
+	</div>
+</section>
+
+================
+File: src/routes/(with_homepage_navbar)/+page.ts
+================
+export const prerender = true
+
+================
+File: src/routes/(with_homepage_navbar)/login/+page.svelte
+================
+<script lang="ts">
+	// login/+page.svelte
+	import { session } from '$lib/session';
+	import { auth } from '$lib/firebase.client';
+	import {
+		GoogleAuthProvider,
+		signInWithPopup,
+		signInWithEmailAndPassword,
+		type UserCredential
+	} from 'firebase/auth';
+	import { goto } from '$app/navigation';
+
+	let email: string = '';
+	let password: string = '';
+
+	async function loginWithMail() {
+		await signInWithEmailAndPassword(auth, email, password)
+			.then((result) => {
+				const { user }: UserCredential = result;
+				session.set({
+					loggedIn: true,
+					user: {
+						displayName: user?.displayName,
+						email: user?.email,
+						photoURL: user?.photoURL,
+						uid: user?.uid
+					}
+				});
+				goto('/train');
+			})
+			.catch((error) => {
+				return error;
+			});
+	}
+
+	async function loginWithGoogle() {
+		const provider = new GoogleAuthProvider();
+		await signInWithPopup(auth, provider)
+			.then((result) => {
+				if (result && result.user) {
+					const { displayName, email, photoURL, uid } = result.user;
+					session.set({
+						loggedIn: true,
+						user: {
+							displayName,
+							email,
+							photoURL,
+							uid
+						}
+					});
+
+					goto('/train');
+				}
+			})
+			.catch((error) => {
+				return error;
+			});
+	}
+</script>
+
+<div class="font-montserrat flex min-h-[100lvh] w-full items-center">
+	<form
+		class="mx-auto flex w-10/12 max-w-md flex-col items-center gap-4 px-4 py-16 sm:w-full"
+		on:submit={loginWithMail}
+	>
+		<h1 class="mb-2 text-center text-2xl font-bold sm:text-3xl">Welcome back</h1>
+		<label class="input input-bordered focus-within:input-primary flex w-full items-center gap-2">
+			<svg
+				xmlns="http://www.w3.org/2000/svg"
+				viewBox="0 0 16 16"
+				fill="currentColor"
+				class="h-4 w-4 opacity-70"
+			>
+				<path
+					d="M2.5 3A1.5 1.5 0 0 0 1 4.5v.793c.026.009.051.02.076.032L7.674 8.51c.206.1.446.1.652 0l6.598-3.185A.755.755 0 0 1 15 5.293V4.5A1.5 1.5 0 0 0 13.5 3h-11Z"
+				/>
+				<path
+					d="M15 6.954 8.978 9.86a2.25 2.25 0 0 1-1.956 0L1 6.954V11.5A1.5 1.5 0 0 0 2.5 13h11a1.5 1.5 0 0 0 1.5-1.5V6.954Z"
+				/>
+			</svg>
+			<input
+				bind:value={email}
+				type="text"
+				class="grow text-lg"
+				placeholder="Email"
+				autocomplete="off"
+			/>
+		</label>
+		<label class="input input-bordered focus-within:input-primary flex w-full items-center gap-2">
+			<svg
+				xmlns="http://www.w3.org/2000/svg"
+				viewBox="0 0 16 16"
+				fill="currentColor"
+				class="h-4 w-4 opacity-70"
+			>
+				<path
+					fill-rule="evenodd"
+					d="M14 6a4 4 0 0 1-4.899 3.899l-1.955 1.955a.5.5 0 0 1-.353.146H5v1.5a.5.5 0 0 1-.5.5h-2a.5.5 0 0 1-.5-.5v-2.293a.5.5 0 0 1 .146-.353l3.955-3.955A4 4 0 1 1 14 6Zm-4-2a.75.75 0 0 0 0 1.5.5.5 0 0 1 .5.5.75.75 0 0 0 1.5 0 2 2 0 0 0-2-2Z"
+					clip-rule="evenodd"
+				/>
+			</svg>
+			<input bind:value={password} type="password" class="grow text-lg" placeholder="Password" />
+		</label>
+		<button type="submit" class="btn btn-primary w-full text-lg">Login</button>
+		<p>Or</p>
+		<button
+			type="button"
+			on:click={loginWithGoogle}
+			class="btn btn-outline btn-neutral w-full gap-1 sm:gap-2"
+		>
+			<p
+				class="inline-block bg-[linear-gradient(to_right,var(--color-red-500),var(--color-yellow-500),var(--color-green-500),var(--color-blue-500))] bg-clip-text py-1 font-bold text-transparent"
+			>
+				Login with Google
+			</p>
+
+			<svg
+				xmlns="http://www.w3.org/2000/svg"
+				x="0px"
+				y="0px"
+				width="32"
+				height="32"
+				viewBox="0 0 48 48"
+			>
+				<path
+					fill="#FFC107"
+					d="M43.611,20.083H42V20H24v8h11.303c-1.649,4.657-6.08,8-11.303,8c-6.627,0-12-5.373-12-12c0-6.627,5.373-12,12-12c3.059,0,5.842,1.154,7.961,3.039l5.657-5.657C34.046,6.053,29.268,4,24,4C12.955,4,4,12.955,4,24c0,11.045,8.955,20,20,20c11.045,0,20-8.955,20-20C44,22.659,43.862,21.35,43.611,20.083z"
+				></path>
+				<path
+					fill="#FF3D00"
+					d="M6.306,14.691l6.571,4.819C14.655,15.108,18.961,12,24,12c3.059,0,5.842,1.154,7.961,3.039l5.657-5.657C34.046,6.053,29.268,4,24,4C16.318,4,9.656,8.337,6.306,14.691z"
+				></path>
+				<path
+					fill="#4CAF50"
+					d="M24,44c5.166,0,9.86-1.977,13.409-5.192l-6.19-5.238C29.211,35.091,26.715,36,24,36c-5.202,0-9.619-3.317-11.283-7.946l-6.522,5.025C9.505,39.556,16.227,44,24,44z"
+				></path>
+				<path
+					fill="#1976D2"
+					d="M43.611,20.083H42V20H24v8h11.303c-0.792,2.237-2.231,4.166-4.087,5.571c0.001-0.001,0.002-0.001,0.003-0.002l6.19,5.238C36.971,39.205,44,34,44,24C44,22.659,43.862,21.35,43.611,20.083z"
+				></path>
+			</svg>
+		</button>
+	</form>
+</div>
+
+================
+File: src/routes/(with_homepage_navbar)/signup/+page.svelte
+================
+<script lang="ts">
+	// register/+page.svelte
+	import { auth } from '$lib/firebase.client';
+	import {
+		GoogleAuthProvider,
+		createUserWithEmailAndPassword,
+		signInWithPopup
+	} from 'firebase/auth';
+	import { goto } from '$app/navigation';
+	import { session, type SessionState } from '$lib/session';
+	import { showNotification } from '$lib/hooks/show-notification';
+
+	let email: string = '';
+	let password: string = '';
+	let repeatedPassword: string = '';
+
+	async function handleRegister() {
+		if (repeatedPassword === password) {
+			await createUserWithEmailAndPassword(auth, email, password)
+				.then((result) => {
+					const { user } = result;
+					session.update((cur: SessionState) => {
+						return {
+							...cur,
+							user,
+							loggedIn: true,
+							loading: false
+						};
+					});
+					goto('/train');
+				})
+				.catch((error) => {
+					throw new Error(error);
+				});
+		} else {
+			showNotification('Passwords dont match!', 2000, 'Failure');
+		}
+	}
+
+	async function loginWithGoogle() {
+		const provider = new GoogleAuthProvider();
+		await signInWithPopup(auth, provider)
+			.then((result) => {
+				if (result && result.user) {
+					const { displayName, email, photoURL, uid } = result.user;
+					session.set({
+						loggedIn: true,
+						user: {
+							displayName,
+							email,
+							photoURL,
+							uid
+						}
+					});
+
+					goto('/train');
+				}
+			})
+			.catch((error) => {
+				return error;
+			});
+	}
+</script>
+
+<div class="font-montserrat flex min-h-[100lvh] w-full items-center">
+	<form
+		class="mx-auto flex w-10/12 max-w-md flex-col items-center gap-4 px-4 py-16 sm:w-full"
+		on:submit={handleRegister}
+	>
+		<h1 class="mb-2 text-center text-xl font-bold sm:text-3xl">Glad to see You</h1>
+		<h2 class="mb-2 w-fit max-w-lg text-center font-semibold [text-wrap:balance]">
+			Just a few more steps before You can start converting Your notes
+		</h2>
+		<label class="input input-bordered focus-within:input-primary flex w-full items-center gap-2">
+			<svg
+				xmlns="http://www.w3.org/2000/svg"
+				viewBox="0 0 16 16"
+				fill="currentColor"
+				class="h-4 w-4 opacity-70"
+			>
+				<path
+					d="M2.5 3A1.5 1.5 0 0 0 1 4.5v.793c.026.009.051.02.076.032L7.674 8.51c.206.1.446.1.652 0l6.598-3.185A.755.755 0 0 1 15 5.293V4.5A1.5 1.5 0 0 0 13.5 3h-11Z"
+				/>
+				<path
+					d="M15 6.954 8.978 9.86a2.25 2.25 0 0 1-1.956 0L1 6.954V11.5A1.5 1.5 0 0 0 2.5 13h11a1.5 1.5 0 0 0 1.5-1.5V6.954Z"
+				/>
+			</svg>
+			<input bind:value={email} type="text" class="grow text-lg" placeholder="Email" />
+		</label>
+		<label class="input input-bordered focus-within:input-primary flex w-full items-center gap-2">
+			<svg
+				xmlns="http://www.w3.org/2000/svg"
+				viewBox="0 0 16 16"
+				fill="currentColor"
+				class="h-4 w-4 opacity-70"
+			>
+				<path
+					fill-rule="evenodd"
+					d="M14 6a4 4 0 0 1-4.899 3.899l-1.955 1.955a.5.5 0 0 1-.353.146H5v1.5a.5.5 0 0 1-.5.5h-2a.5.5 0 0 1-.5-.5v-2.293a.5.5 0 0 1 .146-.353l3.955-3.955A4 4 0 1 1 14 6Zm-4-2a.75.75 0 0 0 0 1.5.5.5 0 0 1 .5.5.75.75 0 0 0 1.5 0 2 2 0 0 0-2-2Z"
+					clip-rule="evenodd"
+				/>
+			</svg>
+			<input bind:value={password} type="password" class="grow text-lg" placeholder="Password" />
+		</label>
+		<label class="input input-bordered focus-within:input-primary flex w-full items-center gap-2">
+			<svg
+				xmlns="http://www.w3.org/2000/svg"
+				viewBox="0 0 16 16"
+				fill="currentColor"
+				class="h-4 w-4 opacity-70"
+			>
+				<path
+					fill-rule="evenodd"
+					d="M14 6a4 4 0 0 1-4.899 3.899l-1.955 1.955a.5.5 0 0 1-.353.146H5v1.5a.5.5 0 0 1-.5.5h-2a.5.5 0 0 1-.5-.5v-2.293a.5.5 0 0 1 .146-.353l3.955-3.955A4 4 0 1 1 14 6Zm-4-2a.75.75 0 0 0 0 1.5.5.5 0 0 1 .5.5.75.75 0 0 0 1.5 0 2 2 0 0 0-2-2Z"
+					clip-rule="evenodd"
+				/>
+			</svg>
+			<input
+				bind:value={repeatedPassword}
+				type="password"
+				placeholder="Repeat Password"
+				class="grow text-lg"
+			/>
+		</label>
+		<button type="submit" class="btn btn-primary w-full text-lg">Sign up</button>
+		<p>Or</p>
+		<button
+			type="button"
+			on:click={loginWithGoogle}
+			class="btn btn-outline btn-neutral w-full gap-1 sm:gap-2"
+		>
+			<p
+				class="inline-block bg-[linear-gradient(to_right,var(--color-red-500),var(--color-yellow-500),var(--color-green-500),var(--color-blue-500))] bg-clip-text py-1 font-bold text-transparent"
+			>
+				Sign up with Google
+			</p>
+
+			<svg
+				xmlns="http://www.w3.org/2000/svg"
+				x="0px"
+				y="0px"
+				width="32"
+				height="32"
+				viewBox="0 0 48 48"
+			>
+				<path
+					fill="#FFC107"
+					d="M43.611,20.083H42V20H24v8h11.303c-1.649,4.657-6.08,8-11.303,8c-6.627,0-12-5.373-12-12c0-6.627,5.373-12,12-12c3.059,0,5.842,1.154,7.961,3.039l5.657-5.657C34.046,6.053,29.268,4,24,4C12.955,4,4,12.955,4,24c0,11.045,8.955,20,20,20c11.045,0,20-8.955,20-20C44,22.659,43.862,21.35,43.611,20.083z"
+				></path>
+				<path
+					fill="#FF3D00"
+					d="M6.306,14.691l6.571,4.819C14.655,15.108,18.961,12,24,12c3.059,0,5.842,1.154,7.961,3.039l5.657-5.657C34.046,6.053,29.268,4,24,4C16.318,4,9.656,8.337,6.306,14.691z"
+				></path>
+				<path
+					fill="#4CAF50"
+					d="M24,44c5.166,0,9.86-1.977,13.409-5.192l-6.19-5.238C29.211,35.091,26.715,36,24,36c-5.202,0-9.619-3.317-11.283-7.946l-6.522,5.025C9.505,39.556,16.227,44,24,44z"
+				></path>
+				<path
+					fill="#1976D2"
+					d="M43.611,20.083H42V20H24v8h11.303c-0.792,2.237-2.231,4.166-4.087,5.571c0.001-0.001,0.002-0.001,0.003-0.002l6.19,5.238C36.971,39.205,44,34,44,24C44,22.659,43.862,21.35,43.611,20.083z"
+				></path>
+			</svg>
+		</button>
+	</form>
+</div>
+
+================
+File: src/routes/(with_main_navbar)/+layout.svelte
+================
+<script lang="ts">
+	import { goto } from '$app/navigation';
+	import ThemePicker from '$lib/components/theme_picker/theme_picker.svelte';
+	import { getAuth, signOut } from 'firebase/auth';
+	import { session } from '$lib/session';
+
+	import ThemePickerSelect from '$lib/components/theme_picker_select/theme_picker_select.svelte';
+	import { showNotification } from '$lib/hooks/show-notification';
+	import { browser } from '$app/environment';
+
+	let loggedIn = false;
+	if (browser)
+		session.subscribe((value) => {
+			if (value?.loggedIn === false) goto('/');
+			else if (value && value.loggedIn === true) loggedIn = true;
+		});
+	let resultsMenu: HTMLDetailsElement;
+	// if (browser)
+	// 	document.addEventListener('click', function () {
+	// 		if (resultsMenu && resultsMenu.removeAttribute) resultsMenu.removeAttribute('open');
+	// 	});
+</script>
+
+{#if loggedIn}
+	<div class="font-montserrat fixed top-0 z-10 w-full bg-transparent backdrop-blur-md">
+		<div class="navbar mx-auto min-h-0 max-w-(--breakpoint-xl) px-4">
+			<div class="navbar-start w-fit lg:w-1/2">
+				<!-- svelte-ignore a11y_no_noninteractive_element_interactions -->
+				<button
+					class="btn btn-ghost"
+					popovertarget="popover-mobile-menu"
+					style="anchor-name:--anchor-mobile-menu"
+					aria-label="Open mobile menu"
+				>
+					<svg
+						xmlns="http://www.w3.org/2000/svg"
+						class="h-5 w-5"
+						fill="none"
+						viewBox="0 0 24 24"
+						stroke="currentColor"
+						><path
+							stroke-linecap="round"
+							stroke-linejoin="round"
+							stroke-width="2"
+							d="M4 6h16M4 12h8m-8 6h16"
+						/></svg
+					>
+				</button>
+				<ul
+					class="dropdown menu rounded-box bg-base-100 w-52 shadow-sm"
+					popover="auto"
+					id="popover-mobile-menu"
+					style="position-anchor:--anchor-mobile-menu"
+				>
+					<li>
+						<ThemePickerSelect class="my-2" />
+					</li>
+					<li>
+						<button
+							on:click={() => {
+								const auth = getAuth();
+								signOut(auth)
+									.then(() => {
+										goto('/');
+									})
+									.catch(() => {
+										showNotification('Logout Error!', 2000, 'Failure');
+									});
+							}}
+							class="btn btn-ghost btn-secondary btn-sm">Logout</button
+						>
+					</li>
+				</ul>
+
+				<a href="/train" class="btn btn-ghost hidden text-xl font-semibold lg:flex">Gym Notebook</a>
+			</div>
+			<div class="navbar-center mx-auto gap-2 lg:mx-0">
+				<a href="/train" class="btn btn-ghost btn-sm lg:btn-md mx-auto lg:text-lg">Train</a>
+				<a href="/prepare" class="btn btn-ghost btn-sm lg:btn-md mx-auto lg:text-lg">Prepare</a>
+				<a href="/reflect" class="btn btn-ghost btn-sm lg:btn-md mx-auto lg:text-lg">Reflect</a>
+			</div>
+
+			<div class="navbar-end hidden gap-4 lg:flex">
+				<ThemePicker class="" />
+				<button
+					on:click={() => {
+						const auth = getAuth();
+						signOut(auth)
+							.then(() => {
+								goto('/');
+							})
+							.catch(() => {
+								showNotification('Logout Error!', 2000, 'Failure');
+							});
+					}}
+					class="btn btn-ghost btn-secondary btn-sm">Logout</button
+				>
+			</div>
+		</div>
+	</div>
+	<slot />
+{/if}
+
+================
+File: src/routes/(with_main_navbar)/prepare/+page.svelte
+================
+<script lang="ts">
+	import {
+		savePlan,
+		getPlans,
+		getPredefinedPlans,
+		deletePlan,
+		type Plan
+	} from '$lib/hooks/manage-plans';
+	import { goto } from '$app/navigation';
+	import { onMount } from 'svelte';
+	import { auth } from '$lib/firebase.client';
+	import { updateUserData } from '$lib/hooks/get-user-data';
+	import ExerciseSelect from '$lib/components/ExerciseSelect.svelte';
+
+	type PlanType = 'new' | 'existing' | 'predefined';
+	let planType = $state<PlanType>('new');
+	let existingPlans: Plan[] = $state([]);
+	let predefinedPlans: Plan[] = $state([]);
+	let selectedPlanId = $state('');
+	let currentUserId = $state<string | undefined>(undefined);
+	let planName = $state('');
+	let weeks = $state(1);
+	let daysPerWeek = $state(1);
+	let selectedWeek = $state(0);
+	let selectedDay = $state(0);
+
+	type Exercise = {
+		exercise_name: string;
+		sets: string;
+		reps: string;
+		rpe: string;
+		weight: string;
+		notes: string;
+	};
+
+	type DayExercises = {
+		exercises: Exercise[];
+	};
+
+	type WeekDays = {
+		days: DayExercises[];
+	};
+
+	let planStructure: WeekDays[] = $state([
+		{
+			days: [{ exercises: [] }]
+		}
+	]);
+
+	function updatePlanStructure() {
+		if (weeks === undefined || daysPerWeek === undefined) return;
+
+		// Only update if dimensions have changed
+		if (planStructure.length !== weeks || planStructure[0].days.length !== daysPerWeek) {
+			planStructure = Array(weeks)
+				.fill(null)
+				.map((_, weekIndex) => ({
+					days: Array(daysPerWeek)
+						.fill(null)
+						.map((_, dayIndex) => ({
+							exercises:
+								weekIndex === selectedWeek && dayIndex === selectedDay
+									? planStructure[selectedWeek]?.days[selectedDay]?.exercises || []
+									: []
+						}))
+				}));
+		}
+	}
+
+	function addExercise() {
+		planStructure[selectedWeek].days[selectedDay].exercises = [
+			...planStructure[selectedWeek].days[selectedDay].exercises,
+			{
+				exercise_name: '',
+				sets: '1',
+				reps: '1',
+				rpe: '1',
+				weight: '0',
+				notes: ''
+			}
+		];
+	}
+
+	function removeExercise(index: number) {
+		planStructure[selectedWeek].days[selectedDay].exercises = planStructure[selectedWeek].days[
+			selectedDay
+		].exercises.filter((_, i) => i !== index);
+	}
+
+	async function loadPlans() {
+		try {
+			[existingPlans, predefinedPlans] = await Promise.all([getPlans(), getPredefinedPlans()]);
+		} catch (error) {
+			console.error('Error loading plans:', error);
+		}
+	}
+
+	function canEditPlan(plan: Plan | null) {
+		if (!plan) return false;
+		return currentUserId && plan.authorId === currentUserId;
+	}
+
+	async function handlePlanSelect() {
+		if (!selectedPlanId) return;
+		const plan = [...existingPlans, ...predefinedPlans].find((p) => p.id === selectedPlanId);
+		if (plan) {
+			planName = plan.name;
+			planStructure = plan.weeks;
+			weeks = plan.weeks.length;
+			daysPerWeek = plan.weeks[0].days.length;
+		}
+	}
+
+	async function handleSavePlan() {
+		try {
+			if (!currentUserId) throw new Error('Must be logged in to save plan');
+
+			const plan = {
+				name: planName,
+				authorId: currentUserId,
+				weeks: planStructure
+			};
+
+			// If we're editing an existing plan, include its ID
+			if (planType === 'existing' && selectedPlanId) {
+				await savePlan({ ...plan, id: selectedPlanId });
+			} else {
+				await savePlan(plan);
+			}
+
+			goto('/train');
+		} catch (error) {
+			console.error('Error saving plan:', error);
+		}
+	}
+
+	async function handleSelectPlan() {
+		if (!selectedPlanId) return;
+
+		try {
+			await updateUserData({
+				selectedPlan: {
+					id: selectedPlanId,
+					type: planType === 'existing' ? 'user' : 'predefined'
+				}
+			});
+			goto('/train');
+		} catch (error) {
+			console.error('Error selecting plan:', error);
+		}
+	}
+
+	async function handleDeletePlan() {
+		if (!selectedPlanId) return;
+
+		try {
+			await deletePlan(selectedPlanId);
+			// Refresh plans list
+			await loadPlans();
+			// Reset selection
+			selectedPlanId = '';
+			planName = '';
+			planStructure = [{ days: [{ exercises: [] }] }];
+		} catch (error) {
+			console.error('Error deleting plan:', error);
+		}
+	}
+
+	$effect(() => {
+		updatePlanStructure();
+	});
+
+	onMount(() => {
+		loadPlans();
+		const unsubscribe = auth.onAuthStateChanged((user) => {
+			currentUserId = user?.uid;
+		});
+		return unsubscribe;
+	});
+</script>
+
+<section class="h-[100dvh] w-full">
+	<div class="mx-auto flex max-w-(--breakpoint-xl) flex-col items-center gap-4 px-4 py-12 lg:py-20">
+		<h1 class="text-2xl font-bold">Training Plan</h1>
+
+		<div class="w-full max-w-xl space-y-4">
+			<div class="flex gap-2">
+				<button
+					class="btn flex-1 {planType === 'new' ? 'btn-primary' : 'btn-outline'}"
+					onclick={() => (planType = 'new')}
+				>
+					Create New
+				</button>
+				<button
+					class="btn flex-1 {planType === 'existing' ? 'btn-primary' : 'btn-outline'}"
+					onclick={() => (planType = 'existing')}
+				>
+					My Plans
+				</button>
+				<button
+					class="btn flex-1 {planType === 'predefined' ? 'btn-primary' : 'btn-outline'}"
+					onclick={() => (planType = 'predefined')}
+				>
+					Predefined
+				</button>
+			</div>
+
+			{#if planType === 'new'}
+				<input
+					type="text"
+					placeholder="Plan Name"
+					class="input input-bordered w-full"
+					bind:value={planName}
+				/>
+			{:else}
+				<select
+					class="select select-bordered w-full"
+					bind:value={selectedPlanId}
+					onchange={handlePlanSelect}
+				>
+					<option value="">Select a plan</option>
+					{#if planType === 'existing'}
+						{#each existingPlans as plan}
+							<option value={plan.id}>{plan.name}</option>
+						{/each}
+					{:else}
+						{#each predefinedPlans as plan}
+							<option value={plan.id}>{plan.name}</option>
+						{/each}
+					{/if}
+				</select>
+			{/if}
+
+			{#if planType === 'new' || (selectedPlanId && canEditPlan(existingPlans.find((p) => p.id === selectedPlanId) || predefinedPlans.find((p) => p.id === selectedPlanId) || null))}
+				<div class="flex gap-4">
+					<div class="form-control w-full">
+						<label class="label" for="weeks">Weeks</label>
+						<input
+							id="weeks"
+							type="number"
+							min="1"
+							class="input input-bordered w-full"
+							bind:value={weeks}
+						/>
+					</div>
+					<div class="form-control w-full">
+						<label class="label" for="days">Days per Week</label>
+						<input
+							id="days"
+							type="number"
+							min="1"
+							max="7"
+							class="input input-bordered w-full"
+							bind:value={daysPerWeek}
+						/>
+					</div>
+				</div>
+
+				<div class="flex gap-4">
+					<select class="select select-bordered w-full" bind:value={selectedWeek}>
+						{#each Array(weeks) as _, i}
+							<option value={i}>Week {i + 1}</option>
+						{/each}
+					</select>
+
+					<select class="select select-bordered w-full" bind:value={selectedDay}>
+						{#each Array(daysPerWeek) as _, i}
+							<option value={i}>Day {i + 1}</option>
+						{/each}
+					</select>
+				</div>
+
+				<div class="space-y-4">
+					<div class="flex justify-between">
+						<h2 class="text-xl font-semibold">
+							Exercises for Week {selectedWeek + 1}, Day {selectedDay + 1}
+						</h2>
+						<button class="btn btn-primary btn-sm" onclick={addExercise}>Add Exercise</button>
+					</div>
+
+					{#each planStructure[selectedWeek].days[selectedDay].exercises as exercise, i}
+						<div class="grid grid-cols-6 gap-2">
+							<ExerciseSelect bind:value={exercise.exercise_name} placeholder="Exercise name" />
+							<input
+								type="number"
+								placeholder="Sets"
+								class="input input-bordered input-sm"
+								bind:value={exercise.sets}
+							/>
+							<input
+								type="number"
+								placeholder="Reps"
+								class="input input-bordered input-sm"
+								bind:value={exercise.reps}
+							/>
+							<input
+								type="number"
+								placeholder="RPE"
+								class="input input-bordered input-sm"
+								bind:value={exercise.rpe}
+							/>
+							<button class="btn btn-error btn-sm" onclick={() => removeExercise(i)}>Remove</button>
+						</div>
+					{/each}
+				</div>
+
+				{#if planType === 'existing' && selectedPlanId}
+					<div class="flex gap-2">
+						<button class="btn btn-error flex-1" onclick={handleDeletePlan}> Delete Plan </button>
+						<button class="btn btn-primary flex-1" onclick={handleSavePlan}> Save Changes </button>
+					</div>
+				{:else if planType === 'new'}
+					<button class="btn btn-primary w-full" onclick={handleSavePlan}> Save Plan </button>
+				{/if}
+			{:else if selectedPlanId}
+				<div class="alert alert-info">
+					<span>This plan can only be viewed. Create a copy to modify it.</span>
+					<button
+						class="btn btn-primary btn-sm"
+						onclick={() => {
+							planType = 'new';
+							planName = `Copy of ${planName}`;
+						}}
+					>
+						Create Copy
+					</button>
+				</div>
+
+				<button class="btn btn-primary w-full" onclick={handleSelectPlan}> Select Plan </button>
+			{/if}
+		</div>
+	</div>
+</section>
+
+================
+File: src/routes/(with_main_navbar)/reflect/+page.svelte
+================
+<script lang="ts">
+	import { onMount } from 'svelte';
+	import { getFirestore, collection, query, where, getDocs, Timestamp } from 'firebase/firestore';
+	import { app, auth } from '$lib/firebase.client';
+	import { getUserData } from '$lib/hooks/get-user-data';
+	import ExerciseChart from '$lib/components/ExerciseChart.svelte';
+
+	type ExerciseLog = {
+		exercise_name: string;
+		reps: number;
+		weight: number;
+		rpe: number;
+		date: Date;
+	};
+
+	let selectedExercise = $state('');
+	let exercises: string[] = $state([]);
+	let exerciseLogs: ExerciseLog[] = $state([]);
+	let timeRange = $state('30'); // days
+
+	async function fetchExercises() {
+		const currentUserId = auth.currentUser?.uid;
+		if (!currentUserId) return;
+
+		const db = getFirestore(app);
+		const logsRef = collection(db, 'users', currentUserId, 'exercise_logs');
+		const querySnapshot = await getDocs(logsRef);
+
+		// Get unique exercise names
+		const uniqueExercises = new Set<string>();
+		querySnapshot.forEach((doc) => {
+			uniqueExercises.add(doc.data().exercise_name);
+		});
+		exercises = Array.from(uniqueExercises).sort();
+	}
+
+	async function fetchExerciseLogs() {
+		if (!selectedExercise) return;
+
+		const currentUserId = auth.currentUser?.uid;
+		if (!currentUserId) return;
+
+		const db = getFirestore(app);
+		const logsRef = collection(db, 'users', currentUserId, 'exercise_logs');
+
+		const startDate = new Date();
+		startDate.setDate(startDate.getDate() - parseInt(timeRange));
+
+		const q = query(
+			logsRef,
+			where('exercise_name', '==', selectedExercise),
+			where('date', '>=', startDate)
+		);
+
+		const querySnapshot = await getDocs(q);
+		exerciseLogs = querySnapshot.docs.map((doc) => {
+			const data = doc.data();
+			return {
+				...data,
+				date: (data.date as Timestamp).toDate()
+			} as ExerciseLog;
+		});
+	}
+
+	function calculateStats() {
+		if (!exerciseLogs.length) return null;
+
+		const maxWeight = Math.max(...exerciseLogs.map((log) => log.weight));
+		const avgWeight = exerciseLogs.reduce((sum, log) => sum + log.weight, 0) / exerciseLogs.length;
+		const maxReps = Math.max(...exerciseLogs.map((log) => log.reps));
+		const avgReps = exerciseLogs.reduce((sum, log) => sum + log.reps, 0) / exerciseLogs.length;
+
+		return {
+			maxWeight: maxWeight.toFixed(1),
+			avgWeight: avgWeight.toFixed(1),
+			maxReps,
+			avgReps: avgReps.toFixed(1)
+		};
+	}
+
+	$effect(() => {
+		if (selectedExercise || timeRange) {
+			fetchExerciseLogs();
+		}
+	});
+
+	onMount(() => {
+		fetchExercises();
+	});
+
+	const stats = $derived(calculateStats());
+</script>
+
+<section class="h-[100dvh] w-full">
+	<div class="mx-auto flex max-w-(--breakpoint-xl) flex-col items-center gap-4 px-4 py-12 lg:py-20">
+		<h1 class="text-2xl font-bold">Exercise Statistics</h1>
+
+		<div class="w-full max-w-xl space-y-6">
+			<div class="flex gap-4">
+				<select class="select select-bordered w-full" bind:value={selectedExercise}>
+					<option value="">Select Exercise</option>
+					{#each exercises as exercise}
+						<option value={exercise}>{exercise}</option>
+					{/each}
+				</select>
+
+				<select class="select select-bordered w-full" bind:value={timeRange}>
+					<option value="7">Last 7 days</option>
+					<option value="30">Last 30 days</option>
+					<option value="90">Last 90 days</option>
+					<option value="365">Last year</option>
+				</select>
+			</div>
+
+			{#if exerciseLogs.length}
+				{#if stats}
+					<div class="grid grid-cols-2 gap-4">
+						<div class="stats shadow">
+							<div class="stat">
+								<div class="stat-title">Max Weight</div>
+								<div class="stat-value">{stats.maxWeight}kg</div>
+							</div>
+						</div>
+						<div class="stats shadow">
+							<div class="stat">
+								<div class="stat-title">Avg Weight</div>
+								<div class="stat-value">{stats.avgWeight}kg</div>
+							</div>
+						</div>
+						<div class="stats shadow">
+							<div class="stat">
+								<div class="stat-title">Max Reps</div>
+								<div class="stat-value">{stats.maxReps}</div>
+							</div>
+						</div>
+						<div class="stats shadow">
+							<div class="stat">
+								<div class="stat-title">Avg Reps</div>
+								<div class="stat-value">{stats.avgReps}</div>
+							</div>
+						</div>
+					</div>
+
+					<div class="overflow-x-auto">
+						<table class="table-zebra table">
+							<thead>
+								<tr>
+									<th>Date</th>
+									<th>Weight</th>
+									<th>Reps</th>
+									<th>RPE</th>
+								</tr>
+							</thead>
+							<tbody>
+								{#each exerciseLogs.sort((a, b) => b.date.getTime() - a.date.getTime()) as log}
+									<tr>
+										<td>{log.date.toLocaleDateString()}</td>
+										<td>{log.weight}kg</td>
+										<td>{log.reps}</td>
+										<td>{log.rpe}</td>
+									</tr>
+								{/each}
+							</tbody>
+						</table>
+						<div class="mt-8 w-full max-w-xl">
+							<ExerciseChart data={exerciseLogs} />
+						</div>
+					</div>
+				{/if}
+			{:else if selectedExercise}
+				<div class="alert">No data available for the selected time range.</div>
+			{/if}
+		</div>
+	</div>
+</section>
+
+================
+File: src/routes/(with_main_navbar)/train/+page.svelte
+================
+<script lang="ts">
+	import { browser } from '$app/environment';
+	import { getUserData, updateUserData, type UserData } from '$lib/hooks/get-user-data';
+	import TrainingDay from '$lib/components/TrainingDay.svelte';
+	import {
+		saveTrainingLog,
+		getPlan,
+		getPlans,
+		getPredefinedPlans,
+		type Plan
+	} from '$lib/hooks/manage-plans';
+	import { onMount } from 'svelte';
+
+	let userData: UserData | null = $state(null);
+	let plan: Plan | null = $state(null);
+	let selectedWeek = $state(0);
+	let selectedDay = $state(0);
+	let weeksCount = $state(0);
+	let daysCount = $state(0);
+	let allPlans: (Plan & { type: 'user' | 'predefined' })[] = $state([]);
+	let exerciseDataToSave: Record<
+		string,
+		Array<{ sets: number; reps: number; rpe: number; weight: number }>
+	> = $state({});
+
+	async function loadAllPlans() {
+		const [userPlans, predefinedPlans] = await Promise.all([getPlans(), getPredefinedPlans()]);
+
+		allPlans = [
+			...userPlans.map((plan) => ({ ...plan, type: 'user' as const })),
+			...predefinedPlans.map((plan) => ({ ...plan, type: 'predefined' as const }))
+		];
+	}
+
+	async function handlePlanSelect(planId: string) {
+		if (!planId) return;
+
+		try {
+			await updateUserData({
+				selectedPlan: {
+					id: planId,
+					type: allPlans.find((p) => p.id === planId)?.type ?? 'user'
+				}
+			});
+
+			const planData = await getPlan(planId);
+			if (planData) {
+				plan = planData;
+				weeksCount = planData.weeks.length;
+				daysCount = planData.weeks[0].days.length;
+				selectedWeek = 0;
+				selectedDay = 0;
+			}
+		} catch (error) {
+			console.error('Error selecting plan:', error);
+		}
+	}
+
+	onMount(async () => {
+		await loadAllPlans();
+		if (browser) {
+			try {
+				const data = await getUserData();
+				userData = data ?? null;
+				if (userData?.selectedPlan?.id) {
+					selectedWeek = userData.currentWeek ?? 0;
+					selectedDay = userData.currentDay ?? 0;
+					const planData = await getPlan(userData.selectedPlan.id);
+					plan = planData ?? null;
+					if (plan) {
+						weeksCount = plan.weeks.length;
+						daysCount = plan.weeks[0].days.length;
+					}
+				}
+			} catch (e) {
+				console.error('Error fetching user data:', e);
+			}
+		}
+	});
+
+	async function handleSaveTraining() {
+		if (!plan) return;
+
+		try {
+			// Save the training log
+			await saveTrainingLog(
+				userData?.selectedPlan?.id ?? '',
+				selectedWeek,
+				selectedDay,
+				exerciseDataToSave
+			);
+
+			// Calculate next position
+			let nextDay = selectedDay + 1;
+			let nextWeek = selectedWeek;
+
+			// If we've reached the end of the week
+			if (nextDay >= daysCount) {
+				nextDay = 0;
+				nextWeek++;
+				// If we've reached the end of the plan
+				if (nextWeek >= weeksCount) {
+					nextWeek = 0;
+				}
+			}
+
+			// Update user data with new position
+			await updateUserData({
+				currentWeek: nextWeek,
+				currentDay: nextDay
+			});
+
+			// Update local state
+			selectedWeek = nextWeek;
+			selectedDay = nextDay;
+			exerciseDataToSave = {};
+
+			// Show success message
+			alert('Training saved! Moving to next day.');
+		} catch (error) {
+			console.error('Error saving training log:', error);
+			alert('Error saving training. Please try again.');
+		}
+	}
+</script>
+
+<section class="h-[100dvh] w-full py-4">
+	<div class="mx-auto flex max-w-(--breakpoint-xl) flex-col items-center gap-4 px-4 py-12 lg:py-20">
+		<div class="form-control w-full max-w-md">
+			<label class="label" for="plan-select">
+				<span class="label-text">Select a Training Plan</span>
+			</label>
+			<select
+				id="plan-select"
+				class="select select-bordered w-full"
+				value={userData?.selectedPlan?.id ?? ''}
+				onchange={(e) => handlePlanSelect(e.currentTarget.value)}
+			>
+				<option value="">Choose a plan</option>
+				{#each allPlans as plan}
+					<option value={plan.id} selected={plan.id === userData?.selectedPlan?.id}>
+						{plan.name}
+						{plan.type === 'predefined' ? '(Predefined)' : '(My Plan)'}
+					</option>
+				{/each}
+			</select>
+		</div>
+
+		{#if !plan}
+			<div class="alert alert-info">
+				<span>Select a plan to start training</span>
+			</div>
+		{:else}
+			<section class="flex flex-col items-center gap-2 lg:flex-row lg:justify-center">
+				<h1 class="text-base font-semibold lg:text-xl">{userData?.currentPlan}</h1>
+				<div class="flex flex-row gap-2 lg:inline-flex">
+					<select
+						class="select select-primary select-sm lg:select-md w-full text-sm lg:text-base"
+						bind:value={selectedWeek}
+						onclick={(e) => (selectedWeek = +e.currentTarget.value)}
+					>
+						{#each Array(weeksCount) as _, i}
+							<option value={i}>Week {i + 1}</option>
+						{/each}
+					</select>
+					<select
+						class="select select-primary select-sm lg:select-md appearance-none text-sm lg:text-base"
+						bind:value={selectedDay}
+						onclick={(e) => (selectedDay = +e.currentTarget.value)}
+					>
+						{#each Array(daysCount) as _, i}
+							<option value={i}>Day {i + 1}</option>
+						{/each}
+					</select>
+				</div>
+			</section>
+			<TrainingDay
+				exercises={plan['weeks'][selectedWeek]['days'][selectedDay]['exercises']}
+				isEditable={true}
+				bind:exerciseData={exerciseDataToSave}
+			/>
+			<button class="btn btn-primary mt-4 w-1/2 max-w-md" onclick={handleSaveTraining}>
+				Save
+			</button>
+		{/if}
+	</div>
+</section>
+
+================
+File: src/routes/+layout.svelte
+================
+<script lang="ts">
+	import '../app.css';
+	import { onMount } from 'svelte';
+	import { session, type SessionState, type User } from '$lib/session';
+	import { goto } from '$app/navigation';
+
+	let { children, data } = $props();
+
+	onMount(async () => {
+		try {
+			const user: User = (await data.getAuthUser()) as User;
+
+			const loggedIn = !!user;
+			session.update((cur: SessionState) => {
+				return {
+					...cur,
+					user,
+					loggedIn,
+					loading: false
+				};
+			});
+
+			if (loggedIn) {
+				goto('/train');
+			}
+		} catch {
+			goto('/');
+		}
+	});
+</script>
+
+{@render children()}
+
+================
+File: src/routes/+layout.ts
+================
+/** @type {import('./$types').LayoutLoad} */
+
+import { initializeFirebase, auth, db } from '$lib/firebase.client';
+import { browser } from '$app/environment';
+import { onAuthStateChanged } from 'firebase/auth';
+
+export async function load({ url }) {
+	if (browser) {
+		try {
+			initializeFirebase();
+		} catch (ex) {
+			console.error(ex);
+		}
+	}
+
+	function getAuthUser() {
+		return new Promise((resolve) => {
+			onAuthStateChanged(auth, (user) => resolve(user ? user : false));
+		});
+	}
+
+	return {
+		getAuthUser: getAuthUser,
+		db: db,
+		url: url.pathname
+	};
+}
+
+================
+File: src/service-worker.js
+================
+// import { build, files, prerendered, version } from '$service-worker'
+// import { cleanupOutdatedCaches, precacheAndRoute } from 'workbox-precaching'
+
+// const precache_list = [...build, ...files, ...prerendered].map((s) => ({
+// 	url: s,
+// 	revision: version,
+// }))
+
+// precacheAndRoute(precache_list)
+
+/// <reference types="@sveltejs/kit" />
+import { build, files, version } from '$service-worker';
+
+// Create a unique cache name for this deployment
+const CACHE = `cache-${version}`;
+
+const ASSETS = [
+	...build, // the app itself
+	...files  // everything in `static`
+];
+
+self.addEventListener('install', (event) => {
+	// Create a new cache and add all files to it
+	async function addFilesToCache() {
+		const cache = await caches.open(CACHE);
+		await cache.addAll(ASSETS);
+	}
+
+	event.waitUntil(addFilesToCache());
+});
+
+self.addEventListener('activate', (event) => {
+	// Remove previous cached data from disk
+	async function deleteOldCaches() {
+		for (const key of await caches.keys()) {
+			if (key !== CACHE) await caches.delete(key);
+		}
+	}
+
+	event.waitUntil(deleteOldCaches());
+});
+
+self.addEventListener('fetch', (event) => {
+	// ignore POST requests etc
+	if (event.request.method !== 'GET') return;
+
+	async function respond() {
+		const url = new URL(event.request.url);
+		const cache = await caches.open(CACHE);
+
+		// `build`/`files` can always be served from the cache
+		if (ASSETS.includes(url.pathname)) {
+			const response = await cache.match(url.pathname);
+
+			if (response) {
+				return response;
+			}
+		}
+
+		// for everything else, try the network first, but
+		// fall back to the cache if we're offline
+		try {
+			const response = await fetch(event.request);
+
+			// if we're offline, fetch can return a value that is not a Response
+			// instead of throwing - and we can't pass this non-Response to respondWith
+			if (!(response instanceof Response)) {
+				throw new Error('invalid response from fetch');
+			}
+
+			if (response.status === 200) {
+				cache.put(event.request, response.clone());
+			}
+
+			return response;
+		} catch (err) {
+			const response = await cache.match(event.request);
+
+			if (response) {
+				return response;
+			}
+
+			// if there's no cache, then just error out
+			// as there is nothing we can do to respond to this request
+			throw err;
+		}
+	}
+
+	event.respondWith(respond());
+});
+
+================
+File: static/index.html
+================
+<!doctype html>
+<html>
+	<head>
+		<meta charset="utf-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1" />
+		<title>Welcome to Firebase Hosting</title>
+
+		<!-- update the version number as needed -->
+		<script defer src="/__/firebase/10.13.2/firebase-app-compat.js"></script>
+		<!-- include only the Firebase features as you need -->
+		<script defer src="/__/firebase/10.13.2/firebase-auth-compat.js"></script>
+		<script defer src="/__/firebase/10.13.2/firebase-database-compat.js"></script>
+		<script defer src="/__/firebase/10.13.2/firebase-firestore-compat.js"></script>
+		<script defer src="/__/firebase/10.13.2/firebase-functions-compat.js"></script>
+		<script defer src="/__/firebase/10.13.2/firebase-messaging-compat.js"></script>
+		<script defer src="/__/firebase/10.13.2/firebase-storage-compat.js"></script>
+		<script defer src="/__/firebase/10.13.2/firebase-analytics-compat.js"></script>
+		<script defer src="/__/firebase/10.13.2/firebase-remote-config-compat.js"></script>
+		<script defer src="/__/firebase/10.13.2/firebase-performance-compat.js"></script>
+		<!-- 
+      initialize the SDK after all desired features are loaded, set useEmulator to false
+      to avoid connecting the SDK to running emulators.
+    -->
+		<script defer src="/__/firebase/init.js?useEmulator=true"></script>
+
+		<style media="screen">
+			body {
+				background: #eceff1;
+				color: rgba(0, 0, 0, 0.87);
+				font-family: Roboto, Helvetica, Arial, sans-serif;
+				margin: 0;
+				padding: 0;
+			}
+			#message {
+				background: white;
+				max-width: 360px;
+				margin: 100px auto 16px;
+				padding: 32px 24px;
+				border-radius: 3px;
+			}
+			#message h2 {
+				color: #ffa100;
+				font-weight: bold;
+				font-size: 16px;
+				margin: 0 0 8px;
+			}
+			#message h1 {
+				font-size: 22px;
+				font-weight: 300;
+				color: rgba(0, 0, 0, 0.6);
+				margin: 0 0 16px;
+			}
+			#message p {
+				line-height: 140%;
+				margin: 16px 0 24px;
+				font-size: 14px;
+			}
+			#message a {
+				display: block;
+				text-align: center;
+				background: #039be5;
+				text-transform: uppercase;
+				text-decoration: none;
+				color: white;
+				padding: 16px;
+				border-radius: 4px;
+			}
+			#message,
+			#message a {
+				box-shadow:
+					0 1px 3px rgba(0, 0, 0, 0.12),
+					0 1px 2px rgba(0, 0, 0, 0.24);
+			}
+			#load {
+				color: rgba(0, 0, 0, 0.4);
+				text-align: center;
+				font-size: 13px;
+			}
+			@media (max-width: 600px) {
+				body,
+				#message {
+					margin-top: 0;
+					background: white;
+					box-shadow: none;
+				}
+				body {
+					border-top: 16px solid #ffa100;
+				}
+			}
+		</style>
+	</head>
+	<body>
+		<div id="message">
+			<h2>Welcome</h2>
+			<h1>Firebase Hosting Setup Complete</h1>
+			<p>
+				You're seeing this because you've successfully setup Firebase Hosting. Now it's time to go
+				build something extraordinary!
+			</p>
+			<a target="_blank" href="https://firebase.google.com/docs/hosting/"
+				>Open Hosting Documentation</a
+			>
+		</div>
+		<p id="load">Firebase SDK Loading&hellip;</p>
+
+		<script>
+			document.addEventListener('DOMContentLoaded', function () {
+				const loadEl = document.querySelector('#load');
+				// // 🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥
+				// // The Firebase SDK is initialized and available here!
+				//
+				// firebase.auth().onAuthStateChanged(user => { });
+				// firebase.database().ref('/path/to/ref').on('value', snapshot => { });
+				// firebase.firestore().doc('/foo/bar').get().then(() => { });
+				// firebase.functions().httpsCallable('yourFunction')().then(() => { });
+				// firebase.messaging().requestPermission().then(() => { });
+				// firebase.storage().ref('/path/to/ref').getDownloadURL().then(() => { });
+				// firebase.analytics(); // call to activate
+				// firebase.analytics().logEvent('tutorial_completed');
+				// firebase.performance(); // call to activate
+				//
+				// // 🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥
+
+				try {
+					let app = firebase.app();
+					let features = [
+						'auth',
+						'database',
+						'firestore',
+						'functions',
+						'messaging',
+						'storage',
+						'analytics',
+						'remoteConfig',
+						'performance'
+					].filter((feature) => typeof app[feature] === 'function');
+					loadEl.textContent = `Firebase SDK loaded with ${features.join(', ')}`;
+				} catch (e) {
+					console.error(e);
+					loadEl.textContent = 'Error loading the Firebase SDK, check the console.';
+				}
+			});
+		</script>
+	</body>
+</html>
+
+================
+File: static/site.webmanifest
+================
+{
+	"name": "Gym Notebook",
+	"short_name": "GN",
+	"start_url": "/",
+	"icons": [
+		{
+			"src": "icons/icon-72x72.png",
+			"sizes": "72x72",
+			"type": "image/png",
+			"purpose": "maskable any"
+		},
+		{
+			"src": "icons/icon-96x96.png",
+			"sizes": "96x96",
+			"type": "image/png",
+			"purpose": "maskable any"
+		},
+		{
+			"src": "icons/icon-128x128.png",
+			"sizes": "128x128",
+			"type": "image/png",
+			"purpose": "maskable any"
+		},
+		{
+			"src": "icons/icon-144x144.png",
+			"sizes": "144x144",
+			"type": "image/png",
+			"purpose": "maskable any"
+		},
+		{
+			"src": "icons/icon-152x152.png",
+			"sizes": "152x152",
+			"type": "image/png",
+			"purpose": "maskable any"
+		},
+		{
+			"src": "icons/icon-192x192.png",
+			"sizes": "192x192",
+			"type": "image/png",
+			"purpose": "maskable any"
+		},
+		{
+			"src": "icons/icon-384x384.png",
+			"sizes": "384x384",
+			"type": "image/png",
+			"purpose": "maskable any"
+		},
+		{
+			"src": "icons/icon-512x512.png",
+			"sizes": "512x512",
+			"type": "image/png",
+			"purpose": "maskable any"
+		}
+	],
+	"theme_color": "#000000",
+	"background_color": "#000000",
+	"display": "standalone",
+	"description": "A replacement for my gym notebook",
+	"dir": "ltr",
+	"lang": "en",
+	"orientation": "portrait",
+	"categories": ["education", "fitness", "health", "lifestyle", "productivity", "social"]
+}
+
+================
+File: svelte.config.js
+================
+import adapter from '@sveltejs/adapter-auto';
+import { vitePreprocess } from '@sveltejs/vite-plugin-svelte';
+
+/** @type {import('@sveltejs/kit').Config} */
+const config = {
+	// Consult https://kit.svelte.dev/docs/integrations#preprocessors
+	// for more information about preprocessors
+	preprocess: vitePreprocess(),
+
+	kit: {
+		// adapter-auto only supports some environments, see https://kit.svelte.dev/docs/adapter-auto for a list.
+		// If your environment is not supported, or you settled on a specific environment, switch out the adapter.
+		// See https://kit.svelte.dev/docs/adapters for more information about adapters.
+		adapter: adapter()
+	}
+};
+
+export default config;
+
+================
+File: TODO.md
+================
+- [ ] Create pages for training, preparing and analyzing
+- [ ] Plan how you are going to store your data
+- [ ] Add offline data persistance
+- [ ] Add offline auth persistance
+- [ ] Test launch speeds on mobile
+- [ ] Test offline mode on mobile
+
+# Notes
+## Database structure:
+1. Exercises table, simply a list of available exercises
+2. Plans table, Plans that have a plan name, weeks and days with specific exercises
+3. Users table that holds current day, week, plan
+4. Exercises log table that holds exercise data for each user, each table is a separate exercise type that holds the log
+
+================
+File: tsconfig.json
+================
+{
+	"extends": "./.svelte-kit/tsconfig.json",
+	"compilerOptions": {
+		"allowJs": true,
+		"checkJs": true,
+		"esModuleInterop": true,
+		"forceConsistentCasingInFileNames": true,
+		"resolveJsonModule": true,
+		"skipLibCheck": true,
+		"sourceMap": true,
+		"strict": true,
+		"moduleResolution": "bundler"
+	}
+	// Path aliases are handled by https://kit.svelte.dev/docs/configuration#alias
+	// except $lib which is handled by https://kit.svelte.dev/docs/configuration#files
+	//
+	// If you want to overwrite includes/excludes, make sure to copy over the relevant includes/excludes
+	// from the referenced tsconfig.json - TypeScript does not merge them in
+}
+
+================
+File: vite.config.ts
+================
+import { sveltekit } from '@sveltejs/kit/vite';
+import { defineConfig } from 'vite';
+
+export default defineConfig({
+	plugins: [sveltekit()]
+});
+
+
+
+================================================================
+End of Codebase
+================================================================
