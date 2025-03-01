@@ -89,6 +89,28 @@
 		return planData;
 	}
 
+	async function loadSavedTrainingData() {
+		if (!userData?.selectedPlan?.id) return;
+
+		const savedData = $trainingData;
+		if (
+			savedData &&
+			savedData.planId === userData.selectedPlan.id &&
+			savedData.week === selectedWeek &&
+			savedData.day === selectedDay
+		) {
+			exerciseDataToSave = savedData.exerciseData;
+		} else {
+			exerciseDataToSave = {};
+		}
+	}
+
+	$effect(() => {
+		if (selectedWeek !== undefined && selectedDay !== undefined) {
+			loadSavedTrainingData();
+		}
+	});
+
 	onMount(async () => {
 		try {
 			// Load all plans first
@@ -111,6 +133,9 @@
 						weeksCount = planData.weeks.length;
 						daysCount = planData.weeks[0].days.length;
 
+						// Load saved training data
+						await loadSavedTrainingData();
+
 						// Ensure the select element reflects the current plan
 						const select = document.getElementById('plan-select') as HTMLSelectElement;
 						if (select) {
@@ -122,6 +147,11 @@
 		} catch (e) {
 			console.error('Error initializing training page:', e);
 		}
+	});
+
+	// Update exerciseDataToSave when changing week or day
+	$effect(() => {
+		loadSavedTrainingData();
 	});
 
 	async function handleSaveTraining() {

@@ -106,6 +106,34 @@
 			exerciseData = $trainingData.exerciseData;
 		}
 	});
+
+	// Initialize input values when component mounts or when plan/week/day changes
+	$effect(() => {
+		if (
+			$trainingData &&
+			$trainingData.planId === planId &&
+			$trainingData.week === currentWeek &&
+			$trainingData.day === currentDay
+		) {
+			// Update input values with saved data
+			exercises.forEach((exercise) => {
+				const exerciseName = exercise.exercise_name;
+				const savedData = $trainingData.exerciseData[exerciseName];
+				if (savedData) {
+					const inputs = document.querySelectorAll(`input[data-exercise="${exerciseName}"]`);
+					inputs.forEach((input, index) => {
+						const inputElement = input as HTMLInputElement;
+						if (savedData[index]) {
+							inputElement.value =
+								savedData[index][
+									inputElement.dataset.field as keyof (typeof savedData)[0]
+								].toString();
+						}
+					});
+				}
+			});
+		}
+	});
 </script>
 
 <section
@@ -117,7 +145,7 @@
 		<h2>Reps</h2>
 		<h2>RPE</h2>
 		<h2>Weight</h2>
-		<h2></h2>
+		<div></div>
 	</div>
 	{#each exercises as exercise}
 		{#if exercise}
@@ -142,6 +170,9 @@
 						type="number"
 						placeholder={exercise.reps.toString()}
 						disabled={!isEditable}
+						data-exercise={exerciseName}
+						data-field="reps"
+						value={exerciseData[exerciseName]?.[i]?.reps ?? ''}
 						oninput={(e) => updateExerciseData(exerciseName, i, 'reps', +e.currentTarget.value)}
 					/>
 					<input
@@ -149,6 +180,9 @@
 						type="number"
 						placeholder={exercise.rpe.toString()}
 						disabled={!isEditable}
+						data-exercise={exerciseName}
+						data-field="rpe"
+						value={exerciseData[exerciseName]?.[i]?.rpe ?? ''}
 						oninput={(e) => updateExerciseData(exerciseName, i, 'rpe', +e.currentTarget.value)}
 					/>
 					<input
@@ -156,6 +190,9 @@
 						type="number"
 						placeholder={exercise.weight.toString()}
 						disabled={!isEditable}
+						data-exercise={exerciseName}
+						data-field="weight"
+						value={exerciseData[exerciseName]?.[i]?.weight ?? ''}
 						oninput={(e) => updateExerciseData(exerciseName, i, 'weight', +e.currentTarget.value)}
 					/>
 					{#if i === 0}
