@@ -31,7 +31,7 @@ export async function getUserData(): Promise<UserData | null> {
 	const currentUser = auth.currentUser;
 	if (!currentUser) return null;
 
-	const userRef = doc(db, 'users', currentUser.uid);
+	const userRef = doc(db, 'UserData', currentUser.uid);
 
 	try {
 		// Try cache first

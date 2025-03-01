@@ -169,7 +169,7 @@
 <section class="h-[100dvh] w-full py-4">
 	<div class="mx-auto flex max-w-(--breakpoint-xl) flex-col items-center gap-4 px-4 py-12 lg:py-20">
 		<div class="form-control w-full max-w-md">
-			<label class="label" for="plan-select">
+			<label class="label my-1" for="plan-select">
 				<span class="label-text">Select a Training Plan</span>
 			</label>
 			<select
