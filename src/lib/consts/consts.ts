@@ -30,5 +30,8 @@ export const themes = [
 	'winter',
 	'dim',
 	'nord',
-	'sunset'
+	'sunset',
+	'caramellatte',
+	'abyss',
+	'silk'
 ];

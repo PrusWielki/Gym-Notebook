@@ -2,8 +2,9 @@
 layer(base);
 @import 'tailwindcss';
 @plugin "@tailwindcss/typography";
-@plugin 'daisyui';
-
+@plugin "daisyui" {
+	themes: all;
+}
 
 
 @utility leanscroll {
