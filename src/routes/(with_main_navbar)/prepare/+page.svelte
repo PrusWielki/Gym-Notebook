@@ -197,12 +197,6 @@
 				>
 					My Plans
 				</button>
-				<button
-					class="btn flex-1 {planType === 'predefined' ? 'btn-primary' : 'btn-outline'}"
-					onclick={() => (planType = 'predefined')}
-				>
-					Predefined
-				</button>
 			</div>
 
 			{#if planType === 'new'}
